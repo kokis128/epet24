@@ -1,8 +1,8 @@
 import React from 'react'
-import { GrLocation } from "react-icons/gr";
-import { FaFacebook } from "react-icons/fa";
-import { FaWhatsapp } from "react-icons/fa";
-import { IoMdMail } from "react-icons/io";
+import { GrLocation } from "@react-icons/all-files/gr/GrLocation";
+import { FaFacebook } from "@react-icons/all-files/fa/FaFacebook";
+import { FaWhatsapp } from "@react-icons/all-files/fa/FaWhatsapp";
+import { IoMdMail } from "@react-icons/all-files/io/IoMdMail";
 
 export const Footer = () => {
   return (

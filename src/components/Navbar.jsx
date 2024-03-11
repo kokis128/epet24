@@ -1,6 +1,6 @@
 
 
-import { GiHamburgerMenu } from "react-icons/gi";
+import { GiHamburgerMenu } from "@react-icons/all-files/gi/GiHamburgerMenu";
 import { useState } from "react";
 
 export const Navbar = () => {
