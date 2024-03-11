@@ -7,8 +7,8 @@ import { IoMdMail } from "react-icons/io";
 export const Footer = () => {
   return (
 
-      <footer className=' bg-slate-300 '>
-        <div className="flex flex-col  md:flex-row justify-between px-5">
+      <footer className='md:col-span-4 bg-slate-300  '>
+        <div className="flex  md:flex-row justify-between px-5">
           
         <div className='pt-[28px]'>
         <i><GrLocation className="inline-block mr-1   "style={{height:'40',color:'red'}} /></i>

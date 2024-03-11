@@ -5,7 +5,7 @@ import img2 from '../assets/img2.jpeg'
 import img3 from '../assets/img3.jpeg'
 export const ArticlesContainer = () => {
   return (
-    <section className='md:flex mt-6 md:flex-wrap'>
+    <section className=' md:flex  md:col-span-4 '>
         <Article
         img={img1}
         number='01'
