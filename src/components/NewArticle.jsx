@@ -1,5 +1,7 @@
 import React from 'react'
 
+
+
 export const NewArticle = ({title,text}) => {
   return (
     <article className='h-[140px] border-b-2 border-GrayisBlue py-3 last:border-none lg:h-[160px] lg:pt-4'>

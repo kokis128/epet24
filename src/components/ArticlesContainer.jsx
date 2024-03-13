@@ -6,6 +6,16 @@ import img3 from '../assets/img3.jpeg'
 export const ArticlesContainer = () => {
   return (
     <section className=' md:flex  md:col-span-4 '>
+
+
+
+
+
+
+
+
+
+      
         <Article
         img={img1}
         number='01'
@@ -27,5 +37,11 @@ export const ArticlesContainer = () => {
         
         />
     </section>
+
+
+    
+
+
+
   )
 }

@@ -7,7 +7,13 @@ import { Carrusel } from "./Carrusel";
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { Header } from './Header';
+import { Autoridades } from "../pages/Institucional";
+import { useState } from "react";
 function Inicio() {
+
+
+ 
+
     return (
      <main className="container mx-auto" >
       
