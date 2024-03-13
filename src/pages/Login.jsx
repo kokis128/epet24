@@ -20,7 +20,7 @@ export const Login = () => {
    <Navbar /> 
 
    <header> 
-    <p className='text-5'>{!data ? "Loading..": data}</p>
+    {/*<p className='text-5'>{!data ? "Loading..": data}</p>*/}
    </header>
    
    </>
