@@ -1,28 +1,25 @@
 
 import '../src/index.css';
 import Inicio from '../src/components/Inicio'
-import {Header} from '../src/components/Header'
-import {Footer} from '../src/components/Footer'
-import { Sidebar } from './components/Sidebar';
+
 import { Institucional } from './pages/Institucional';
-import { useState } from 'react';
+
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
+import { useState } from 'react';
 import {Normativa} from '../src/pages/Normativa'
 import { Programas } from '../src/pages/Programas';
-import { Login } from '../src/pages/Login';
+import {Login}  from './pages/Login';
+import { Menu } from './pages/Menu';
+import { Register } from "../src/pages/Register";
+import { RutaProtegida } from './pages/RutaProtegida';
 
 
 function App() {
+  
+  let text = localStorage.getItem("user");
+  let user = JSON.parse(text);
 
-  const [showComponente,setShowComponente]=useState(false)
-
-
-  const mostrar = ()=>{
- 
-  setShowComponente(!showComponente);
-}
-
+  console.log(user);
   return (
    
    <>
@@ -37,6 +34,12 @@ function App() {
     <Route path='/programas' element={<Programas />} />
     <Route path='/normativa' element={<Normativa />} />
     <Route path='/login' element={<Login />} />
+
+    <Route element={<RutaProtegida isLogged={user} />}>
+    <Route path='/menu' element={<Menu />} />
+    </Route   >
+    <Route path='/register' element={<Register />} />
+  
     
     
     

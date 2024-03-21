@@ -1,40 +1,37 @@
 import React from 'react'
-import { useState} from 'react'
+
+
+
+import { useState } from 'react'
 import logoepet24 from '../assets/logo24.png' 
-import {  Navigate } from "react-router-dom";
 
-export const Login = () => {
 
-  
+export const Register = () => {
+
+
   const [username,setUsername] =useState('');
   const [password,setPassword] =useState('');
-  
 
-  
-
-  const handleRegister = (e)=>{
-    
+  const handleVolver = (e)=>{
 
 
-    window.location.href ='/register';
+    window.location.href ='/login';
 
   }
 
 
 
 
- 
-const handleLogin = async (event)=>{
- 
+
+const handleSignup = async (event)=>{
+
   event.preventDefault();
 
-  
- 
+
+
 try { 
 
-  
-
-  const response = await fetch('http://localhost:3000/auth/user/login',{
+  const response = await fetch('http://localhost:3000/auth/signup',{
 
   method:'POST',
   headers: {
@@ -44,31 +41,24 @@ try {
 
 }
   )
+   
+  
   const data = await response.json();
 
-  const myJSON = JSON.stringify(data.user);
-  localStorage.setItem("user", myJSON);
-    console.log(data)
-
-  if (data.ok) {
-    console.log("Inicio de sesión exitoso");
-   
-   window.location.href='/menu'
-   
-    alert(data.msg);
- 
+  if (response.ok) {
+    console.log("Registro exitoso");
 
 
-   
+    window.location.href= '/login';
     // Aquí podrías redirigir al usuario a otra página o realizar alguna acción adicional
-  
+  alert('Login Registro Exitoso')
 
 
   } else {
 
     console.error("Inicio de sesión fallido:", data.error);
     // Puedes mostrar un mensaje de error al usuario o hacer alguna otra acción
-    alert(data.msg)
+    alert('debes ingresar un usuario y contraseña validos')
  
   }
   
@@ -77,11 +67,6 @@ try {
   console.error("Error durante el inicio de sesión:", error);
   // Puedes mostrar un mensaje de error genérico al usuario o hacer alguna otra acción
 }
-
-
-
-
-
 }
 
 
@@ -91,19 +76,14 @@ try {
 
 
 
-
-  
   return (
-
     <>
-  
-
     <section className='container flex place-content-center relative'>
      
      
-    <form onSubmit={handleLogin} className=' flex flex-col border-2 my-5 mx-auto p-5'>
+    <form onSubmit={handleSignup} className=' flex flex-col border-2 my-5 mx-auto p-5'>
     <div  className=' text-3xl mx-auto my-auto'><img src = {logoepet24}  alt="logo" className='w-8 h-10 pt-2 mb-2 mx-auto' />
-      Login</div>
+      Registrarse</div>
       <div className=' flex flex-col my-20 place-content-center'  >
         
     <div className=' ml-6 pb-2'>
@@ -125,23 +105,18 @@ try {
         onChange={(e) => setPassword(e.target.value)}
       className='border-2 border-indigo-600 ml-2'/>
     </div>
-    <button type="submit" onClick={handleLogin} className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center transition delay-700 duration-300 ease-in-out ...'>Iniciar sesión</button>
+    <button type="submit" className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center transition delay-700 duration-300 ease-in-out ...'>Registrarse</button>
     </div>
   </form>
 
-  <button type="submit" onClick={handleRegister} className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center absolute right-2'>Registrarse</button>
+  <button type="submit" onClick={handleVolver} className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center absolute right-2'>Login</button>
   
   
   
   </section>
  
 
- 
-   
-   
-
 
   </>
-   
   )
 }
