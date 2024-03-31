@@ -1,0 +1,43 @@
+.custom-li :not(:last-child){
+    border-bottom: 1px solid rgb(89, 146, 236);
+}
+.custom-li {
+    
+padding-left: 1rem;
+list-style: none;
+display: flex;
+align-items: center;
+width: 100%;
+}
+
+.custom-ul {
+    
+    padding-left: 1rem;
+    list-style: none;
+ 
+    align-items: center;
+    width: 100%;
+    }
+
+
+
+
+
+
+
+.observaciones{
+   
+    padding-right: 2px;
+    padding-left: 2px;
+
+}
+.fecha{    
+    padding-left: 1rem;
+}
+.observaciones{    
+    padding-left: 1rem;
+
+}
+.w-75{
+    width: 75%;
+}

@@ -34,7 +34,7 @@ try {
 
   
 
-  const response = await fetch('http://localhost:3000/auth/user/login',{
+  const response = await fetch('http://localhost:3000/api/user/login',{
 
   method:'POST',
   headers: {
@@ -46,13 +46,13 @@ try {
   )
   const data = await response.json();
 
-  const myJSON = JSON.stringify(data.user);
-  localStorage.setItem("user", myJSON);
-    console.log(data)
+ 
 
   if (data.ok) {
     console.log("Inicio de sesión exitoso");
-   
+    const myJSON = JSON.stringify(data.user);
+  localStorage.setItem("user", myJSON);
+    console.log(data)
    window.location.href='/menu'
    
     alert(data.msg);

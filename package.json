@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.3.5",
     "@material-tailwind/react": "^2.1.9",
     "@react-icons/all-files": "^4.1.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -16,6 +17,7 @@
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "scss": "^0.2.4",
     "tailwindcss": "^3.4.1",
     "web-vitals": "^2.1.4"
   },
@@ -44,7 +46,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-icons": "^3.0.0"
+    "@types/react-icons": "^3.0.0",
+    "resolve-url-loader": "^5.0.0"
   }
-  
 }
