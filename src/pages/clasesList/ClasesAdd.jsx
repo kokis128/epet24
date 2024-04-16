@@ -1,34 +1,41 @@
+import { Button } from 'antd';
 import React from 'react'
-import { Form, Input, Button  } from 'antd';
-export const ClasesAdd = ({updateClase}) => {
+import {useForm} from 'react-hook-form';
+ 
+const URL='http://localhost:3000/api'
+export const ClasesAdd = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const  onSubmit =  async (data) => {console.log(data);
+   
+  const first = await fetch(`${URL}/clase`,{
+  method: 'POST',
+  body: JSON.stringify(data),
+  headers:{
+    'Content-Type':'application/json'
+  }
+  }
+  );
+const newClaseFromDB = await first.json();
+console.log(newClaseFromDB);
 
-    const handleSubmit = (event) => {
-        event.preventDefault(); // Evita que la página se recargue al enviar el formulario
-        updateClase()
-        // Aquí puedes realizar acciones con los datos del formulario, como enviar una solicitud al servidor
-      
-      };
+}
+
+
   return (
-   <>
-   
-   <Form className='clases-add' >
-    <div className='w-75'>
-    <Form.Item label="clase" name="clases" 
-    rules={[{required:true,message:'El nombre de la clase es obligatorio'}]}>
-      <Input />
-     
-    </Form.Item>
-    </div>
+  
     
-    <Form>
+    <form onSubmit={handleSubmit(onSubmit)}>
+    <input type="text" placeholder="tema" {...register("tema", {required: true, max: 29})} />
+    <input type="number" placeholder="numero" {...register("numero")} />
+    <input type="text" placeholder="asistencia" {...register("asistencia", {required: true, max: 5})} />
+    <input type="datetime" placeholder="fecha" {...register("fecha", {required: true})} />
 
-        <Button onClick={ handleSubmit} type='primary' htmlType='submit'>cargar</Button>
-       
-    </Form>
-    </Form>
+    <input type="submit" />
+  </form>
+    
+    
+    
    
    
-   
-   </>
   )
 }

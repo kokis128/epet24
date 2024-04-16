@@ -8,10 +8,12 @@ import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import { useState } from 'react';
 import {Normativa} from '../src/pages/Normativa'
 import { Programas } from '../src/pages/Programas';
-import {Login}  from './pages/Login';
+import { Login }  from './pages/Login';
 import { Menu } from './pages/Menu';
 import { Register } from "../src/pages/Register";
 import { RutaProtegida } from './pages/RutaProtegida';
+import { PlanillasSeguimiento } from './components/PlanillasSeguimiento';
+import { ClaseListItem } from './pages/clasesList/ClaseListItem';
 
 
 function App() {
@@ -37,8 +39,11 @@ function App() {
 
     <Route element={<RutaProtegida isLogged={user} />}>
     <Route path='/menu' element={<Menu />} />
+    <Route path='/seguimiento' element={<PlanillasSeguimiento />} />
     </Route   >
     <Route path='/register' element={<Register />} />
+   
+    
   
     
     

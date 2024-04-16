@@ -2,40 +2,46 @@ import React from 'react'
 import './clasesListItem.css';
 import {DeleteOutlined,SelectOutlined} from '@ant-design/icons'
 import {Button, Space }from 'antd';
-export const ClaseListItem = ({clases, del , _id}) => {
-   
+export const ClaseListItem = ({clases,clasesm, del , update, materias}) => {
+ console.log(clases);
   return (
     
     <li className='custom-li' >    
-              
-        <div className='numero'>
-        {clases.numero}
-        </div>
+            
+           <ul>
+      {
 
-        <div className='observaciones'> 
-        {clases.tema} 
-        </div>
-        
-        <div className='fecha'>
-        {clases.fecha}
-        
-        </div>
-        <div className='observaciones'>
-        {clases.observaciones}
-        
-        </div>
-        <div className='actions'>
+
+
+
+
+            
+       
+        <li key={clasesm._id} className='custom-li'>
+           
+          <div className='observaciones'>{clasesm.observaciones}</div>
+          <div className='actions'>
             <Space size='small'>
-        <Button type='primary' onClick={()=>del(clases._id)} danger>
-           { console.log(_id)}
-        <DeleteOutlined />
-        </Button>
-        <Button type='primary'>
-        <SelectOutlined />
-        </Button>
-        </Space>
+              <span>{clasesm._id}</span>
+              <span>{clasesm.tema}</span>
+              <span>{clasesm.fecha}</span>
+              <Button type='primary' onClick={() => del(clasesm._id)} danger>
+                Eliminar
+              </Button>
+              <Button type='primary' onClick={()=>update(clases._id)}>
+               <SelectOutlined />
+               </Button>
+            </Space>
+          </div>
+        </li>
+     }
+    </ul>
+
+
+       
         
-        </div>
+        
+       
   
   
    </li>

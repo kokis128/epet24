@@ -2,18 +2,71 @@ import React from 'react'
 import { Layout, Typography ,Flex } from 'antd';
 import { ClasesList } from '../pages/clasesList/ClasesList';
 import { ClasesAdd } from '../pages/clasesList/ClasesAdd';
-import { useState } from 'react';
-import  { clasesFromDb } from '../constant/Clases'
-export const PlanillasSeguimiento = () => {
-  const clasesDb= clasesFromDb;
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-const [listState, setlistState]=useState(clasesDb)
-console.log(listState)
+export const PlanillasSeguimiento = () => {
+  
+  const [materias, setMaterias] = useState([]);
+  const [clases, setClases] = useState([]);
+
+
+
+ 
+
+  const handleResponseclases = (response) => {
+    if (!response) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json();
+  };
+
+
+  // Define una función para manejar errores de la solicitud fetch
+  const handleErrorc = (error) => {
+    console.error('Error fetching data:', error);
+  };
+
+
+  
+  const handleResponseMaterias = (response) => {
+    if (!response) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json();
+  };
+
+  const handleError = (error) => {
+    console.error('Error fetching data:', error);
+  };
+
+
+  useEffect(() => {
+    fetch('http://localhost:3000/api/materias')
+      .then(handleResponseMaterias)
+      .then(data => setMaterias(data))
+      .then(data => console.log(data))
+      .catch(handleError);
+  }, []);
+
+
+  useEffect(() => {
+    fetch('http://localhost:3000/api/clases')
+      .then(handleResponseclases)
+      .then(data => setClases(data))
+      .catch(handleErrorc);
+  }, []);
+
+ 
+ 
+  
+
+
 
 
   const { Header, Footer, Sider, Content } = Layout;
-
-  
+const user = JSON.parse(localStorage.getItem('user'))
+ 
   const headerStyle = {
     textAlign: 'center',
     color: '#fff',    
@@ -47,44 +100,124 @@ console.log(listState)
     maxHeight:'100%',
   };
 
-  const nClase ={
-    tema:'mongoDb',
-    numero:12,
-    fecha:'2024-03-30',
-    observaciones:'clase teórica',
-    asistencia:'p',
-    id:'2541'
+ 
+
+  
+
+  
+
+  const [materiaSeleccionada, setMateriaSeleccionada] = useState(null);
+
+  const onSelectMateria = (materiaId) => {
+    setMateriaSeleccionada(materiaId);
+console.log(materiaId)
   }
 
-  const updateClase = () => {
-    const nArray=[...clasesDb];
-    nArray.push(nClase)
-   
-    setlistState(nArray)
-  };
-
-
-  const delClase = (id) => {
-    const nArray = listState.filter(item=>item._id !=id)
-    setlistState(nArray)
-
-  }
 
   return (
     <Layout style={layoutStyle}>
       <Header style={headerStyle}>Header</Header>
       <Layout>
         <Sider width="25%" style={siderStyle}>
-          Sider
+        <span>Bienvenido {user.username}</span>         
+      
+      <div>
+        <h3>Materias:</h3>
+        {materias.map((materia) => (
+
+          <ul>
+          <li key={materia._id} onClick={() => onSelectMateria(materia._id)}>
+          <li>{materia.userId === user._id && materia.name}</li>
+          
+            
+          </li>
+          </ul>
+        ))}
+      </div>
+         
+          
         </Sider>
+
+       
+
         <Content style={contentStyle}>
           <Typography.Title level={1}>Clases</Typography.Title>
-          <ClasesAdd updateClase={updateClase}/> 
+          <ClasesAdd/>         
+      {user._id  && (
+        <div>
+
+
           
-        <ClasesList clases={listState} del={delClase} />
+         
+          <h5>Clases:</h5>
+          {
+            
+            <div >
+             
+          
+              
+              
+              
+              {clases.map((clase) => (
+                <div >
+                
+                  <h5>{clase.materiaId && clase.materiaId._id === materiaSeleccionada
+                   && (
+               <div >
+                
+               
+                 <ClasesList clases={clase} />
+                 </div>
+                 )
+                  }</h5>
+                
+                  
+                 
+                </div>
+              ))}
+            </div>
+         }
+        </div>
+      )}
+
+ 
+    
+         
+
+       
+          
+          
+         
+        
+
+      
+        
+
+        
+
+
+        
+        
+          
+          
+         
+    
+          
+          
+
+       
+          
+          
+         
+        
+
+
+        
           </Content>
       </Layout>
+      
       <Footer style={footerStyle}>Footer</Footer>
     </Layout>
+   
   )
 }
