@@ -1,11 +1,43 @@
-import { Button } from 'antd';
 import React from 'react'
-import {useForm} from 'react-hook-form';
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Mentions,
+  Select,
+  
+} from 'antd';
+const { RangePicker } = DatePicker;
+const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 6,
+    },
+  },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 14,
+    },
+  },
+};
+
  
 const URL='http://localhost:3000/api'
-export const ClasesAdd = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const  onSubmit =  async (data) => {console.log(data);
+export const ClasesAdd = ({materiaS }) => {
+
+ console.log(materiaS);
+  
+
+  
+    const  onFinish =  async (data) => {console.log(data);
    
   const first = await fetch(`${URL}/clase`,{
   method: 'POST',
@@ -18,20 +50,169 @@ export const ClasesAdd = () => {
 const newClaseFromDB = await first.json();
 console.log(newClaseFromDB);
 
+
+  
+
+  
+
+
 }
 
 
   return (
-  
     
-    <form onSubmit={handleSubmit(onSubmit)}>
-    <input type="text" placeholder="tema" {...register("tema", {required: true, max: 29})} />
-    <input type="number" placeholder="numero" {...register("numero")} />
-    <input type="text" placeholder="asistencia" {...register("asistencia", {required: true, max: 5})} />
-    <input type="datetime" placeholder="fecha" {...register("fecha", {required: true})} />
+    <Form
+    {...formItemLayout}
+    variant="filled"
+    style={{
+      maxWidth: 600,
+    }}
+    onFinish={onFinish}
+    
+    
+  >
+ <Form.Item name="materiaId"  hidden
+  initialValue = {materiaS}
+  >
+        <Input />
+      </Form.Item>
 
-    <input type="submit" />
-  </form>
+
+
+    <Form.Item
+      label="Fecha"
+      name="fecha"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+
+      
+      <DatePicker />
+    </Form.Item>
+    
+
+    <Form.Item
+      label="Tema"
+      name="tema"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="Unidad"
+      name="unidad"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="Clase N°"
+      name="numero"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <InputNumber
+        style={{
+          width: '100%',
+        }}
+      />
+    </Form.Item>
+
+    <Form.Item
+      label="Contenidos Trabajados"
+      name="contenidos"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input.TextArea />
+    </Form.Item>
+
+
+    <Form.Item
+      label="Actividades"
+      name="actividades"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input.TextArea />
+    </Form.Item>
+
+    <Form.Item
+      label="Anotaciones"
+      name="anotaciones"
+      
+            rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Mentions />
+    </Form.Item>
+
+    <Form.Item
+      label="Observaciones"
+      name="observaciones"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input.TextArea />
+    </Form.Item>
+
+   
+
+   
+
+  
+
+    
+
+    
+
+    <Form.Item
+      wrapperCol={{
+        offset: 6,
+        span: 16,
+      }}
+    >
+      <Button type="primary" htmlType="submit">
+        Guardar Clase
+      </Button>
+    </Form.Item>
+  </Form>
     
     
     

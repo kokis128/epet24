@@ -9,20 +9,13 @@ export const ClaseListItem = ({clases,clasesm, del , update, materias}) => {
     <li className='custom-li' >    
             
            <ul>
-      {
-
-
-
-
-
-            
+      {         
        
         <li key={clasesm._id} className='custom-li'>
            
           <div className='observaciones'>{clasesm.observaciones}</div>
           <div className='actions'>
             <Space size='small'>
-              <span>{clasesm._id}</span>
               <span>{clasesm.tema}</span>
               <span>{clasesm.fecha}</span>
               <Button type='primary' onClick={() => del(clasesm._id)} danger>

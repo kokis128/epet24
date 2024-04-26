@@ -101,17 +101,51 @@ const user = JSON.parse(localStorage.getItem('user'))
   };
 
  
+  
+    
+  const primeraMateria=null;
 
   
 
   
 
-  const [materiaSeleccionada, setMateriaSeleccionada] = useState(null);
+  const [materiaSeleccionada, setMateriaSeleccionada] = useState();
 
   const onSelectMateria = (materiaId) => {
     setMateriaSeleccionada(materiaId);
-console.log(materiaId)
+
+
   }
+
+  useEffect(() => {
+    // Verificar si hay materias y clases disponibles
+    if (materias.length > 0 && clases.length > 0) {
+      let primeraMateria = null;
+      // Iterar sobre las materias
+      for (let i = 0; i < materias.length; i++) {
+        const materia = materias[i];
+        // Iterar sobre las clases
+        for (let j = 0; j < clases.length; j++) {
+          const clase = clases[j];
+          // Verificar si hay una coincidencia entre materia._id y clase.materiaId._id
+          if (clase.materiaId && materia._id === clase.materiaId._id) {
+            primeraMateria = materia._id;
+            break; // Salir del bucle interior si se encuentra una coincidencia
+          }
+        }
+        // Salir del bucle exterior si se encontró la primera materia
+        if (primeraMateria) {
+          break;
+        }
+      }
+      // Establecer la primera materia encontrada como materia seleccionada
+      setMateriaSeleccionada(primeraMateria);
+    }
+  }, [materias, clases]);
+  
+ 
+  
+  
 
 
   return (
@@ -123,26 +157,31 @@ console.log(materiaId)
       
       <div>
         <h3>Materias:</h3>
-        {materias.map((materia) => (
-
-          <ul>
-          <li key={materia._id} onClick={() => onSelectMateria(materia._id)}>
-          <li>{materia.userId === user._id && materia.name}</li>
-          
+        
+        {materias.map((materia,index) => (
+           
+          <ul className='border-first' >
+         
+          <li  key={materia._id}  onClick={() => onSelectMateria(materia._id)} > {materia.userId === user._id && materia.name }</li>
+         
             
-          </li>
+         
           </ul>
         ))}
+        
       </div>
          
-          
+      
         </Sider>
 
        
 
         <Content style={contentStyle}>
           <Typography.Title level={1}>Clases</Typography.Title>
-          <ClasesAdd/>         
+          <ClasesAdd materiaS={materiaSeleccionada}/>         
+     
+     
+     
       {user._id  && (
         <div>
 
@@ -152,32 +191,44 @@ console.log(materiaId)
           <h5>Clases:</h5>
           {
             
-            <div >
-             
+            <div >   
+
+
+
+               {materias.map((materia,index) => (
+           
+          <ul >
+         
           
-              
-              
-              
-              {clases.map((clase) => (
-                <div >
-                
-                  <h5>{clase.materiaId && clase.materiaId._id === materiaSeleccionada
-                   && (
-               <div >
-                
+         
+          {clases.map((clase,index) => (
                
-                 <ClasesList clases={clase} />
-                 </div>
-                 )
-                  }</h5>
-                
-                  
                  
-                </div>
-              ))}
+               <ul>
+               
+                <li>{clase.materiaId && clase.materiaId._id === materiaSeleccionada && clase.materiaId._id===materia._id 
+                
+              
+                &&(                
+                             
+                 <ClasesList clases={clase}/>
+             
+                )
+                
+            }</li>
+          
+              </ul>
+             
+            ))}
+         
+          </ul>
+        ))}  
+              
+              
             </div>
          }
         </div>
+        
       )}
 
  
