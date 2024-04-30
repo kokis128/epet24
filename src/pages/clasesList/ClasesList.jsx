@@ -5,7 +5,9 @@ import { ClaseListItem } from './ClaseListItem';
 import { clasesFromDb } from '../../constant/Clases';
 export const ClasesList =  ({clases}) => {
 console.log(clases);
+
   const [clasesm, setClases] = useState(clases);
+  const [deletedItemId, setDeletedItemId] = useState(null);
   
   const nClase = {
     tema:'mongoDb',
@@ -14,11 +16,9 @@ console.log(clases);
     observaciones:'clase teórica',
     asistencia:'p',
     id:'2541'
-  };
-  
+  };  
 
-  const updateClase = (id) => {
-   
+  const updateClase = (id) => {   
    
    const clasesArray = [clasesm];
 
@@ -28,9 +28,7 @@ console.log(clases);
    if (index !==1) {
     // Insertar el nuevo elemento en esa posición
     setClases(...nArray1,nClase);
-    nArray1.splice(index, 1, nClase);
-    
-   
+    nArray1.splice(index, 1, nClase); 
    
      setClases(...nArray1);
 } 
@@ -50,38 +48,23 @@ console.log(clases);
   
   const delClase = (id) => {
     const clasesArray = [clasesm];
-    const nArray = clasesArray.filter(item=>item._id!==id)
-    
-    
+    const nArray = clasesArray.filter(item=>item._id!==id)    
+    setDeletedItemId(id);
     setClases(nArray)
- 
-
   }
-    
- 
- 
-
- 
-
+  
  
   
     return (
-    <>
+    <> 
     
-    <ul>
-   
+    <ul className='custom-ul'>   
     
-    <ul className='custom-ul'>
-
-  
-    
-    
-    <li><ClaseListItem clases={clases} clasesm={clasesm} del={delClase} update={updateClase} nClase={nClase}/></li>
-    
+    <li><ClaseListItem clases={clases} clasesm={clasesm} del={delClase} update={updateClase} nClase={nClase} deletedItemId={deletedItemId} isDeleted={deletedItemId===clasesm._id}/></li>
     
     </ul>
 
-    </ul>
+    
  
 
     

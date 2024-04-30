@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import {
   Button,
   DatePicker,
@@ -29,11 +29,17 @@ const formItemLayout = {
   },
 };
 
- 
+
 const URL='http://localhost:3000/api'
-export const ClasesAdd = ({materiaS }) => {
+export const ClasesAdd = ({ materiaS }) => {
 
  console.log(materiaS);
+
+ const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue({ materiaId: materiaS });
+  }, [materiaS]);
   
 
   
@@ -68,12 +74,11 @@ console.log(newClaseFromDB);
       maxWidth: 600,
     }}
     onFinish={onFinish}
-    
+    form={form}
     
   >
  <Form.Item name="materiaId"  hidden
-  initialValue = {materiaS}
-  >
+    >
         <Input />
       </Form.Item>
 
@@ -84,7 +89,7 @@ console.log(newClaseFromDB);
       name="fecha"
       rules={[
         {
-          required: true,
+          
           message: 'Please input!',
         },
       ]}

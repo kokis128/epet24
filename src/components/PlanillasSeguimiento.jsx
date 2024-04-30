@@ -57,13 +57,6 @@ export const PlanillasSeguimiento = () => {
       .catch(handleErrorc);
   }, []);
 
- 
- 
-  
-
-
-
-
   const { Header, Footer, Sider, Content } = Layout;
 const user = JSON.parse(localStorage.getItem('user'))
  
@@ -98,54 +91,20 @@ const user = JSON.parse(localStorage.getItem('user'))
     width: '100%',
     maxWidth: '100%',
     maxHeight:'100%',
-  };
+  };  
+
 
  
-  
-    
-  const primeraMateria=null;
-
-  
-
-  
 
   const [materiaSeleccionada, setMateriaSeleccionada] = useState();
-
-  const onSelectMateria = (materiaId) => {
-    setMateriaSeleccionada(materiaId);
-
-
-  }
-
-  useEffect(() => {
-    // Verificar si hay materias y clases disponibles
-    if (materias.length > 0 && clases.length > 0) {
-      let primeraMateria = null;
-      // Iterar sobre las materias
-      for (let i = 0; i < materias.length; i++) {
-        const materia = materias[i];
-        // Iterar sobre las clases
-        for (let j = 0; j < clases.length; j++) {
-          const clase = clases[j];
-          // Verificar si hay una coincidencia entre materia._id y clase.materiaId._id
-          if (clase.materiaId && materia._id === clase.materiaId._id) {
-            primeraMateria = materia._id;
-            break; // Salir del bucle interior si se encuentra una coincidencia
-          }
-        }
-        // Salir del bucle exterior si se encontró la primera materia
-        if (primeraMateria) {
-          break;
-        }
-      }
-      // Establecer la primera materia encontrada como materia seleccionada
-      setMateriaSeleccionada(primeraMateria);
-    }
-  }, [materias, clases]);
-  
  
-  
-  
+  const onSelectMateria = (materiaId) => {
+    
+ setMateriaSeleccionada(materiaId)
+
+  } 
+ 
+ 
 
 
   return (
@@ -159,14 +118,16 @@ const user = JSON.parse(localStorage.getItem('user'))
         <h3>Materias:</h3>
         
         {materias.map((materia,index) => (
+        
            
-          <ul className='border-first' >
+           <ul  >
          
-          <li  key={materia._id}  onClick={() => onSelectMateria(materia._id)} > {materia.userId === user._id && materia.name }</li>
+          <li   onClick={() => onSelectMateria(materia._id)} key={materia._id} style={{ cursor: 'pointer', margin: '1px 0px' }} > { materia.userId === user._id && materia.name }</li>
          
             
          
           </ul>
+        
         ))}
         
       </div>
@@ -177,41 +138,28 @@ const user = JSON.parse(localStorage.getItem('user'))
        
 
         <Content style={contentStyle}>
-          <Typography.Title level={1}>Clases</Typography.Title>
-          <ClasesAdd materiaS={materiaSeleccionada}/>         
-     
-     
-     
+          <Typography.Title level={1}>Clases</Typography.Title>  
+          {materiaSeleccionada && <ClasesAdd materiaS={materiaSeleccionada} />}
+     {console.log(materiaSeleccionada)}
       {user._id  && (
-        <div>
-
-
-          
+        <div>         
          
           <h5>Clases:</h5>
           {
             
-            <div >   
-
-
-
-               {materias.map((materia,index) => (
-           
-          <ul >
-         
-          
+            <div >            
          
           {clases.map((clase,index) => (
                
                  
-               <ul>
+               <ul key={index}>
                
-                <li>{clase.materiaId && clase.materiaId._id === materiaSeleccionada && clase.materiaId._id===materia._id 
-                
+                <li >{ clase.materiaId && clase.materiaId._id === materiaSeleccionada
+               
               
                 &&(                
                              
-                 <ClasesList clases={clase}/>
+                 <ClasesList clases={clase}  />
              
                 )
                 
@@ -220,50 +168,13 @@ const user = JSON.parse(localStorage.getItem('user'))
               </ul>
              
             ))}
+             
          
-          </ul>
-        ))}  
-              
-              
-            </div>
+         </div>
          }
         </div>
         
-      )}
-
- 
-    
-         
-
-       
-          
-          
-         
-        
-
-      
-        
-
-        
-
-
-        
-        
-          
-          
-         
-    
-          
-          
-
-       
-          
-          
-         
-        
-
-
-        
+      )}        
           </Content>
       </Layout>
       
