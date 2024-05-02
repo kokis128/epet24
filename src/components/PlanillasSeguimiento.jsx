@@ -3,16 +3,12 @@ import { Layout, Typography ,Flex } from 'antd';
 import { ClasesList } from '../pages/clasesList/ClasesList';
 import { ClasesAdd } from '../pages/clasesList/ClasesAdd';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import '../pages/clasesList/clasesListItem.css'
 
 export const PlanillasSeguimiento = () => {
   
   const [materias, setMaterias] = useState([]);
-  const [clases, setClases] = useState([]);
-
-
-
- 
+  const [clases, setClases] = useState([]); 
 
   const handleResponseclases = (response) => {
     if (!response) {
@@ -93,20 +89,25 @@ const user = JSON.parse(localStorage.getItem('user'))
     maxHeight:'100%',
   };  
 
+  const selectedMateriaId = localStorage.getItem('selectedMateriaId'); 
 
- 
+  const selectMateriaInicio=()=>{
+    if (!selectedMateriaId){
+setMateriaSeleccionada(null)
+return null;
+    } else{ 
+      return selectedMateriaId;}
+  }
 
-  const [materiaSeleccionada, setMateriaSeleccionada] = useState();
+  const [deletedItemId, setDeletedItemId] = useState(null);
+
+  const [materiaSeleccionada, setMateriaSeleccionada] = useState(selectMateriaInicio);
  
   const onSelectMateria = (materiaId) => {
     
  setMateriaSeleccionada(materiaId)
 
-  } 
- 
- 
-
-
+  }
   return (
     <Layout style={layoutStyle}>
       <Header style={headerStyle}>Header</Header>
@@ -122,7 +123,10 @@ const user = JSON.parse(localStorage.getItem('user'))
            
            <ul  >
          
-          <li   onClick={() => onSelectMateria(materia._id)} key={materia._id} style={{ cursor: 'pointer', margin: '1px 0px' }} > { materia.userId === user._id && materia.name }</li>
+          <li onClick={() => onSelectMateria(materia._id)} key={materia._id}
+           style={{ cursor: 'pointer', margin: '1px 0px' } } className={materia._id===materiaSeleccionada?'select':''} > { materia.userId === user._id && materia.name }
+                     
+           </li>
          
             
          

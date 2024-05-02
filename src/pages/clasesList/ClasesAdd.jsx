@@ -34,7 +34,7 @@ const URL='http://localhost:3000/api'
 export const ClasesAdd = ({ materiaS }) => {
 
  console.log(materiaS);
-
+ const [reload, setReload] = useState(false);
  const [form] = Form.useForm();
 
   useEffect(() => {
@@ -44,34 +44,57 @@ export const ClasesAdd = ({ materiaS }) => {
 
   
     const  onFinish =  async (data) => {console.log(data);
-   
+      try {
   const first = await fetch(`${URL}/clase`,{
   method: 'POST',
   body: JSON.stringify(data),
   headers:{
     'Content-Type':'application/json'
   }
-  }
-  );
+  });
 const newClaseFromDB = await first.json();
 console.log(newClaseFromDB);
+setReload(true);
 
-
-  
-
-  
-
-
+} catch (error) {
+  console.error('Error al enviar datos:', error)
+}
 }
 
+useEffect(() => {
+  if (reload) {
+    localStorage.setItem('selectedMateriaId', materiaS);
+    window.location.reload(); // Recarga la página si reload es true
+  }
+}, [reload,materiaS]);
 
+
+
+
+  
+
+
+
+const [fechaActual, setFechaActual] = useState(null); // Inicializa con null
+const obtenerFechaActual = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const fecha = `${day}-${month}-${year}`;
+  setFechaActual(fecha);
+};
+
+useEffect(() => {
+  obtenerFechaActual();
+}, []);
   return (
     
     <Form
     {...formItemLayout}
     variant="filled"
     style={{
-      maxWidth: 600,
+      maxWidth: 500,
     }}
     onFinish={onFinish}
     form={form}
@@ -82,22 +105,9 @@ console.log(newClaseFromDB);
         <Input />
       </Form.Item>
 
-
-
-    <Form.Item
-      label="Fecha"
-      name="fecha"
-      rules={[
-        {
-          
-          message: 'Please input!',
-        },
-      ]}
-    >
-
-      
-      <DatePicker />
-    </Form.Item>
+      <Form.Item name="fecha" label="Fecha" initialValue={fechaActual}>
+        <DatePicker />
+      </Form.Item>
     
 
     <Form.Item
@@ -195,17 +205,7 @@ console.log(newClaseFromDB);
       ]}
     >
       <Input.TextArea />
-    </Form.Item>
-
-   
-
-   
-
-  
-
-    
-
-    
+    </Form.Item>    
 
     <Form.Item
       wrapperCol={{

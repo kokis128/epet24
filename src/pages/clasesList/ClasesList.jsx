@@ -51,6 +51,7 @@ console.log(clases);
     const nArray = clasesArray.filter(item=>item._id!==id)    
     setDeletedItemId(id);
     setClases(nArray)
+    
   }
   
  
@@ -58,10 +59,10 @@ console.log(clases);
     return (
     <> 
     
-    <ul className='custom-ul'>   
+    <ul className='custom-ul'>
     
-    <li><ClaseListItem clases={clases} clasesm={clasesm} del={delClase} update={updateClase} nClase={nClase} deletedItemId={deletedItemId} isDeleted={deletedItemId===clasesm._id}/></li>
     
+    <li><ClaseListItem clases={clases} clasesm={clasesm} del={delClase} update={updateClase} nClase={nClase} deletedItemId={deletedItemId}/></li>
     </ul>
 
     
