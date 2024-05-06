@@ -2,6 +2,8 @@ import React from 'react'
 import { Layout, Typography ,Flex } from 'antd';
 import { ClasesList } from '../pages/clasesList/ClasesList';
 import { ClasesAdd } from '../pages/clasesList/ClasesAdd';
+//import { CargarEstudiantes } from '../pages/estudiantes/CargarEstudiantes';
+
 import { useState, useEffect } from 'react';
 import '../pages/clasesList/clasesListItem.css'
 

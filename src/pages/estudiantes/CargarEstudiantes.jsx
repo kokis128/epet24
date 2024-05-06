@@ -1,0 +1,166 @@
+import React, { useEffect, useState } from 'react'
+
+
+import {
+  Button,
+  Form,
+  Input,
+  
+  
+} from 'antd';
+
+export const CargarEstudiantes = () => {
+
+const URL = 'http://localhost:3000/api'
+const [estudiantes,setEstudiantes]=useState();
+
+
+  const  onFinish =  async (data) => {console.log(data);
+try {
+    const first = await fetch(`${URL}/estudiante`,{
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers:{
+      'Content-Type':'application/json'
+    }
+    });
+  const newEstudiante = await first.json();
+  console.log(newEstudiante);
+  
+  
+  } catch (error) {
+    console.error('Error al enviar datos:', error)
+  }
+}
+
+
+
+
+
+  
+
+const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 6,
+    },
+  },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 14,
+    },
+  },
+};
+
+
+
+  return (
+
+    <>
+    <div className='my-5 text-center'>Cargar Estudiantes</div>
+  
+    <Form
+    
+    variant="filled"
+    style={{
+      maxWidth: 500,
+    }}
+
+    onFinish={onFinish}
+    
+    
+  >   
+
+    <Form.Item
+      label="Apellido"
+      name="apellido"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="Nombre"
+      name="nombre"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+   
+
+    <Form.Item
+      label="DNI"
+      name="dni"
+      rules={[
+        {
+          required: true,
+          message: 'Por favor Ingrese el Nombre',
+        },
+      ]}
+    >
+      <Input/>
+    </Form.Item>
+
+
+     <Form.Item
+      label="Observaciones"
+      name="observaciones"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>    
+
+    <Form.Item
+      label="Id"
+      name="materiaId"
+      rules={[
+        {
+          required: true,
+          message: 'Please input!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>    
+
+    <Form.Item
+      wrapperCol={{
+        offset: 6,
+        span: 16,
+      }}
+    >
+      <Button  htmlType="submit">
+        Guardar
+      </Button>
+    </Form.Item>
+  </Form>
+   
+   
+  </>
+      
+    
+    
+  )
+}

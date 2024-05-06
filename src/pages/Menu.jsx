@@ -36,6 +36,30 @@ export const Menu = () => {
       
     </Flex>
     <Flex gap="small">
+    <Button className="p-8 mt-10 bg-cyan-600"><Link to="/estudiantes" className=" text-black text-end">Cargar Estudiantes</Link>
+
+      </Button>
+      
+    </Flex>
+    
+  </Flex>
+
+  <Flex gap="small" align="flex" vertical>
+    
+    <Flex gap="small">
+      <Button className="p-8 mt-10 bg-cyan-600"><Link to="/seguimiento" className=" text-black text-end">Planillas De Seguimiento</Link>
+
+      </Button>
+      
+    </Flex>
+    
+    <Flex gap="small">
+      <Button className="p-8 bg-cyan-600">Cargar materias
+
+      </Button>
+      
+    </Flex>
+    <Flex gap="small">
       <Button className="p-8 bg-cyan-600">Cargar Estudiantes
 
       </Button>
