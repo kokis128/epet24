@@ -1,7 +1,8 @@
 import React from 'react'
-import { Layout, Typography ,Flex } from 'antd';
+import { Layout, Typography ,Flex,Button, Modal  } from 'antd';
 import { ClasesList } from '../pages/clasesList/ClasesList';
 import { ClasesAdd } from '../pages/clasesList/ClasesAdd';
+import { MatricularEstudiante} from '../pages/estudiantes/MatricularEstudiante';
 //import { CargarEstudiantes } from '../pages/estudiantes/CargarEstudiantes';
 
 import { useState, useEffect } from 'react';
@@ -68,13 +69,13 @@ const user = JSON.parse(localStorage.getItem('user'))
   const contentStyle = {
     textAlign: 'center',
     minHeight:120,
-    lineHeight: '90px',
+    lineHeight: '80px',
     color: '#fff',
     backgroundColor: '#0958d9',
   };
   const siderStyle = {
     textAlign: 'center',
-    lineHeight: '120px',
+    lineHeight: '70px',
     color: '#fff',
     backgroundColor: '#1677ff',
   };
@@ -88,7 +89,7 @@ const user = JSON.parse(localStorage.getItem('user'))
     overflow: 'hidden',
     width: '100%',
     maxWidth: '100%',
-    maxHeight:'100%',
+    maxHeight:'50%',
   };  
 
   const selectedMateriaId = localStorage.getItem('selectedMateriaId'); 
@@ -110,6 +111,31 @@ return null;
  setMateriaSeleccionada(materiaId)
 
   }
+
+  
+
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+ 
+
+
+
+
+
+
+
+
+
+
   return (
     <Layout style={layoutStyle}>
       <Header style={headerStyle}>Header</Header>
@@ -118,7 +144,23 @@ return null;
         <span>Bienvenido {user.username}</span>         
       
       <div>
+      
+
+      <>
+     
+      <Button type="primary" onClick={showModal}>
+      MatricularEstudiante
+      </Button>
+      <Modal title="Matricular Estudiante" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <MatricularEstudiante />
+        
+        
+      </Modal>
+    </>
+                          
+                
         <h3>Materias:</h3>
+        
         
         {materias.map((materia,index) => (
         
@@ -144,6 +186,7 @@ return null;
        
 
         <Content style={contentStyle}>
+        
           <Typography.Title level={1}>Clases</Typography.Title>  
           {materiaSeleccionada && <ClasesAdd materiaS={materiaSeleccionada} />}
      {console.log(materiaSeleccionada)}
@@ -163,9 +206,13 @@ return null;
                 <li >{ clase.materiaId && clase.materiaId._id === materiaSeleccionada
                
               
-                &&(                
-                             
-                 <ClasesList clases={clase}  />
+                &&(   
+                  <>            
+                  <div className="flex" >     
+                 <ClasesList clases={clase} />
+                 </div> 
+                 
+                 </> 
              
                 )
                 
@@ -177,13 +224,18 @@ return null;
              
          
          </div>
+         
          }
+         
         </div>
-        
-      )}        
+         
+      )}      
+       
           </Content>
+         
       </Layout>
       
+    
       <Footer style={footerStyle}>Footer</Footer>
     </Layout>
    

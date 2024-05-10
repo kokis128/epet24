@@ -9,10 +9,12 @@ import {
   
 } from 'antd';
 
-export const CargarEstudiantes = () => {
+const materiaId=localStorage.getItem('selectedMateriaId')
 
+export const CargarEstudiantes = () => {
+  const [form] = Form.useForm();
 const URL = 'http://localhost:3000/api'
-const [estudiantes,setEstudiantes]=useState();
+
 
 
   const  onFinish =  async (data) => {console.log(data);
@@ -58,6 +60,10 @@ const formItemLayout = {
   },
 };
 
+useEffect(() => {
+  form.setFieldsValue({ materiaId: materiaId });
+}, []);
+
 
 
   return (
@@ -73,6 +79,7 @@ const formItemLayout = {
     }}
 
     onFinish={onFinish}
+    form={form}
     
     
   >   
@@ -124,27 +131,23 @@ const formItemLayout = {
       name="observaciones"
       rules={[
         {
-          required: true,
+         
           message: 'Please input!',
         },
       ]}
     >
       <Input />
     </Form.Item>    
-
-    <Form.Item
-      label="Id"
+    <Form.Item hidden
+      label="materiaId"
       name="materiaId"
-      rules={[
-        {
-          required: true,
-          message: 'Please input!',
-        },
-      ]}
+      
+      
     >
       <Input />
-    </Form.Item>    
+    </Form.Item>  
 
+  
     <Form.Item
       wrapperCol={{
         offset: 6,

@@ -36,9 +36,9 @@ export const Menu = () => {
       
     </Flex>
     <Flex gap="small">
-    <Button className="p-8 mt-10 bg-cyan-600"><Link to="/estudiantes" className=" text-black text-end">Cargar Estudiantes</Link>
+    <Link to="/estudiantes" className=" text-black text-end"><Button className="p-8 mt-10 bg-cyan-600">Cargar Estudiantes
 
-      </Button>
+      </Button></Link>
       
     </Flex>
     
