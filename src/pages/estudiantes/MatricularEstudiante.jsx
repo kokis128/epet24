@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react'
 
 
 
-export const MatricularEstudiante = () => {
+export const MatricularEstudiante = ({materiaS}) => {
   const [dni, setDni] = useState('');
   const [estudiantes, setEstudiantes] = useState([]);
   const [idEstudiante, setIdEstudiante] = useState('');
@@ -47,7 +47,11 @@ export const MatricularEstudiante = () => {
 
   const matricular = async () => {
 
-    const materiaId =localStorage.getItem('selectedMateriaId')
+   
+      const materiaId =materiaS;
+    console.log(materiaId)
+
+    
     
 
     const URL = 'http://localhost:3000/api'
@@ -58,25 +62,36 @@ export const MatricularEstudiante = () => {
   
   
       fetch(`${URL}/estudiante/${idEstudiante}/matricular`,{
+       
       method: 'PUT',
-      body: JSON.stringify(materiaId),
+      body: JSON.stringify({materiaId}),
       headers:{
         'Content-Type':'application/json'
       }
 
       })
-      .then(response =>{
-        if(response.ok){
-          throw new Error('Error al matricular al estudiante')
+      .then(response =>{ console.log(idEstudiante)
+        if(!response.ok){
+         
+          return response.json();
         }
         return response.json();
       })
       .then (data=>{
-        console.log('Estudiante matriculado correctamente')
+        console.log(data)
+        if(data.err){
+        alert(data.err);
+        }
+        
+        
       })
       .catch(error=>{
-        console.error('error al matricular al estudiante')
+        console.error('Algo fallo al matricular al estudiante')
       })
+
+   
+
+      
       
     
   

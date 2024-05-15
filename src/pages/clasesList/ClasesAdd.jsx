@@ -6,7 +6,7 @@ import {
   Input,
   InputNumber,
   Mentions,
-  Select,
+  
   
 } from 'antd';
 const { RangePicker } = DatePicker;
@@ -33,7 +33,7 @@ const formItemLayout = {
 const URL='http://localhost:3000/api'
 export const ClasesAdd = ({ materiaS }) => {
 
- console.log(materiaS);
+
  const [reload, setReload] = useState(false);
  const [form] = Form.useForm();
 
@@ -94,12 +94,14 @@ useEffect(() => {
     {...formItemLayout}
     variant="filled"
     style={{
-      maxWidth: 500,
+      maxWidth: '100%',
+      minWidth: '115%',
+      
     }}
     onFinish={onFinish}
     form={form}
     
-  >
+ >
  <Form.Item name="materiaId"  hidden
     >
         <Input />
@@ -210,7 +212,7 @@ useEffect(() => {
     <Form.Item
       wrapperCol={{
         offset: 6,
-        span: 16,
+        span: 5,
       }}
     >
       <Button type="primary" htmlType="submit">

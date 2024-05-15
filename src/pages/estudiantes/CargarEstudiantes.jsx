@@ -9,7 +9,7 @@ import {
   
 } from 'antd';
 
-const materiaId=localStorage.getItem('selectedMateriaId')
+
 
 export const CargarEstudiantes = () => {
   const [form] = Form.useForm();
@@ -60,9 +60,7 @@ const formItemLayout = {
   },
 };
 
-useEffect(() => {
-  form.setFieldsValue({ materiaId: materiaId });
-}, []);
+
 
 
 
@@ -79,7 +77,7 @@ useEffect(() => {
     }}
 
     onFinish={onFinish}
-    form={form}
+    
     
     
   >   
@@ -138,15 +136,7 @@ useEffect(() => {
     >
       <Input />
     </Form.Item>    
-    <Form.Item hidden
-      label="materiaId"
-      name="materiaId"
-      
-      
-    >
-      <Input />
-    </Form.Item>  
-
+   
   
     <Form.Item
       wrapperCol={{

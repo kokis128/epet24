@@ -4,11 +4,14 @@ import {DeleteOutlined,SelectOutlined} from '@ant-design/icons'
 import {Button, Space }from 'antd';
 export const ClaseListItem = ({clases,clasesm, del, update,deletedItemId}) => {
 
+
+
+
   const formatDate = (fecha) => {
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
     return new Date(fecha).toLocaleDateString('es-AR', options);
   };
- console.log(clases);
+ 
 
 
  const isDeleted = (deletedItemId === clasesm._id);

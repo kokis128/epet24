@@ -4,7 +4,7 @@ import { useState,useEffect } from 'react';
 import { ClaseListItem } from './ClaseListItem';
 import { clasesFromDb } from '../../constant/Clases';
 export const ClasesList =  ({clases}) => {
-console.log(clases);
+
 
   const [clasesm, setClases] = useState(clases);
   const [deletedItemId, setDeletedItemId] = useState(null);

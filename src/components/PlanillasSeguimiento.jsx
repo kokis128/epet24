@@ -7,11 +7,16 @@ import { MatricularEstudiante} from '../pages/estudiantes/MatricularEstudiante';
 
 import { useState, useEffect } from 'react';
 import '../pages/clasesList/clasesListItem.css'
+import { MdHeight } from 'react-icons/md';
 
 export const PlanillasSeguimiento = () => {
   
   const [materias, setMaterias] = useState([]);
   const [clases, setClases] = useState([]); 
+  const [estudiantesBd, setEstudiantesBd] = useState([]); 
+  const [idEstudiante, setIdEstudiante] = useState('');
+  const [error, setError] = useState(null);
+  const [msgSeleccionar, setMsgSeleccionar]=useState('Debes Seleccionar una Materia')
 
   const handleResponseclases = (response) => {
     if (!response) {
@@ -20,12 +25,16 @@ export const PlanillasSeguimiento = () => {
     return response.json();
   };
 
-
-  // Define una función para manejar errores de la solicitud fetch
-  const handleErrorc = (error) => {
-    console.error('Error fetching data:', error);
+  const handleResponseEstudiantes = (response) => {
+    if (!response) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json();
   };
 
+
+  // Define una función para manejar errores de la solicitud fetch
+  
 
   
   const handleResponseMaterias = (response) => {
@@ -38,44 +47,68 @@ export const PlanillasSeguimiento = () => {
   const handleError = (error) => {
     console.error('Error fetching data:', error);
   };
-
-
+  const selectedMateriaId = localStorage.getItem('selectedMateriaId');
+  console.log(selectedMateriaId)
+  const [materiaSeleccionada, setMateriaSeleccionada] = useState();
+  
+    const selectMateriaInicio=()=>{
+    if (!selectedMateriaId){
+setMateriaSeleccionada(null)
+return null;
+    } else{ 
+      return selectedMateriaId;}
+  }
+  
+  
+  
   useEffect(() => {
     fetch('http://localhost:3000/api/materias')
       .then(handleResponseMaterias)
       .then(data => setMaterias(data))
       .then(data => console.log(data))
       .catch(handleError);
-  }, []);
+  }, [materiaSeleccionada]);
 
 
   useEffect(() => {
     fetch('http://localhost:3000/api/clases')
       .then(handleResponseclases)
       .then(data => setClases(data))
-      .catch(handleErrorc);
+      .catch(handleError);
   }, []);
 
+  useEffect(() => {
+    fetch('http://localhost:3000/api/estudiantes')
+      .then(handleResponseEstudiantes)
+      .then(data => setEstudiantesBd(data))
+      .catch(handleError);
+  }, []);
+
+
+ 
+
+  const user = JSON.parse(localStorage.getItem('user'))
+
   const { Header, Footer, Sider, Content } = Layout;
-const user = JSON.parse(localStorage.getItem('user'))
+
  
   const headerStyle = {
     textAlign: 'center',
     color: '#fff',    
-    paddingInline: 5,
-    lineHeight: '120px',
-    backgroundColor: '#4096ff',
+    paddingInline: 10,
+    lineHeight: '20px',
+    backgroundColor: '#7196ff',
   };
   const contentStyle = {
     textAlign: 'center',
     minHeight:120,
-    lineHeight: '80px',
+    lineHeight: '60px',
     color: '#fff',
     backgroundColor: '#0958d9',
   };
   const siderStyle = {
     textAlign: 'center',
-    lineHeight: '70px',
+    lineHeight: '60px',
     color: '#fff',
     backgroundColor: '#1677ff',
   };
@@ -85,35 +118,27 @@ const user = JSON.parse(localStorage.getItem('user'))
     backgroundColor: '#4096ff',
   };
   const layoutStyle = {
-    borderRadius: 8,
+    borderRadius: 2,
     overflow: 'hidden',
     width: '100%',
     maxWidth: '100%',
-    maxHeight:'50%',
+    maxHeight:'5%',
   };  
 
-  const selectedMateriaId = localStorage.getItem('selectedMateriaId'); 
+   
 
-  const selectMateriaInicio=()=>{
-    if (!selectedMateriaId){
-setMateriaSeleccionada(null)
-return null;
-    } else{ 
-      return selectedMateriaId;}
-  }
 
-  const [deletedItemId, setDeletedItemId] = useState(null);
 
-  const [materiaSeleccionada, setMateriaSeleccionada] = useState(selectMateriaInicio);
+  const [isSlected, setIsSlected] = useState(null);
+
+  
  
   const onSelectMateria = (materiaId) => {
     
  setMateriaSeleccionada(materiaId)
-
-  }
-
-  
-
+ if (!selectedMateriaId){ 
+ setMsgSeleccionar('Matricular Estudiante');
+  }}
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -125,38 +150,42 @@ return null;
   const handleCancel = () => {
     setIsModalOpen(false);
   };
- 
-
-
-
-
-
-
-
-
+  
 
 
   return (
     <Layout style={layoutStyle}>
-      <Header style={headerStyle}>Header</Header>
+      <Header className='h-20' style={headerStyle}>
+        
+        
+        <h1 className='text-black text-3xl text-center'>EPET 24</h1>
+        <span className='text-left'  >Bienvenido {user.username}</span>
+        
+        <div className='flex'>
+        
+        
+     
+     <Button type="primary" onClick={showModal}>
+     Matricular Estudiantes
+     </Button>
+     <Modal  title={msgSeleccionar} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+     {  materiaSeleccionada &&  <MatricularEstudiante materiaS={materiaSeleccionada} />}
+           
+     </Modal>
+     </div>
+     
+   
+        
+        </Header>
+       
       <Layout>
         <Sider width="25%" style={siderStyle}>
-        <span>Bienvenido {user.username}</span>         
+                
       
       <div>
       
 
-      <>
      
-      <Button type="primary" onClick={showModal}>
-      MatricularEstudiante
-      </Button>
-      <Modal title="Matricular Estudiante" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <MatricularEstudiante />
-        
-        
-      </Modal>
-    </>
                           
                 
         <h3>Materias:</h3>
@@ -167,9 +196,9 @@ return null;
            
            <ul  >
          
-          <li onClick={() => onSelectMateria(materia._id)} key={materia._id}
+          <li  onClick={() => onSelectMateria(materia._id)} key={materia._id}
            style={{ cursor: 'pointer', margin: '1px 0px' } } className={materia._id===materiaSeleccionada?'select':''} > { materia.userId === user._id && materia.name }
-                     
+                
            </li>
          
             
@@ -178,18 +207,64 @@ return null;
         
         ))}
         
+        
       </div>
          
       
         </Sider>
 
-       
+        <Layout style={contentStyle} >
 
-        <Content style={contentStyle}>
+        <Layout className='flex-row ' style={contentStyle} >
+
+          
+        <Content className='border-solid border-2 border-blue-700 w-[20%]'  >
         
-          <Typography.Title level={1}>Clases</Typography.Title>  
-          {materiaSeleccionada && <ClasesAdd materiaS={materiaSeleccionada} />}
-     {console.log(materiaSeleccionada)}
+          <Typography.Title level={5}>Clases</Typography.Title>  
+          {materiaSeleccionada && <ClasesAdd materiaS={materiaSeleccionada}/>}
+     
+          </Content  >
+
+          <Content className='border-solid border-2 border-blue-700  ' >
+          <Typography.Title level={5}>Estudiantes</Typography.Title> 
+          
+
+          
+
+
+
+          {console.log(estudiantesBd)}
+            
+          { estudiantesBd.map((estudianteBd)=>(
+            <ul key={estudianteBd._id} className='flex-col'>
+              {materias.map((materia,index)=>(
+
+                
+                            <li key={index}>{materiaSeleccionada === materia._id && materia.estudiantes.map((estudiante,index)=>(
+                              <ul key={index} className='flex-col'>
+                               {estudiante===estudianteBd._id && <li> { estudianteBd.nombre} { estudianteBd.apellido}</li> }
+                               
+                               
+                               </ul>)
+                              
+                              )
+                               }</li>
+                            
+                          ))}
+              
+              
+            </ul>
+            
+          ))}
+
+          
+
+          </Content>
+
+          </Layout >
+     
+     
+    
       {user._id  && (
         <div>         
          
@@ -208,14 +283,13 @@ return null;
               
                 &&(   
                   <>            
-                  <div className="flex" >     
+                  <div >     
                  <ClasesList clases={clase} />
                  </div> 
                  
                  </> 
              
-                )
-                
+                )                
             }</li>
           
               </ul>
@@ -231,7 +305,10 @@ return null;
          
       )}      
        
-          </Content>
+            
+          
+          
+          </Layout>
          
       </Layout>
       
