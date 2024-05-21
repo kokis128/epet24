@@ -31,16 +31,27 @@ const formItemLayout = {
 
 
 const URL='http://localhost:3000/api'
-export const ClasesAdd = ({ materiaS }) => {
+export const ClasesAdd = ({ materiaS,ausentes,estudianteSeleccionado}) => {
 
 
  const [reload, setReload] = useState(false);
  const [form] = Form.useForm();
 
+
   useEffect(() => {
     form.setFieldsValue({ materiaId: materiaS });
+    
   }, [materiaS]);
+
+
+
+
   
+
+
+ 
+
+
 
   
     const  onFinish =  async (data) => {console.log(data);
@@ -49,17 +60,57 @@ export const ClasesAdd = ({ materiaS }) => {
   method: 'POST',
   body: JSON.stringify(data),
   headers:{
-    'Content-Type':'application/json'
-  }
-  });
+    'Content-Type':'application/json'}
+      
+  });  
 const newClaseFromDB = await first.json();
 console.log(newClaseFromDB);
+
+const response = await fetch(`${URL}/register_absences`, {
+
+    method: 'POST',
+    body: JSON.stringify({ausentes, materia_id:materiaS}),
+    headers:{
+      'Content-Type':'application/json'}    
+     
+
+ 
+});
+
+if (!response.ok) {
+  console.log(ausentes)
+  console.log(materiaS)
+  throw new Error('Error al registrar ausencias');
+  
+}
+const ausenciasData = await response.json();
+    if (ausenciasData.success) {
+      alert('Ausencias registradas con éxito');
+    } else {
+      alert('Hubo un error al registrar las ausencias');
+    }
+
+
+
+
+
 setReload(true);
 
 } catch (error) {
   console.error('Error al enviar datos:', error)
 }
 }
+console.log(ausentes);
+
+
+
+
+
+
+
+
+
+
 
 useEffect(() => {
   if (reload) {
@@ -83,7 +134,7 @@ const obtenerFechaActual = () => {
   const day = String(today.getDate()).padStart(2, '0');
   const fecha = `${day}-${month}-${year}`;
   setFechaActual(fecha);
-};
+};  
 
 useEffect(() => {
   obtenerFechaActual();
@@ -101,11 +152,17 @@ useEffect(() => {
     onFinish={onFinish}
     form={form}
     
+  
+    
  >
  <Form.Item name="materiaId"  hidden
     >
         <Input />
       </Form.Item>
+
+    
+
+
 
       <Form.Item name="fecha" label="Fecha" initialValue={fechaActual}>
         <DatePicker />

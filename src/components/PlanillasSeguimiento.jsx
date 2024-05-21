@@ -1,14 +1,13 @@
 import React from 'react'
-import { Layout, Typography ,Flex,Button, Modal  } from 'antd';
+import { Layout, Typography ,Flex,Button, Modal,Checkbox,CheckboxProps   } from 'antd';
 import { ClasesList } from '../pages/clasesList/ClasesList';
 import { ClasesAdd } from '../pages/clasesList/ClasesAdd';
 import { MatricularEstudiante} from '../pages/estudiantes/MatricularEstudiante';
 //import { CargarEstudiantes } from '../pages/estudiantes/CargarEstudiantes';
-
 import { useState, useEffect } from 'react';
 import '../pages/clasesList/clasesListItem.css'
 import { MdHeight } from 'react-icons/md';
-
+import { ContarAusencias} from '../pages/estudiantes/ContarAusencias';
 export const PlanillasSeguimiento = () => {
   
   const [materias, setMaterias] = useState([]);
@@ -17,7 +16,7 @@ export const PlanillasSeguimiento = () => {
   const [idEstudiante, setIdEstudiante] = useState('');
   const [error, setError] = useState(null);
   const [msgSeleccionar, setMsgSeleccionar]=useState('Debes Seleccionar una Materia')
-
+  const [ausentes, setAusentes] = useState([]);
   const handleResponseclases = (response) => {
     if (!response) {
       throw new Error('Failed to fetch data');
@@ -44,12 +43,24 @@ export const PlanillasSeguimiento = () => {
     return response.json();
   };
 
+  const handleResponseAusencias = (response) => {
+    if (!response) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json();
+  };
+
+
+
+
+
   const handleError = (error) => {
     console.error('Error fetching data:', error);
   };
   const selectedMateriaId = localStorage.getItem('selectedMateriaId');
-  console.log(selectedMateriaId)
+  
   const [materiaSeleccionada, setMateriaSeleccionada] = useState();
+  const [estudianteSeleccionado, setEstudianteSeleccionado] = useState('');
   
     const selectMateriaInicio=()=>{
     if (!selectedMateriaId){
@@ -83,6 +94,8 @@ return null;
       .then(data => setEstudiantesBd(data))
       .catch(handleError);
   }, []);
+
+  
 
 
  
@@ -140,6 +153,13 @@ return null;
  setMsgSeleccionar('Matricular Estudiante');
   }}
 
+  const onSelectEstudiante = (estudianteId) => {
+    
+    setEstudianteSeleccionado(estudianteId)
+    console.log(estudianteId)
+  }
+    
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -150,6 +170,16 @@ return null;
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  const onChange = (e, id) => {
+    if (e.target.checked) {
+      console.log(e.target.checked)
+      setAusentes([...ausentes, id]);
+    } else {
+      setAusentes(ausentes.filter(ausenteId => ausenteId !== id));
+  }};
+
+  
   
 
 
@@ -220,10 +250,13 @@ return null;
           
         <Content className='border-solid border-2 border-blue-700 w-[20%]'  >
         
-          <Typography.Title level={5}>Clases</Typography.Title>  
-          {materiaSeleccionada && <ClasesAdd materiaS={materiaSeleccionada}/>}
+          <Typography.Title level={5}>Clases</Typography.Title>   
+
+          
+          {materiaSeleccionada && <ClasesAdd materiaS={materiaSeleccionada} ausentes={ausentes} estudianteSeleccionado={estudianteSeleccionado}/>}
      
           </Content  >
+          
 
           <Content className='border-solid border-2 border-blue-700  ' >
           <Typography.Title level={5}>Estudiantes</Typography.Title> 
@@ -233,18 +266,21 @@ return null;
 
 
 
-          {console.log(estudiantesBd)}
+         
             
           { estudiantesBd.map((estudianteBd)=>(
             <ul key={estudianteBd._id} className='flex-col'>
               {materias.map((materia,index)=>(
 
-                
+
                             <li key={index}>{materiaSeleccionada === materia._id && materia.estudiantes.map((estudiante,index)=>(
                               <ul key={index} className='flex-col'>
-                               {estudiante===estudianteBd._id && <li> { estudianteBd.nombre} { estudianteBd.apellido}</li> }
+                               {estudiante===estudianteBd._id &&
+                                <li onClick={()=>onSelectEstudiante(estudianteBd._id)} className={estudianteBd._id===estudianteSeleccionado ?'select':''}>
+                                   { estudianteBd.nombre} { estudianteBd.apellido} {<ContarAusencias materiaS={materiaSeleccionada}/>}
+                                 <Checkbox onChange={(e) => onChange(e, estudianteBd._id)} className='pl-5'></Checkbox></li> }
                                
-                               
+                                                                                                                                                                                                                                                                                                                 
                                </ul>)
                               
                               )
