@@ -1,8 +1,9 @@
 import React from 'react'
+import { useState,useEffect } from 'react';
 import './clasesListItem.css';
 import {DeleteOutlined,SelectOutlined} from '@ant-design/icons'
 import {Button, Space }from 'antd';
-export const ClaseListItem = ({clases,clasesm, del, update,deletedItemId}) => {
+export const ClaseListItem = ({clasesm, del, update,deletedItemId,incrementarCantidad,decrementarCantidad})=> {
 
 
 
@@ -14,61 +15,46 @@ export const ClaseListItem = ({clases,clasesm, del, update,deletedItemId}) => {
  
 
 
- const isDeleted = (deletedItemId === clasesm._id);
-
-  if (isDeleted) {
-    // Si el elemento ha sido eliminado, no renderizar nada
-    return null;
+ 
+ 
+ useEffect(() => {
+  if (!deletedItemId) {
+    incrementarCantidad();
+    
+    
+   
   }
+  return () => {
+    if (!deletedItemId) {
+      decrementarCantidad();
+     
+    }
+  };
+}, [deletedItemId, incrementarCantidad, decrementarCantidad]);
 
+if (deletedItemId) {
+  return null;
 
+}
 
   return (
     
-    <ul className='custom-li' >    
-            
-           
-      {       
-       
-        <li key={clasesm._id} className='custom-li'>
-            {!deletedItemId&&!isDeleted && (<>
-          
-          <div className='observaciones'>{clasesm.observaciones}</div>
-          <span>{clasesm.tema}</span>
-          <span>{clasesm.fecha?`${formatDate(clasesm.fecha)}`:null}</span>
-          
-          
-          <div className='actions'>
-
-          
-          <Space size='small'>             
-          <Button type='primary' danger onClick={() => del(clasesm._id)} >
-                <DeleteOutlined />
-              </Button>
-            <Button type='primary' onClick={()=> update(clasesm._id)}>
-               <SelectOutlined />
-               </Button>
-              
-          </Space>
-            
-          
-          </div>
-          </>
-            )}
-        </li>
- }
-      
-     
-    </ul>
-
-
-       
-        
-        
-       
-  
-  
-   
-  
+    <ul className="max-w-2xl mx-auto my-4 p-4 bg-white rounded-lg shadow-md">
+    <li key={clasesm._id} className="flex flex-col md:flex-row md:items-center justify-between p-4 border-b border-gray-200">
+      <div className="flex flex-col md:flex-row md:items-center gap-4">
+        <span className="font-semibold text-gray-700">{clasesm.tema}</span>
+        <span className="text-gray-500">{clasesm.fecha ? formatDate(clasesm.fecha) : null}</span>
+        <span className="text-gray-600">{clasesm.observaciones}</span>
+      </div>
+      <div className="flex gap-2 mt-2 md:mt-0">
+        <Button type="primary" danger onClick={() => del(clasesm._id)}>
+          <DeleteOutlined />
+        </Button>
+        <Button type="default" onClick={() => update(clasesm._id)}>
+          <SelectOutlined />
+        </Button>
+      </div>
+    </li>
+  </ul>
   );
-}
+};

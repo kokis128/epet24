@@ -1,10 +1,6 @@
 import React from 'react'
-
 import { useState, useEffect } from 'react';
-
 export const ContarAusencias = ({materiaS}) => {
-
-
 
 const [ausenciasData, setAusenciasData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -26,7 +22,7 @@ const [ausenciasData, setAusenciasData] = useState([]);
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     if (materiaS) {
       fetchAusencias(materiaS);

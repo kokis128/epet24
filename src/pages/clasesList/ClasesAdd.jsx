@@ -31,7 +31,7 @@ const formItemLayout = {
 
 
 const URL='http://localhost:3000/api'
-export const ClasesAdd = ({ materiaS,ausentes,estudianteSeleccionado}) => {
+export const ClasesAdd = ({ materiaS,ausentes,cantidadClases,anotaciones}) => {
 
 
  const [reload, setReload] = useState(false);
@@ -39,19 +39,8 @@ export const ClasesAdd = ({ materiaS,ausentes,estudianteSeleccionado}) => {
 
 
   useEffect(() => {
-    form.setFieldsValue({ materiaId: materiaS });
-    
+    form.setFieldsValue({ materia_id: materiaS, numero: cantidadClases+1, anotacion:anotaciones });    
   }, [materiaS]);
-
-
-
-
-  
-
-
- 
-
-
 
   
     const  onFinish =  async (data) => {console.log(data);
@@ -60,9 +49,9 @@ export const ClasesAdd = ({ materiaS,ausentes,estudianteSeleccionado}) => {
   method: 'POST',
   body: JSON.stringify(data),
   headers:{
-    'Content-Type':'application/json'}
-      
-  });  
+    'Content-Type':'application/json'}      
+  });
+
 const newClaseFromDB = await first.json();
 console.log(newClaseFromDB);
 
@@ -71,11 +60,9 @@ const response = await fetch(`${URL}/register_absences`, {
     method: 'POST',
     body: JSON.stringify({ausentes, materia_id:materiaS}),
     headers:{
-      'Content-Type':'application/json'}    
-     
-
- 
+      'Content-Type':'application/json'} 
 });
+
 
 if (!response.ok) {
   console.log(ausentes)
@@ -90,26 +77,27 @@ const ausenciasData = await response.json();
       alert('Hubo un error al registrar las ausencias');
     }
 
+    const res = await fetch(`${URL}/register_anotaciones`, {
+      method: 'POST',
+      body: JSON.stringify({anotaciones,materia_id:materiaS}),
+      headers:{
+        'Content-Type':'application/json'}
+      }  
+  
+  );
 
+  if (!res.ok) {
+    console.log(anotaciones)
+    console.log(materiaS)
+    throw new Error('Error al registrar anotaciones');
+  }
 
-
-
-setReload(true);
 
 } catch (error) {
   console.error('Error al enviar datos:', error)
 }
+setReload(true);
 }
-console.log(ausentes);
-
-
-
-
-
-
-
-
-
 
 
 useEffect(() => {
@@ -118,12 +106,6 @@ useEffect(() => {
     window.location.reload(); // Recarga la página si reload es true
   }
 }, [reload,materiaS]);
-
-
-
-
-  
-
 
 
 const [fechaActual, setFechaActual] = useState(null); // Inicializa con null
@@ -140,7 +122,7 @@ useEffect(() => {
   obtenerFechaActual();
 }, []);
   return (
-    
+
     <Form
     {...formItemLayout}
     variant="filled"
@@ -151,18 +133,17 @@ useEffect(() => {
     }}
     onFinish={onFinish}
     form={form}
-    
-  
-    
+    initialValues={{ numero: cantidadClases }}
+        
  >
  <Form.Item name="materiaId"  hidden
     >
         <Input />
       </Form.Item>
-
-    
-
-
+      <Form.Item name="anotacion"  hidden
+    >
+        <Input />
+      </Form.Item>
 
       <Form.Item name="fecha" label="Fecha" initialValue={fechaActual}>
         <DatePicker />
@@ -186,11 +167,11 @@ useEffect(() => {
       label="Unidad"
       name="unidad"
       rules={[
-        {
+    {
           required: true,
           message: 'Please input!',
         },
-      ]}
+    ]}
     >
       <Input />
     </Form.Item>
@@ -198,8 +179,10 @@ useEffect(() => {
     <Form.Item
       label="Clase N°"
       name="numero"
+      
       rules={[
         {
+          
           required: true,
           message: 'Please input!',
         },
@@ -276,10 +259,7 @@ useEffect(() => {
         Guardar Clase
       </Button>
     </Form.Item>
-  </Form>
-    
-    
-    
+  </Form> 
    
    
   )

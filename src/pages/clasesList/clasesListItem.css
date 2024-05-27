@@ -46,3 +46,9 @@ width: 100%;
     font-weight: bold;
 
 }
+.resizable {
+    resize: both;
+    overflow: auto;
+    min-width: 100px;
+    min-height: 100px;
+  }

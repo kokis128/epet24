@@ -11,23 +11,22 @@ import {
 
 
 
-export const CargarEstudiantes = () => {
+export const AgregarMateria = ({user}) => {
   const [form] = Form.useForm();
 const URL = 'http://localhost:3000/api'
-
-
+const [reload, setReload] = useState(false);
 
   const  onFinish =  async (data) => {console.log(data);
 try {
-    const first = await fetch(`${URL}/estudiante`,{
+    const first = await fetch(`${URL}/materia`,{
     method: 'POST',
     body: JSON.stringify(data),
     headers:{
       'Content-Type':'application/json'
     }
     });
-  const newEstudiante = await first.json();
-  console.log(newEstudiante);
+  const newMateria = await first.json();
+  console.log(newMateria);
   
   
   } catch (error) {
@@ -62,12 +61,26 @@ const formItemLayout = {
 
 
 
+useEffect(() => {
+  form.setFieldsValue({userId: user._id});
+  console.log(user._id)
+}, [user]);
+
+
+useEffect(() => {
+    if (reload) {
+      
+      window.location.reload('/seguimiento'); // Recarga la página si reload es true
+    }
+  }, [reload]);
+
+
 
 
   return (
 
     <>
-    <div className='my-5 text-center'>Cargar Estudiantes</div>
+    <div className='my-5 text-center'>Cargar Materia</div>
   
     <Form
     
@@ -77,14 +90,20 @@ const formItemLayout = {
     }}
 
     onFinish={onFinish}
+    form={form}
     
     
+  >
+    <Form.Item name="userId"  hidden
+    >
+        <Input />
+      </Form.Item>
+
     
-  >   
 
     <Form.Item
-      label="Apellido"
-      name="apellido"
+      label="Nombre"
+      name="name"
       rules={[
         {
           required: true,
@@ -95,12 +114,13 @@ const formItemLayout = {
       <Input />
     </Form.Item>
 
+
     <Form.Item
-      label="Nombre"
-      name="nombre"
+      label="Division"
+      name="division"
       rules={[
         {
-          required: true,
+         
           message: 'Please input!',
         },
       ]}
@@ -111,12 +131,12 @@ const formItemLayout = {
    
 
     <Form.Item
-      label="DNI"
-      name="dni"
+      label="Dias"
+      name="dias"
       rules={[
         {
           required: true,
-          message: 'Por favor Ingrese el Nombre',
+          message: 'Por favor Ingrese los dias los cuales se da esta materia',
         },
       ]}
     >
@@ -128,13 +148,15 @@ const formItemLayout = {
       label="Observaciones"
       name="observaciones"
       rules={[
-        {         
+        {
+         
           message: 'Please input!',
         },
       ]}
     >
       <Input />
     </Form.Item>    
+     
    
   
     <Form.Item
@@ -156,3 +178,4 @@ const formItemLayout = {
     
   )
 }
+

@@ -88,25 +88,7 @@ export const MatricularEstudiante = ({materiaS}) => {
       .catch(error=>{
         console.error('Algo fallo al matricular al estudiante')
       })
-
-   
-
-      
-      
-    
-  
-  
-
-
-
   };
-
-
-
-
-
-
-
 
   return (
     <div>

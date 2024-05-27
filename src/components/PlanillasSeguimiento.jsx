@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Typography ,Flex,Button, Modal,Checkbox,CheckboxProps   } from 'antd';
+import { Layout, Typography ,Flex,Button, Modal,Checkbox,Input  } from 'antd';
 import { ClasesList } from '../pages/clasesList/ClasesList';
 import { ClasesAdd } from '../pages/clasesList/ClasesAdd';
 import { MatricularEstudiante} from '../pages/estudiantes/MatricularEstudiante';
@@ -8,15 +8,30 @@ import { useState, useEffect } from 'react';
 import '../pages/clasesList/clasesListItem.css'
 import { MdHeight } from 'react-icons/md';
 import { ContarAusencias} from '../pages/estudiantes/ContarAusencias';
+import { AgregarMateria} from '../pages/materias/AgregarMateria';
 export const PlanillasSeguimiento = () => {
+
   
   const [materias, setMaterias] = useState([]);
   const [clases, setClases] = useState([]); 
   const [estudiantesBd, setEstudiantesBd] = useState([]); 
-  const [idEstudiante, setIdEstudiante] = useState('');
+ 
   const [error, setError] = useState(null);
   const [msgSeleccionar, setMsgSeleccionar]=useState('Debes Seleccionar una Materia')
   const [ausentes, setAusentes] = useState([]);
+  const [reload, setReload] = useState(false);
+  const [anotaciones, setAnotaciones] = useState([]);
+
+  const [cantidadClases, setCantidadClases] = useState(0);
+
+  const incrementarCantidad = () => {
+    setCantidadClases((prevCount) => prevCount + 1);
+  };
+
+  const decrementarCantidad = () => {
+    setCantidadClases((prevCount) => prevCount - 1);
+  };
+  console.log(cantidadClases);
   const handleResponseclases = (response) => {
     if (!response) {
       throw new Error('Failed to fetch data');
@@ -43,23 +58,18 @@ export const PlanillasSeguimiento = () => {
     return response.json();
   };
 
-  const handleResponseAusencias = (response) => {
-    if (!response) {
-      throw new Error('Failed to fetch data');
-    }
-    return response.json();
-  };
+  
 
 
 
-
+let [selectedMateriaId,setSelectedMateriaId] = useState();
 
   const handleError = (error) => {
     console.error('Error fetching data:', error);
   };
-  const selectedMateriaId = localStorage.getItem('selectedMateriaId');
+  selectedMateriaId = localStorage.getItem('selectedMateriaId');
   
-  const [materiaSeleccionada, setMateriaSeleccionada] = useState();
+  const [materiaSeleccionada, setMateriaSeleccionada] = useState(selectedMateriaId);
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState('');
   
     const selectMateriaInicio=()=>{
@@ -75,8 +85,12 @@ return null;
   useEffect(() => {
     fetch('http://localhost:3000/api/materias')
       .then(handleResponseMaterias)
-      .then(data => setMaterias(data))
-      .then(data => console.log(data))
+      .then(data => {
+         // Verifica los datos aquí
+        setMaterias(data);
+        return data; // Retorna los datos para el siguiente then
+      })
+      .then(data=>(console.log(data)))    
       .catch(handleError);
   }, [materiaSeleccionada]);
 
@@ -146,65 +160,135 @@ return null;
 
   
  
-  const onSelectMateria = (materiaId) => {
-    
+const onSelectMateria = (materiaId) => {    
  setMateriaSeleccionada(materiaId)
+ localStorage.setItem('selectedMateriaId', materiaId);
+ 
  if (!selectedMateriaId){ 
  setMsgSeleccionar('Matricular Estudiante');
-  }}
+  }
 
-  const onSelectEstudiante = (estudianteId) => {
-    
+}
+
+  const onSelectEstudiante = (estudianteId) => {    
     setEstudianteSeleccionado(estudianteId)
     console.log(estudianteId)
-  }
-    
+  }   
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);  
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  const [isModalOpenInasistencias, setIsModalOpenInasistencias] = useState(false);
+  const showModalInasistencias = () => {
+    setIsModalOpenInasistencias(true);
+  };
+
+  const [isModalOpenMaterias, setIsModalOpenMaterias] = useState(false);
+  const showModalMaterias = () => {
+    setIsModalOpenMaterias(true);
+  };
+
   const handleOk = () => {
     setIsModalOpen(false);
   };
+  const handleOkInasistencias = () => {
+    setIsModalOpenInasistencias(false);
+  };
+  
+  const handleOkMaterias = () => {
+    setIsModalOpenMaterias(false);
+  };
+  
+
   const handleCancel = () => {
     setIsModalOpen(false);
+
+    
+    };
+  const handleCancelMaterias = () => {
+    setIsModalOpenMaterias(false);
   };
+  const handleCancelInasistencias = () => {
+    setIsModalOpenInasistencias(false);
+   
+     
+  };
+
+
+  
+   
+   
+
+  
+  
 
   const onChange = (e, id) => {
     if (e.target.checked) {
       console.log(e.target.checked)
       setAusentes([...ausentes, id]);
+     
     } else {
       setAusentes(ausentes.filter(ausenteId => ausenteId !== id));
   }};
 
   
+
+  const handleAnotacionChange = (e, estudianteId) => {
+    const nuevaAnotacion = { student_id: estudianteId, anotacion: e.target.value };
+    setAnotaciones(prevAnotaciones => {
+      const index = prevAnotaciones.findIndex(anotacion => anotacion.student_id === estudianteId);
+      if (index !== -1) {
+        // Actualizar anotación existente
+        const updatedAnotaciones = [...prevAnotaciones];
+        updatedAnotaciones[index] = nuevaAnotacion;
+        return updatedAnotaciones;
+      } else {
+        // Agregar nueva anotación
+        return [...prevAnotaciones, nuevaAnotacion];
+      }
+    })};
+
   
 
 
+
   return (
-    <Layout style={layoutStyle}>
-      <Header className='h-20' style={headerStyle}>
-        
+    <Layout style={layoutStyle} className=''>
+      <Header className=' overflow-hidden h-full w-full ' style={headerStyle}>        
         
         <h1 className='text-black text-3xl text-center'>EPET 24</h1>
-        <span className='text-left'  >Bienvenido {user.username}</span>
+        <span className='text-left'>Bienvenido {user.username}</span>
         
-        <div className='flex'>
-        
-        
-     
-     <Button type="primary" onClick={showModal}>
+               
+    <ul className='flex bg-slate-500  ' >
+    <li><Button className=' h-full border-none bg-slate-500 rounded-none overflow-hidden'   onClick={showModalMaterias}>
+     Agregar Materia
+     </Button ></li>
+
+     <li><Button className=' h-full border-none bg-slate-500 rounded-none overflow-hidden '  onClick={showModal}>
      Matricular Estudiantes
-     </Button>
+     </Button></li>
+
+     <li><Button className='border-none bg-slate-500 rounded-none   '  onClick={showModalInasistencias}>
+     Ver inasistencias
+     </Button></li>
+     </ul> 
+    
      <Modal  title={msgSeleccionar} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-     {  materiaSeleccionada &&  <MatricularEstudiante materiaS={materiaSeleccionada} />}
+     {materiaSeleccionada &&  <MatricularEstudiante materiaS={materiaSeleccionada} />}
            
      </Modal>
-     </div>
-     
-   
+
+     <Modal  title={'inasistencias'} open={isModalOpenInasistencias} onOk={handleOkInasistencias} onCancel={handleCancelInasistencias}>
+     {materiaSeleccionada && <ContarAusencias materiaS={materiaSeleccionada} />}
+      </Modal>
+
+    
+    <Modal  title={'Agregar Materia'} open={isModalOpenMaterias} onOk={handleOkMaterias} onCancel={handleCancelMaterias}>
+    <AgregarMateria user={user}/>           
+     </Modal>     
         
         </Header>
        
@@ -212,19 +296,13 @@ return null;
         <Sider width="25%" style={siderStyle}>
                 
       
-      <div>
-      
-
-     
-                          
+      <div>                         
                 
-        <h3>Materias:</h3>
+        <h3>Materias:</h3>       
         
-        
-        {materias.map((materia,index) => (
-        
+        {materias.map((materia,index) => (        
            
-           <ul  >
+        <ul  >
          
           <li  onClick={() => onSelectMateria(materia._id)} key={materia._id}
            style={{ cursor: 'pointer', margin: '1px 0px' } } className={materia._id===materiaSeleccionada?'select':''} > { materia.userId === user._id && materia.name }
@@ -253,56 +331,64 @@ return null;
           <Typography.Title level={5}>Clases</Typography.Title>   
 
           
-          {materiaSeleccionada && <ClasesAdd materiaS={materiaSeleccionada} ausentes={ausentes} estudianteSeleccionado={estudianteSeleccionado}/>}
+          {materiaSeleccionada && <ClasesAdd cantidadClases={cantidadClases} materiaS={materiaSeleccionada} ausentes={ausentes} estudianteSeleccionado={estudianteSeleccionado} anotaciones={anotaciones}/>}
      
           </Content  >
           
 
-          <Content className='border-solid border-2 border-blue-700  ' >
-          <Typography.Title level={5}>Estudiantes</Typography.Title> 
-          
-
-          
-
-
-
-         
-            
-          { estudiantesBd.map((estudianteBd)=>(
-            <ul key={estudianteBd._id} className='flex-col'>
-              {materias.map((materia,index)=>(
-
-
-                            <li key={index}>{materiaSeleccionada === materia._id && materia.estudiantes.map((estudiante,index)=>(
-                              <ul key={index} className='flex-col'>
-                               {estudiante===estudianteBd._id &&
-                                <li onClick={()=>onSelectEstudiante(estudianteBd._id)} className={estudianteBd._id===estudianteSeleccionado ?'select':''}>
-                                   { estudianteBd.nombre} { estudianteBd.apellido} {<ContarAusencias materiaS={materiaSeleccionada}/>}
-                                 <Checkbox onChange={(e) => onChange(e, estudianteBd._id)} className='pl-5'></Checkbox></li> }
-                               
-                                                                                                                                                                                                                                                                                                                 
-                               </ul>)
-                              
-                              )
-                               }</li>
+          <div className="border-solid border-2 border-blue-700 p-4 rounded-lg shadow-md">
+      
+      
+      <Typography.Title level={5}>
+        Estudiantes
+      </Typography.Title>
+      {estudiantesBd.map((estudianteBd) => (
+        <ul key={estudianteBd._id}  >
+          {materias.map((materia, index) => (
+            <li key={index} className="mb-2 ">
+              {materiaSeleccionada === materia._id &&
+                materia.estudiantes.map((estudiante, idx) => (
+                  <ul key={idx} >
+                    {estudiante === estudianteBd._id && (
+                      <li
+                        onClick={() => onSelectEstudiante(estudianteBd._id)}
+                        className={`flex items-center justify-between p-2 cursor-pointer border rounded-lg ${
+                          estudianteBd._id === estudianteSeleccionado ? 'bg-blue-300 border-blue-800' : 'bg-blue-200 border-gray-700'
+                        }`}
+                      >
+                        <span className="font-medium text-gray-700">
+                          {estudianteBd.nombre} {estudianteBd.apellido}
+                        </span>
+                        <ul className='flex flex-row-reverse overflow-x-hidden'>
+                        <li><Input
+                            placeholder="Anotación"
+                            className="ml-4"
+                            value={anotaciones.find(anotacion => anotacion.student_id === estudianteBd._id)?.anotacion || ''}
+                            onChange={(e) => handleAnotacionChange(e, estudianteBd._id)}
                             
-                          ))}
-              
-              
-            </ul>
-            
+                          
+                          /></li>
+                        
+                       <li> <Checkbox onChange={(e) => onChange(e, estudianteBd._id)} className="pl-5"></Checkbox></li>
+                       
+                        </ul>
+
+                      </li>
+                    )}
+                  </ul>
+                ))}
+            </li>
           ))}
-
-          
-
-          </Content>
+        </ul>
+      ))}
+    </div>
 
           </Layout >
      
      
     
       {user._id  && (
-        <div>         
+        <div className='resizable'>         
          
           <h5>Clases:</h5>
           {
@@ -312,15 +398,17 @@ return null;
           {clases.map((clase,index) => (
                
                  
-               <ul key={index}>
+               <ul key={index} >
                
                 <li >{ clase.materiaId && clase.materiaId._id === materiaSeleccionada
                
               
                 &&(   
                   <>            
-                  <div >     
-                 <ClasesList clases={clase} />
+                  <div  >     
+                 <ClasesList clases={clase}
+                      incrementarCantidad={incrementarCantidad}
+                      decrementarCantidad={decrementarCantidad} />
                  </div> 
                  
                  </> 
