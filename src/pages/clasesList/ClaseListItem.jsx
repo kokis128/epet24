@@ -19,9 +19,7 @@ export const ClaseListItem = ({clasesm, del, update,deletedItemId,incrementarCan
  
  useEffect(() => {
   if (!deletedItemId) {
-    incrementarCantidad();
-    
-    
+    incrementarCantidad();   
    
   }
   return () => {

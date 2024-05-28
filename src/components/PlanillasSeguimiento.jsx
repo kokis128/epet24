@@ -1,5 +1,6 @@
 import React from 'react'
 import { Layout, Typography ,Flex,Button, Modal,Checkbox,Input  } from 'antd';
+import logo from "../assets/logo24.png";
 import { ClasesList } from '../pages/clasesList/ClasesList';
 import { ClasesAdd } from '../pages/clasesList/ClasesAdd';
 import { MatricularEstudiante} from '../pages/estudiantes/MatricularEstudiante';
@@ -11,7 +12,6 @@ import { ContarAusencias} from '../pages/estudiantes/ContarAusencias';
 import { AgregarMateria} from '../pages/materias/AgregarMateria';
 export const PlanillasSeguimiento = () => {
 
-  
   const [materias, setMaterias] = useState([]);
   const [clases, setClases] = useState([]); 
   const [estudiantesBd, setEstudiantesBd] = useState([]); 
@@ -45,11 +45,7 @@ export const PlanillasSeguimiento = () => {
     }
     return response.json();
   };
-
-
   // Define una función para manejar errores de la solicitud fetch
-  
-
   
   const handleResponseMaterias = (response) => {
     if (!response) {
@@ -58,12 +54,7 @@ export const PlanillasSeguimiento = () => {
     return response.json();
   };
 
-  
-
-
-
 let [selectedMateriaId,setSelectedMateriaId] = useState();
-
   const handleError = (error) => {
     console.error('Error fetching data:', error);
   };
@@ -86,7 +77,7 @@ return null;
     fetch('http://localhost:3000/api/materias')
       .then(handleResponseMaterias)
       .then(data => {
-         // Verifica los datos aquí
+         
         setMaterias(data);
         return data; // Retorna los datos para el siguiente then
       })
@@ -122,7 +113,7 @@ return null;
   const headerStyle = {
     textAlign: 'center',
     color: '#fff',    
-    paddingInline: 10,
+    paddingInline: 0,
     lineHeight: '20px',
     backgroundColor: '#7196ff',
   };
@@ -211,18 +202,8 @@ const onSelectMateria = (materiaId) => {
     setIsModalOpenMaterias(false);
   };
   const handleCancelInasistencias = () => {
-    setIsModalOpenInasistencias(false);
-   
-     
-  };
-
-
-  
-   
-   
-
-  
-  
+    setIsModalOpenInasistencias(false);     
+  }; 
 
   const onChange = (e, id) => {
     if (e.target.checked) {
@@ -231,9 +212,7 @@ const onSelectMateria = (materiaId) => {
      
     } else {
       setAusentes(ausentes.filter(ausenteId => ausenteId !== id));
-  }};
-
-  
+  }};  
 
   const handleAnotacionChange = (e, estudianteId) => {
     const nuevaAnotacion = { student_id: estudianteId, anotacion: e.target.value };
@@ -256,10 +235,17 @@ const onSelectMateria = (materiaId) => {
 
   return (
     <Layout style={layoutStyle} className=''>
-      <Header className=' overflow-hidden h-full w-full ' style={headerStyle}>        
+      <Header className='overflow-hidden h-full w-full p-0 bg-gradient-to-r from-indigo-600  ' style={headerStyle}>        
+        <div className='flex items-center justify-center'>
+        <h1 className='text-black text-3xl text-center inline font-mono'>EPET 24</h1>
+        <img src={logo} alt="logo epet24" className='w-10 h-8 pl-3 text-center inline' />
+     
+        </div>
+       
+        <span className='font-sans text-gray-700 pr-6 underline decoration-solid text-center inline'>Gestión de Clases</span>
+        <span className='flex flex-row-reverse pr-5 text-gray-500 font-mono inline text-xs'>Bienvenido {user.username}</span>
         
-        <h1 className='text-black text-3xl text-center'>EPET 24</h1>
-        <span className='text-left'>Bienvenido {user.username}</span>
+        
         
                
     <ul className='flex bg-slate-500  ' >
@@ -271,12 +257,12 @@ const onSelectMateria = (materiaId) => {
      Matricular Estudiantes
      </Button></li>
 
-     <li><Button className='border-none bg-slate-500 rounded-none   '  onClick={showModalInasistencias}>
+     <li><Button className='border-none bg-slate-500 rounded-none'  onClick={showModalInasistencias}>
      Ver inasistencias
      </Button></li>
      </ul> 
     
-     <Modal  title={msgSeleccionar} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+     <Modal title={msgSeleccionar} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
      {materiaSeleccionada &&  <MatricularEstudiante materiaS={materiaSeleccionada} />}
            
      </Modal>
@@ -293,20 +279,17 @@ const onSelectMateria = (materiaId) => {
         </Header>
        
       <Layout>
-        <Sider width="25%" style={siderStyle}>
-                
+        <Sider width="25%" style={siderStyle}>        
       
       <div>                         
-                
-        <h3>Materias:</h3>       
+      <Typography.Title level={5}>Materias</Typography.Title>            
         
         {materias.map((materia,index) => (        
            
-        <ul  >
+        <ul className='bg-gradient-to-r from-indigo-400'  >
          
           <li  onClick={() => onSelectMateria(materia._id)} key={materia._id}
-           style={{ cursor: 'pointer', margin: '1px 0px' } } className={materia._id===materiaSeleccionada?'select':''} > { materia.userId === user._id && materia.name }
-                
+           style={{ cursor: 'pointer', margin: '0px 0px' } } className={materia._id===materiaSeleccionada?'font-sans select':''} > {materia.userId === user._id && materia.name}
            </li>
          
             
@@ -323,7 +306,7 @@ const onSelectMateria = (materiaId) => {
 
         <Layout style={contentStyle} >
 
-        <Layout className='flex-row ' style={contentStyle} >
+        <Layout className='flex-row  ' style={contentStyle} >
 
           
         <Content className='border-solid border-2 border-blue-700 w-[20%]'  >
@@ -336,7 +319,7 @@ const onSelectMateria = (materiaId) => {
           </Content  >
           
 
-          <div className="border-solid border-2 border-blue-700 p-4 rounded-lg shadow-md">
+          <div className="border-solid border-2 border-blue-700 px-2 rounded-lg shadow-md">
       
       
       <Typography.Title level={5}>
@@ -353,10 +336,10 @@ const onSelectMateria = (materiaId) => {
                       <li
                         onClick={() => onSelectEstudiante(estudianteBd._id)}
                         className={`flex items-center justify-between p-2 cursor-pointer border rounded-lg ${
-                          estudianteBd._id === estudianteSeleccionado ? 'bg-blue-300 border-blue-800' : 'bg-blue-200 border-gray-700'
+                          estudianteBd._id === estudianteSeleccionado ? 'bg-blue-300 border-blue-800' : 'bg-gradient-to-r from-indigo-400  border-gray-700'
                         }`}
                       >
-                        <span className="font-medium text-gray-700">
+                        <span className=" text-gray-600 font-sans text-xs">
                           {estudianteBd.nombre} {estudianteBd.apellido}
                         </span>
                         <ul className='flex flex-row-reverse overflow-x-hidden'>

@@ -34,18 +34,9 @@ console.log(clasesm)
     console.log(nArray1)
      setClases(...nArray1);
     
-} 
-
-
-
+}
     
-   
-    
-  };
- 
-  
-
-  
+  };  
   // Realiza la solicitud fetch cuando el componente se monta
   
   const delClase = (id) => {
@@ -53,12 +44,8 @@ console.log(clasesm)
     const nArray = clasesArray.filter(item=>item._id!==id)    
     
     setClases(nArray)
-    setDeletedItemId(id);
-    
-  }
-  
- 
-  
+    setDeletedItemId(id);    
+  }  
     return (
     <> 
     

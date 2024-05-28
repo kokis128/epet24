@@ -30,17 +30,20 @@ const formItemLayout = {
 };
 
 
+
 const URL='http://localhost:3000/api'
 export const ClasesAdd = ({ materiaS,ausentes,cantidadClases,anotaciones}) => {
 
-
+ 
  const [reload, setReload] = useState(false);
  const [form] = Form.useForm();
 
 
   useEffect(() => {
-    form.setFieldsValue({ materia_id: materiaS, numero: cantidadClases+1, anotacion:anotaciones });    
-  }, [materiaS]);
+    
+    form.setFieldsValue({ materia_id:materiaS, numero: cantidadClases+1, anotacion:anotaciones });    
+   
+  }, [materiaS,cantidadClases]);
 
   
     const  onFinish =  async (data) => {console.log(data);
@@ -136,7 +139,7 @@ useEffect(() => {
     initialValues={{ numero: cantidadClases }}
         
  >
- <Form.Item name="materiaId"  hidden
+ <Form.Item name="materia_id"  hidden
     >
         <Input />
       </Form.Item>
@@ -178,21 +181,14 @@ useEffect(() => {
 
     <Form.Item
       label="Clase N°"
-      name="numero"
-      
+      name="numero"      
       rules={[
-        {
-          
-          required: true,
-          message: 'Please input!',
-        },
+        {message: 'Please input!',
+        required: true,
+        }
       ]}
     >
-      <InputNumber
-        style={{
-          width: '100%',
-        }}
-      />
+      <Input/>
     </Form.Item>
 
     <Form.Item
