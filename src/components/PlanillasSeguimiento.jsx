@@ -10,6 +10,7 @@ import '../pages/clasesList/clasesListItem.css'
 import { MdHeight } from 'react-icons/md';
 import { ContarAusencias} from '../pages/estudiantes/ContarAusencias';
 import { AgregarMateria} from '../pages/materias/AgregarMateria';
+import { PlanillaToPrint} from '../components/PlanillaToPrint';
 export const PlanillasSeguimiento = () => {
 
   const [materias, setMaterias] = useState([]);
@@ -155,9 +156,7 @@ const onSelectMateria = (materiaId) => {
  setMateriaSeleccionada(materiaId)
  localStorage.setItem('selectedMateriaId', materiaId);
  
- if (!selectedMateriaId){ 
- setMsgSeleccionar('Matricular Estudiante');
-  }
+
 
 }
 
@@ -168,6 +167,9 @@ const onSelectMateria = (materiaId) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);  
   const showModal = () => {
+    if (materiaSeleccionada){ 
+      setMsgSeleccionar('Matricular Estudiante');
+       }
     setIsModalOpen(true);
   };
 
@@ -181,6 +183,11 @@ const onSelectMateria = (materiaId) => {
     setIsModalOpenMaterias(true);
   };
 
+  const [isModalOpenIprimir, setIsModalOpenImprimir] = useState(false);
+  const showModalImprimir = () => {
+    setIsModalOpenImprimir(true);
+  };
+
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -190,6 +197,9 @@ const onSelectMateria = (materiaId) => {
   
   const handleOkMaterias = () => {
     setIsModalOpenMaterias(false);
+  };
+  const handleOkImprimir = () => {
+    setIsModalOpenImprimir(false);
   };
   
 
@@ -203,6 +213,10 @@ const onSelectMateria = (materiaId) => {
   };
   const handleCancelInasistencias = () => {
     setIsModalOpenInasistencias(false);     
+  }; 
+
+  const handleCancelImprimir = () => {
+    setIsModalOpenImprimir(false);     
   }; 
 
   const onChange = (e, id) => {
@@ -260,6 +274,13 @@ const onSelectMateria = (materiaId) => {
      <li><Button className='border-none bg-slate-500 rounded-none'  onClick={showModalInasistencias}>
      Ver inasistencias
      </Button></li>
+
+     <li><Button className='border-none bg-slate-500 rounded-none'  onClick={showModalImprimir}>
+     Imprimir Planillas
+     </Button></li>
+
+
+
      </ul> 
     
      <Modal title={msgSeleccionar} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -274,6 +295,10 @@ const onSelectMateria = (materiaId) => {
     
     <Modal  title={'Agregar Materia'} open={isModalOpenMaterias} onOk={handleOkMaterias} onCancel={handleCancelMaterias}>
     <AgregarMateria user={user}/>           
+     </Modal> 
+
+      <Modal  title={'Imprimir Planillas'} open={isModalOpenIprimir} onOk={handleOkImprimir} onCancel={handleCancelImprimir}>
+    <PlanillaToPrint/>           
      </Modal>     
         
         </Header>

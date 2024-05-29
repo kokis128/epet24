@@ -13,6 +13,7 @@ import { Menu } from './pages/Menu';
 import { Register } from "../src/pages/Register";
 import { RutaProtegida } from './pages/RutaProtegida';
 import { PlanillasSeguimiento } from './components/PlanillasSeguimiento';
+
 import { CargarEstudiantes } from './pages/estudiantes/CargarEstudiantes';
 
 
@@ -41,6 +42,7 @@ function App() {
     <Route path='/menu' element={<Menu />} />
     <Route path='/seguimiento' element={<PlanillasSeguimiento />} />
     <Route path='/estudiantes' element={<CargarEstudiantes />} />
+  
     </Route   >
     <Route path='/register' element={<Register />} />
    
