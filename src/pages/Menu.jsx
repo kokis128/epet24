@@ -23,8 +23,8 @@ export const Menu = () => {
 <Flex gap="small" align="flex" vertical>
     
     <Flex gap="small">
-      <Button className="p-8 mt-10 bg-cyan-600"><Link to="/seguimiento" className=" text-black text-end">Planillas De Seguimiento</Link>
-
+     
+ <Button className="p-8 mt-10 bg-cyan-600"><Link to="/seguimiento" className=" text-black text-end">Planillas De Seguimiento</Link>
       </Button>
       
     </Flex>

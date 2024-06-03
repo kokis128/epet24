@@ -6,9 +6,13 @@ import {
   Input,
   InputNumber,
   Mentions,
+  ConfigProvider,
   
   
 } from 'antd';
+import esES from 'antd/es/locale/es_ES';
+import moment from 'moment';
+import 'moment/locale/es';
 const { RangePicker } = DatePicker;
 const formItemLayout = {
   labelCol: {
@@ -36,16 +40,21 @@ export const ClasesAdd = ({ materiaS,ausentes,cantidadClases,anotaciones}) => {
 
  
  const [reload, setReload] = useState(false);
+ const [fechaActual, setFechaActual] = useState(moment());
  const [form] = Form.useForm();
 
-
+ 
   useEffect(() => {
     
-    form.setFieldsValue({ materia_id:materiaS, numero: cantidadClases+1, anotacion:anotaciones });    
+    form.setFieldsValue({ materia_id:materiaS, numero: cantidadClases+1, anotacion:anotaciones,fecha:fechaActual, });    
    
-  }, [materiaS,cantidadClases]);
+  }, [materiaS,cantidadClases,fechaActual]);
 
   
+
+  useEffect(() => {
+    moment.locale('es');
+  }, []);
     const  onFinish =  async (data) => {console.log(data);
       try {
   const first = await fetch(`${URL}/clase`,{
@@ -111,20 +120,12 @@ useEffect(() => {
 }, [reload,materiaS]);
 
 
-const [fechaActual, setFechaActual] = useState(null); // Inicializa con null
-const obtenerFechaActual = () => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  const fecha = `${day}-${month}-${year}`;
-  setFechaActual(fecha);
-};  
+// Inicializa con null
 
-useEffect(() => {
-  obtenerFechaActual();
-}, []);
+
   return (
+
+    <ConfigProvider locale={esES}>
 
     <Form
     {...formItemLayout}
@@ -136,8 +137,8 @@ useEffect(() => {
     }}
     onFinish={onFinish}
     form={form}
-    initialValues={{ numero: cantidadClases }}
-        
+    initialValues={{ numero: cantidadClases, fecha: fechaActual  }}
+    className=" p-8 rounded shadow-md w-full max-w-2xl"  
  >
  <Form.Item name="materia_id"  hidden
     >
@@ -148,8 +149,14 @@ useEffect(() => {
         <Input />
       </Form.Item>
 
-      <Form.Item name="fecha" label="Fecha" initialValue={fechaActual}>
-        <DatePicker />
+      <Form.Item 
+        name="fecha"
+        label="Fecha"
+        rules={[{ required: true, message: 'Debes Completar!' }]}
+      >
+        <DatePicker  value={fechaActual}
+            onChange={(date) => setFechaActual(date)}
+            format="DD/MM/YYYY" />
       </Form.Item>
     
 
@@ -159,7 +166,7 @@ useEffect(() => {
       rules={[
         {
           required: true,
-          message: 'Please input!',
+          message: 'Debes Completar!',
         },
       ]}
     >
@@ -172,7 +179,7 @@ useEffect(() => {
       rules={[
     {
           required: true,
-          message: 'Please input!',
+          message: 'Debes Completar!',
         },
     ]}
     >
@@ -183,7 +190,7 @@ useEffect(() => {
       label="Clase N°"
       name="numero"      
       rules={[
-        {message: 'Please input!',
+        {message: 'Debes Completar!',
         required: true,
         }
       ]}
@@ -197,7 +204,7 @@ useEffect(() => {
       rules={[
         {
           required: true,
-          message: 'Please input!',
+          message: 'Debes Completar!',
         },
       ]}
     >
@@ -238,7 +245,7 @@ useEffect(() => {
       rules={[
         {
           required: true,
-          message: 'Please input!',
+          message: 'Debes completar este campo!',
         },
       ]}
     >
@@ -256,6 +263,8 @@ useEffect(() => {
       </Button>
     </Form.Item>
   </Form> 
+
+  </ConfigProvider>
    
    
   )

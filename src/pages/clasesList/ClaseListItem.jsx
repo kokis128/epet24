@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 import './clasesListItem.css';
 import {DeleteOutlined,SelectOutlined} from '@ant-design/icons'
 import {Button, Space }from 'antd';
-export const ClaseListItem = ({clasesm, del, update,deletedItemId,incrementarCantidad,decrementarCantidad})=> {
+export const ClaseListItem = ({clases,clasesm, del, update,deletedItemId,incrementarCantidad,decrementarCantidad})=> {
 
 
 

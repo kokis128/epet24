@@ -297,8 +297,9 @@ const onSelectMateria = (materiaId) => {
     <AgregarMateria user={user}/>           
      </Modal> 
 
-      <Modal  title={'Imprimir Planillas'} open={isModalOpenIprimir} onOk={handleOkImprimir} onCancel={handleCancelImprimir}>
-    <PlanillaToPrint/>           
+      <Modal  title={'Planilla de Seguimiento'} style={{ top: 0, padding: 0 ,height: '110vh', padding: 0, overflow: 'hidden' }}
+        width="100vw" className="full-screen-modal"  open={isModalOpenIprimir} onOk={handleOkImprimir} onCancel={handleCancelImprimir}>
+    <PlanillaToPrint materiaS={materiaSeleccionada}/>           
      </Modal>     
         
         </Header>
@@ -414,7 +415,7 @@ const onSelectMateria = (materiaId) => {
                 &&(   
                   <>            
                   <div  >     
-                 <ClasesList clases={clase}
+                 <ClasesList clases={clases}
                       incrementarCantidad={incrementarCantidad}
                       decrementarCantidad={decrementarCantidad} />
                  </div> 
