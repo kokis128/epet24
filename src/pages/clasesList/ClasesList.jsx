@@ -9,7 +9,7 @@ export const ClasesList =  ({clases,incrementarCantidad,decrementarCantidad}) =>
   const [clasesm, setClases] = useState(clases);
   const [deletedItemId, setDeletedItemId] = useState(null);  
  
-console.log(clases)
+console.log(clasesm)
   
   const nClase = {
     tema:'mongoDb',

@@ -27,18 +27,19 @@ try {
     });
   const newMateria = await first.json();
   console.log(newMateria);
+  setReload(true);
   
   
   } catch (error) {
     console.error('Error al enviar datos:', error)
   }
-}
-
-
-
-
-
-  
+} 
+useEffect(() => {
+  if (reload) {
+    alert('Materia Agregada Correctamente')
+    window.location.reload();
+  }
+}, [reload]);
 
 const formItemLayout = {
   labelCol: {
@@ -107,7 +108,20 @@ useEffect(() => {
       rules={[
         {
           required: true,
-          message: 'Please input!',
+          message: 'Debes Completar!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="Curso"
+      name="curso"
+      rules={[
+        {
+          required: true,        
+          message: 'Debes Completar!',
         },
       ]}
     >
@@ -115,13 +129,31 @@ useEffect(() => {
     </Form.Item>
 
 
+
+
+
+
+
     <Form.Item
       label="Division"
       name="division"
       rules={[
         {
-         
+          required: true,
           message: 'Please input!',
+        },
+      ]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      label="Turno"
+      name="turno"
+      rules={[
+        {
+          required: true,
+          message: 'Debes Completar!',
         },
       ]}
     >
@@ -135,8 +167,21 @@ useEffect(() => {
       name="dias"
       rules={[
         {
-          required: true,
-          message: 'Por favor Ingrese los dias los cuales se da esta materia',
+          
+          message: 'Por favor Ingresa los dias, que se dicta esta materia',
+        },
+      ]}
+    >
+      <Input/>
+    </Form.Item>
+
+    <Form.Item
+      label="Horarios"
+      name="horarios"
+      rules={[
+        {
+         
+          message: 'Por favor Ingresa los horarios de esta materia',
         },
       ]}
     >
@@ -148,16 +193,13 @@ useEffect(() => {
       label="Observaciones"
       name="observaciones"
       rules={[
-        {
-         
+        {         
           message: 'Please input!',
         },
       ]}
     >
       <Input />
-    </Form.Item>    
-     
-   
+    </Form.Item>  
   
     <Form.Item
       wrapperCol={{
@@ -169,8 +211,7 @@ useEffect(() => {
         Guardar
       </Button>
     </Form.Item>
-  </Form>
-   
+  </Form>  
    
   </>
       

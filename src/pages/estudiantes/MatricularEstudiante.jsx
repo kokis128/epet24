@@ -51,17 +51,9 @@ export const MatricularEstudiante = ({materiaS}) => {
       const materiaId =materiaS;
     console.log(materiaId)
 
-    
-    
-
     const URL = 'http://localhost:3000/api'
 
-
-
-    
-  
-  
-      fetch(`${URL}/estudiante/${idEstudiante}/matricular`,{
+    fetch(`${URL}/estudiante/${idEstudiante}/matricular`,{
        
       method: 'PUT',
       body: JSON.stringify({materiaId}),
@@ -74,8 +66,11 @@ export const MatricularEstudiante = ({materiaS}) => {
         if(!response.ok){
          
           return response.json();
+          
         }
+       
         return response.json();
+        
       })
       .then (data=>{
         console.log(data)
@@ -85,7 +80,7 @@ export const MatricularEstudiante = ({materiaS}) => {
         
         
       })
-      .catch(error=>{
+      .catch( error =>{
         console.error('Algo fallo al matricular al estudiante')
       })
   };
@@ -105,11 +100,7 @@ export const MatricularEstudiante = ({materiaS}) => {
     
       <button onClick={matricular}>Matricular</button>
     
-    
-    
-    
-    
-    </div>
+        </div>
     
   );
 };

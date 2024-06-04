@@ -283,7 +283,11 @@ const onSelectMateria = (materiaId) => {
 
      </ul> 
     
-     <Modal title={msgSeleccionar} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+     <Modal title={msgSeleccionar} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  footer={[<Button key="cancel" onClick={handleCancel}>
+            Cancelar
+          </Button>,
+          // Puedes agregar más botones si es necesario
+        ]}>
      {materiaSeleccionada &&  <MatricularEstudiante materiaS={materiaSeleccionada} />}
            
      </Modal>
@@ -415,7 +419,7 @@ const onSelectMateria = (materiaId) => {
                 &&(   
                   <>            
                   <div  >     
-                 <ClasesList clases={clases}
+                 <ClasesList clases={clase}
                       incrementarCantidad={incrementarCantidad}
                       decrementarCantidad={decrementarCantidad} />
                  </div> 
