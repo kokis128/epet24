@@ -68,8 +68,7 @@ export const PlanillaToPrint = ({materiaS}) => {
                          
                 </th>
                 
-              ))}
-            
+              ))}           
               
             </tr>
             <tr>             

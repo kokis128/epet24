@@ -190,6 +190,7 @@ const onSelectMateria = (materiaId) => {
 
   const handleOk = () => {
     setIsModalOpen(false);
+  
   };
   const handleOkInasistencias = () => {
     setIsModalOpenInasistencias(false);
@@ -205,6 +206,7 @@ const onSelectMateria = (materiaId) => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+   
 
     
     };
@@ -292,7 +294,7 @@ const onSelectMateria = (materiaId) => {
            
      </Modal>
 
-     <Modal  title={'inasistencias'} open={isModalOpenInasistencias} onOk={handleOkInasistencias} onCancel={handleCancelInasistencias}>
+     <Modal  title={'inasistencias'} open={isModalOpenInasistencias} onOk={handleOkInasistencias}  onCancel={handleCancelInasistencias} >
      {materiaSeleccionada && <ContarAusencias materiaS={materiaSeleccionada} />}
       </Modal>
 

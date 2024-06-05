@@ -18,7 +18,7 @@ export const Navbar = () => {
   
   return (
 
-    <div className="container mx-auto flex justify-end mb-3   grid col-1 text-rigth md:col-span-4">
+    <nav className="container mx-auto flex justify-end mb-3   grid col-1 text-rigth md:col-span-4">
 <div className="text-rigth">
 <div className="z-0 ">
 <button onClick={mostrarMenu} className="absolute left-[450px]  top-4 z-10  w-13 h-13 sm:hidden "><GiHamburgerMenu  /></button> 
@@ -48,7 +48,7 @@ export const Navbar = () => {
  
   </div>
   </div>
-  </div>
+  </nav>
  
 
   

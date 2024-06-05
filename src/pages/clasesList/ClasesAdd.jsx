@@ -96,13 +96,13 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
 
   return (
     <ConfigProvider locale={esES}>
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center">
         <Form
           {...formItemLayout}
           form={form}
           onFinish={onFinish}
           initialValues={{ numero: cantidadClases + 1, fecha: fechaActual,materiaId:materiaS }}
-          className="p-8 rounded shadow-md w-full max-w-2xl"
+          className=" w-full"
         >
           <Form.Item name="materiaId" hidden>
             <Input />
@@ -115,16 +115,19 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             name="fecha"
             label="Fecha"
             rules={[{ required: true, message: 'Debes Completar!' }]}
+            className="mb-3 "
           >
             <DatePicker
               selected={fechaActual}
               onChange={(date) => {
                 setFechaActual(date);
                 form.setFieldsValue({ fecha: date });
+                
               }}
               dateFormat="dd/MM/yyyy"
               className="w-full border rounded p-2"
               locale={es}
+              
             />
           </Form.Item>
 
@@ -132,6 +135,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             label="Tema"
             name="tema"
             rules={[{ required: true, message: 'Debes Completar!' }]}
+            className=" mb-3"
           >
             <Input className="w-full" />
           </Form.Item>
@@ -140,6 +144,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             label="Unidad"
             name="unidad"
             rules={[{ required: true, message: 'Debes Completar!' }]}
+            className=" mb-3"
           >
             <Input className="w-full" />
           </Form.Item>
@@ -148,6 +153,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             label="Clase N°"
             name="numero"
             rules={[{ required: true, message: 'Debes Completar!' }]}
+            className=" mb-3"
           >
             <Input className="w-full" />
           </Form.Item>
@@ -156,6 +162,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             label="Contenidos Trabajados"
             name="contenidos"
             rules={[{ required: true, message: 'Debes Completar!' }]}
+            className=" mb-3"
           >
             <Input.TextArea className="w-full" />
           </Form.Item>
@@ -164,6 +171,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             label="Actividades"
             name="actividades"
             rules={[{ required: true, message: 'Debes Completar!' }]}
+            className=" mb-3"
           >
             <Input.TextArea className="w-full" />
           </Form.Item>
@@ -172,6 +180,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             label="Anotaciones"
             name="anotaciones"
             rules={[{ required: true, message: 'Debes Completar!' }]}
+            className=" mb-3"
           >
             <Mentions className="w-full" />
           </Form.Item>
@@ -180,6 +189,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             label="Observaciones"
             name="observaciones"
             rules={[{ required: true, message: 'Debes completar este campo!' }]}
+            className=" mb-3"
           >
             <Input.TextArea className="w-full" />
           </Form.Item>
@@ -188,8 +198,9 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             <Button
               type="primary"
               htmlType="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white w-full"
+              className="bg-blue-500 hover:bg-blue-600 text-white "
             >
+
               Guardar Clase
             </Button>
           </Form.Item>
