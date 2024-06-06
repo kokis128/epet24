@@ -2,14 +2,14 @@ import React from 'react'
 import { useState,useEffect } from 'react';
 
 import { ClaseListItem } from './ClaseListItem';
-import { clasesFromDb } from '../../constant/Clases';
+
 export const ClasesList =  ({clases,incrementarCantidad,decrementarCantidad}) => {
 
 
   const [clasesm, setClases] = useState(clases);
   const [deletedItemId, setDeletedItemId] = useState(null);  
  
-console.log(clasesm)
+
   
   const nClase = {
     tema:'mongoDb',
@@ -31,7 +31,7 @@ console.log(clasesm)
     // Insertar el nuevo elemento en esa posición
    
     nArray1.splice(index, 1, nClase); 
-    console.log(nArray1)
+   
      setClases(...nArray1);
     
 }

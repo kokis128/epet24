@@ -5,6 +5,8 @@ import {
   Input,
   Mentions,
   ConfigProvider,
+  Select,
+  
 } from 'antd';
 import esES from 'antd/es/locale/es_ES';
 import DatePicker from 'react-datepicker';
@@ -36,12 +38,25 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
       numero: cantidadClases + 1,
       anotacion: anotaciones,
       fecha: fechaActual,
+      
     });
   }, [materiaS, cantidadClases, anotaciones, fechaActual, form]);
 
+  const actividadesPredefinidas = [
+    'TP',
+    'T. Clase',
+    'Particip.',
+    'Eval.',
+    'Nota',
+    'Calif. Final'
+  ];
+
+
+
+
   const onFinish = async (data) => {
     data.fecha = format(data.fecha, 'yyyy-MM-dd'); // Format the date before sending
-    console.log(data);
+    console.log(data.registro);
     try {
       const first = await fetch(`${URL}/clase`, {
         method: 'POST',
@@ -69,12 +84,18 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
       } else {
         alert('Hubo un error al registrar las ausencias');
       }
+      const updatedAnotaciones = anotaciones.map(anotacion => ({
+        ...anotacion,
+        registro: data.registro // Añadir el campo registro
+      }));
 
       const res = await fetch(`${URL}/register_anotaciones`, {
         method: 'POST',
-        body: JSON.stringify({ anotaciones, materia_id: materiaS }),
+        body: JSON.stringify({ anotaciones: updatedAnotaciones, materia_id: materiaS }),
         headers: { 'Content-Type': 'application/json' },
       });
+      console.log('Anotaciones:', ...anotaciones);
+      console.log('Materia ID:', materiaS);
 
       if (!res.ok) {
         console.log(anotaciones);
@@ -82,6 +103,10 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
         throw new Error('Error al registrar anotaciones');
       }
     } catch (error) {
+      debugger;
+      console.log(anotaciones);
+      console.log(materiaS);
+
       console.error('Error al enviar datos:', error);
     }
     setReload(true);
@@ -168,17 +193,27 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
           </Form.Item>
 
           <Form.Item
-            label="Actividades"
-            name="actividades"
+            label="Reg. de Clase"
+            name="registro"
             rules={[{ required: true, message: 'Debes Completar!' }]}
-            className=" mb-3"
+            className="mb-3"
           >
-            <Input.TextArea className="w-full" />
+            <Select
+              mode="simple"              
+              className="w-full"
+              placeholder="Selecciona actividades"
+            >
+              {actividadesPredefinidas.map((actividad) => (
+                <Select.Option key={actividad} value={actividad}>
+                  {actividad}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Form.Item
-            label="Anotaciones"
-            name="anotaciones"
+            label="Actividades"
+            name="actividades"
             rules={[{ required: true, message: 'Debes Completar!' }]}
             className=" mb-3"
           >
