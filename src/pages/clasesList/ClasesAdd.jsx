@@ -58,9 +58,10 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
     data.fecha = format(data.fecha, 'yyyy-MM-dd'); // Format the date before sending
     console.log(data.registro);
     try {
+      const {registro, ...claseData } = data
       const first = await fetch(`${URL}/clase`, {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify(claseData ),
         headers: { 'Content-Type': 'application/json' },
       });
 
