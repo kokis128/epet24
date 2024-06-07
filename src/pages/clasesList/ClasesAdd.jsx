@@ -112,7 +112,6 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
     }
     setReload(true);
   };
-
   useEffect(() => {
     if (reload) {
       localStorage.setItem('selectedMateriaId', materiaS);
@@ -194,7 +193,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
           </Form.Item>
 
           <Form.Item
-            label="Reg. de Clase"
+            label="Calif Clase."
             name="registro"
             rules={[{ required: true, message: 'Debes Completar!' }]}
             className="mb-3"

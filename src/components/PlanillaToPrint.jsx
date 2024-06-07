@@ -22,7 +22,6 @@ export const PlanillaToPrint = ({materiaS}) => {
             console.log(data);
           })
           .catch(error => {
-            
           
             console.error('Error al obtener la lista de estudiantes:', error);
           });
@@ -40,7 +39,7 @@ export const PlanillaToPrint = ({materiaS}) => {
     if (!data) return <div>Cargando...</div>;
     
     const fechasUnicas = [...new Set(data.anotaciones.filter(anotacion =>  data.materia._id === anotacion.materia_id).map(anotacion=> formatDate(anotacion.fecha)))];
-
+    const anotacionRegistroUnico = [data.anotaciones.find(anotacion=>data.materia._id === anotacion.materia_id)]
 
   return (
     <>
@@ -61,12 +60,15 @@ export const PlanillaToPrint = ({materiaS}) => {
         <table className=" border-collapse border border-gray-400">
           <thead>
             <tr>
-              <th className="border border-gray-400 text-[10px]">Fecha</th>
+              <th className=" text-[10px]">Fecha</th>
             
-              {fechasUnicas.map(fecha => ( 
+              {fechasUnicas.map(fecha => (
+                
+                 
                 <th key={fecha} className="border border-gray-400 text-bold text-[8px]">{fecha}
-                         
-                </th>
+                </th>         
+
+
                 
               ))}           
               
@@ -75,6 +77,9 @@ export const PlanillaToPrint = ({materiaS}) => {
                 <th className="border border-gray-400 text-[10px]" >
                   actividad
                 </th>
+                {anotacionRegistroUnico.map(anotacion=>(
+                <th className="border border-gray-400 text-bold text-[8px]">{anotacion.registro}</th>
+               ))}
               </tr>
             
           </thead>
@@ -99,7 +104,6 @@ export const PlanillaToPrint = ({materiaS}) => {
           </tbody>
         </table>
       </div>
-
       <button onClick={handlePrint} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
         Imprimir
       </button>

@@ -4,13 +4,8 @@ import { useState,useEffect } from 'react';
 import { ClaseListItem } from './ClaseListItem';
 
 export const ClasesList =  ({clases,incrementarCantidad,decrementarCantidad}) => {
-
-
   const [clasesm, setClases] = useState(clases);
   const [deletedItemId, setDeletedItemId] = useState(null);  
- 
-
-  
   const nClase = {
     tema:'mongoDb',
     numero:12,
@@ -30,10 +25,8 @@ export const ClasesList =  ({clases,incrementarCantidad,decrementarCantidad}) =>
    if (index !==-1) {
     // Insertar el nuevo elemento en esa posición
    
-    nArray1.splice(index, 1, nClase); 
-   
-     setClases(...nArray1);
-    
+    nArray1.splice(index, 1, nClase);   
+     setClases(...nArray1);  
 }
     
   };  
