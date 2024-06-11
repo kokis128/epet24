@@ -305,7 +305,7 @@ const onSelectMateria = (materiaId) => {
 
       <Modal  title={'Planilla de Seguimiento'} style={{ top: 0, padding: 0 ,height: '110vh', padding: 0, overflow: 'hidden' }}
         width="100vw" className="full-screen-modal"  open={isModalOpenIprimir} onOk={handleOkImprimir} onCancel={handleCancelImprimir}>
-    <PlanillaToPrint materiaS={materiaSeleccionada}/>           
+    <PlanillaToPrint materiaS={materiaSeleccionada} clases={clases}/>           
      </Modal>     
         
         </Header>

@@ -39,10 +39,14 @@ if (deletedItemId) {
     
     <ul className="max-w-2xl mx-auto my-4 p-4 bg-white rounded-lg shadow-md">
     <li key={clasesm._id} className="flex flex-col md:flex-row md:items-center justify-between p-4 border-b border-gray-200">
-      <div className="flex flex-col md:flex-row md:items-center gap-4">
-        <span className="font-semibold text-gray-700">{clasesm.tema}</span>
-        <span className="text-gray-500">{clasesm.fecha ? formatDate(clasesm.fecha) : null}</span>
-        <span className="text-gray-600">{clasesm.observaciones}</span>
+      <div className="flex flex-row md:flex-row md:items-center gap-4">
+        <span className="font-semibold text-gray-700">Tema: {clasesm.tema}</span>
+        <span className="font-semibold text-gray-700">Numero de Clase: {clasesm.numero}</span>
+        <span className="text-gray-500">Fecha:{clasesm.fecha ? formatDate(clasesm.fecha) : null}</span>
+        <span className="font-semibold text-gray-700">Numero de Clase: {clasesm.numero}</span>
+        <span className="font-semibold text-gray-700">Contenido: {clasesm.contenidos}</span>
+        <span className="font-semibold text-gray-700">Actividades: {clasesm.actividades}</span>
+        <span className="text-gray-600"> Obs: {clasesm.observaciones}</span>
       </div>
       <div className="flex gap-2 mt-2 md:mt-0">
         <Button type="primary" danger onClick={() => del(clasesm._id)}>

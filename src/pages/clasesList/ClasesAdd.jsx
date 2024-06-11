@@ -6,7 +6,6 @@ import {
   Mentions,
   ConfigProvider,
   Select,
-  
 } from 'antd';
 import esES from 'antd/es/locale/es_ES';
 import DatePicker from 'react-datepicker';
@@ -38,7 +37,6 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
       numero: cantidadClases + 1,
       anotacion: anotaciones,
       fecha: fechaActual,
-      
     });
   }, [materiaS, cantidadClases, anotaciones, fechaActual, form]);
 
@@ -50,23 +48,22 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
     'Nota',
     'Calif. Final'
   ];
-
-
-
+  
 
   const onFinish = async (data) => {
-    data.fecha = format(data.fecha, 'yyyy-MM-dd'); // Format the date before sending
-    console.log(data.registro);
+    const selectedDate = data.fecha ? format(data.fecha,'yyyy-MM-dd') : format(fechaActual,'yyyy-MM-dd');
+    data.fecha = selectedDate;
+    console.log('Data being sent:', data);
+
     try {
-      const {registro, ...claseData } = data
       const first = await fetch(`${URL}/clase`, {
         method: 'POST',
-        body: JSON.stringify(claseData ),
+        body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
       });
 
       const newClaseFromDB = await first.json();
-      console.log(newClaseFromDB);
+      console.log('Clase saved:', newClaseFromDB);
 
       const response = await fetch(`${URL}/register_absences`, {
         method: 'POST',
@@ -85,16 +82,16 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
       } else {
         alert('Hubo un error al registrar las ausencias');
       }
-      const updatedAnotaciones = anotaciones.map(anotacion => ({
-        ...anotacion,
-        registro: data.registro // Añadir el campo registro
-      }));
+
+      const anotacionesPayload = { anotaciones, fecha: selectedDate, materia_id: materiaS };
+      console.log('Anotaciones payload:', anotacionesPayload);
 
       const res = await fetch(`${URL}/register_anotaciones`, {
         method: 'POST',
-        body: JSON.stringify({ anotaciones: updatedAnotaciones, materia_id: materiaS }),
+        body: JSON.stringify(anotacionesPayload),
         headers: { 'Content-Type': 'application/json' },
       });
+
       console.log('Anotaciones:', ...anotaciones);
       console.log('Materia ID:', materiaS);
 
@@ -104,14 +101,13 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
         throw new Error('Error al registrar anotaciones');
       }
     } catch (error) {
-      debugger;
       console.log(anotaciones);
       console.log(materiaS);
-
       console.error('Error al enviar datos:', error);
     }
     setReload(true);
   };
+
   useEffect(() => {
     if (reload) {
       localStorage.setItem('selectedMateriaId', materiaS);
@@ -126,7 +122,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
           {...formItemLayout}
           form={form}
           onFinish={onFinish}
-          initialValues={{ numero: cantidadClases + 1, fecha: fechaActual,materiaId:materiaS }}
+          initialValues={{ numero: cantidadClases + 1, fecha: fechaActual, materiaId: materiaS }}
           className=" w-full"
         >
           <Form.Item name="materiaId" hidden>
@@ -140,19 +136,17 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             name="fecha"
             label="Fecha"
             rules={[{ required: true, message: 'Debes Completar!' }]}
-            className="mb-3 "
+            className="mb-3"
           >
             <DatePicker
               selected={fechaActual}
               onChange={(date) => {
                 setFechaActual(date);
                 form.setFieldsValue({ fecha: date });
-                
               }}
               dateFormat="dd/MM/yyyy"
               className="w-full border rounded p-2"
               locale={es}
-              
             />
           </Form.Item>
 
@@ -199,7 +193,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             className="mb-3"
           >
             <Select
-              mode="simple"              
+              mode="simple"
               className="w-full"
               placeholder="Selecciona actividades"
             >
@@ -233,9 +227,8 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
             <Button
               type="primary"
               htmlType="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white "
+              className="bg-blue-500 hover:bg-blue-600 text-white"
             >
-
               Guardar Clase
             </Button>
           </Form.Item>
