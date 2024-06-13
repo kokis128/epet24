@@ -99,12 +99,7 @@ return null;
       .then(handleResponseEstudiantes)
       .then(data => setEstudiantesBd(data))
       .catch(handleError);
-  }, []);
-
-  
-
-
- 
+  }, []); 
 
   const user = JSON.parse(localStorage.getItem('user'))
 
@@ -142,15 +137,9 @@ return null;
     width: '100%',
     maxWidth: '100%',
     maxHeight:'5%',
-  };  
+  };
 
-   
-
-
-
-  const [isSlected, setIsSlected] = useState(null);
-
-  
+  const [isSlected, setIsSlected] = useState(null);  
  
 const onSelectMateria = (materiaId) => {    
  setMateriaSeleccionada(materiaId)
@@ -244,10 +233,6 @@ const onSelectMateria = (materiaId) => {
         return [...prevAnotaciones, nuevaAnotacion];
       }
     })};
-
-  
-
-
 
   return (
     <Layout style={layoutStyle} className=''>

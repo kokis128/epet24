@@ -10,9 +10,9 @@ import {
 import esES from 'antd/es/locale/es_ES';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
 
+import { format, parseISO } from 'date-fns';
+import { es } from 'date-fns/locale';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
