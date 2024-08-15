@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+
 import {
   Button,
   Form,
   Input,  
 } from 'antd';
 
-export const AgregarMateria = () => {
-  const { id} = useParams();
-  const cursoId=id;
+export const MateriasPorCurso = ({user}) => {
   const [form] = Form.useForm();
 const URL = 'http://localhost:3000/api'
 const [reload, setReload] = useState(false);
 
   const  onFinish =  async (data) => {console.log(data);
-
-    const dataWithId = { ...data, cursoId};
 try {
     const first = await fetch(`${URL}/materia`,{
     method: 'POST',
-    body: JSON.stringify(dataWithId),
+    body: JSON.stringify(data),
     headers:{
       'Content-Type':'application/json'
     }
@@ -57,9 +53,9 @@ const formItemLayout = {
     },
   },
 };
-const user = JSON.parse(localStorage.getItem('user'))
+
 useEffect(() => {
-  form.setFieldsValue({userId: user._id,cursoId:id});
+  form.setFieldsValue({userId: user._id});
   console.log(user._id)
 }, [user]);
 
@@ -199,4 +195,3 @@ useEffect(() => {
     
   )
 }
-

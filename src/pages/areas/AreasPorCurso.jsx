@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { AreasPorEstudiante } from './AreasPorEstudiante';
+import { AreasRender } from './AreasRender';
+
 import { useParams } from 'react-router-dom';
 import {
   Button,
@@ -6,26 +9,41 @@ import {
   Input,  
 } from 'antd';
 
-export const AgregarMateria = () => {
+export const AreasPorCurso = () => {
   const { id} = useParams();
   const cursoId=id;
   const [form] = Form.useForm();
 const URL = 'http://localhost:3000/api'
 const [reload, setReload] = useState(false);
+const [mostrarForm, setMostrarForm] = useState(false);
+const [mostrarData, setMostrarData] = useState(false);
+const[cursos,setCursos]=useState();
+
+const mostrar = () =>{
+  
+  if (!mostrarForm){    
+    setMostrarForm(true);
+  }else{
+    console.log(mostrarForm);
+    setMostrarForm(false);
+  }
+
+} ;
+
 
   const  onFinish =  async (data) => {console.log(data);
 
     const dataWithId = { ...data, cursoId};
 try {
-    const first = await fetch(`${URL}/materia`,{
+    const first = await fetch(`${URL}/area`,{
     method: 'POST',
     body: JSON.stringify(dataWithId),
     headers:{
       'Content-Type':'application/json'
     }
     });
-  const newMateria = await first.json();
-  console.log(newMateria);
+  const newArea = await first.json();
+  console.log(newArea);
   setReload(true);  
   
   } catch (error) {
@@ -34,10 +52,20 @@ try {
 } 
 useEffect(() => {
   if (reload) {
-    alert('Materia Agregada Correctamente')
+    alert('Area Agregada Correctamente')
     window.location.reload();
   }
 }, [reload]);
+
+useEffect(() => {
+    fetch('http://localhost:3000/api/cursos')
+      .then(response=>response.json())
+      .then(data => setCursos({data}))
+      .then(data=>console.log(data))      
+     
+  }, []); 
+  
+  console.log(cursos)
 
 const formItemLayout = {
   labelCol: {
@@ -57,24 +85,25 @@ const formItemLayout = {
     },
   },
 };
-const user = JSON.parse(localStorage.getItem('user'))
+
 useEffect(() => {
-  form.setFieldsValue({userId: user._id,cursoId:id});
-  console.log(user._id)
-}, [user]);
+  form.setFieldsValue({cursoId:id});
+  
+}, [cursoId]);
 
 
 useEffect(() => {
     if (reload) {
       
-      window.location.reload('/seguimiento'); // Recarga la página si reload es true
+      window.location.reload('/cursos'); // Recarga la página si reload es true
     }
   }, [reload]);
-
+ 
   return (
 
     <>
-    <div className='my-5 text-center'>Cargar Materia</div>
+    <Button onClick={mostrar} className='my-5 text-center mr-2'>Cargar Area</Button>
+   
   
     <Form
     
@@ -84,18 +113,17 @@ useEffect(() => {
     }}
 
     onFinish={onFinish}
-    form={form}
-    
-    
-  >
-    <Form.Item name="userId"  hidden
+    form={form}   
+  className={mostrarForm?'visible':'hidden'}>
+    <Form.Item name="cursoId"  hidden
     >
         <Input />
-      </Form.Item>    
+      </Form.Item>  
+       
 
     <Form.Item
-      label="Nombre"
-      name="name"
+      label="Area"
+      name="area"
       rules={[
         {
           required: true,
@@ -107,8 +135,8 @@ useEffect(() => {
     </Form.Item>
 
     <Form.Item
-      label="Curso"
-      name="curso"
+      label="Asignaturas"
+      name="materias"
       rules={[
         {
           required: true,        
@@ -117,24 +145,11 @@ useEffect(() => {
       ]}
     >
       <Input />
-    </Form.Item>
+    </Form.Item>     
 
     <Form.Item
-      label="Division"
-      name="division"
-      rules={[
-        {
-          required: true,
-          message: 'Please input!',
-        },
-      ]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      label="Turno"
-      name="turno"
+      label="Informe Descripcion"
+      name="informeDescripcion"
       rules={[
         {
           required: true,
@@ -143,44 +158,7 @@ useEffect(() => {
       ]}
     >
       <Input />
-    </Form.Item>   
-
-    <Form.Item
-      label="Dias"
-      name="dias"
-      rules={[
-        {          
-          message: 'Por favor Ingresa los dias, que se dicta esta materia',
-        },
-      ]}
-    >
-      <Input/>
-    </Form.Item>
-
-    <Form.Item
-      label="Horarios"
-      name="horarios"
-      rules={[
-        {
-         
-          message: 'Por favor Ingresa los horarios de esta materia',
-        },
-      ]}
-    >
-      <Input/>
-    </Form.Item>
-
-     <Form.Item
-      label="Observaciones"
-      name="observaciones"
-      rules={[
-        {         
-          message: 'Please input!',
-        },
-      ]}
-    >
-      <Input />
-    </Form.Item>  
+    </Form.Item>       
   
     <Form.Item
       wrapperCol={{
@@ -191,12 +169,15 @@ useEffect(() => {
       <Button  htmlType="submit">
         Guardar
       </Button>
+      <Button onClick={mostrar} className='my-5 text-center mx-2'>
+        Cancelar
+      </Button>
     </Form.Item>
-  </Form>  
-   
+  </Form>
+
+ <AreasRender cursoId={cursoId}/>   
   </> 
     
     
   )
 }
-

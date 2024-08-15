@@ -11,6 +11,7 @@ import { MdHeight } from 'react-icons/md';
 import { ContarAusencias} from '../pages/estudiantes/ContarAusencias';
 import { AgregarMateria} from '../pages/materias/AgregarMateria';
 import { PlanillaToPrint} from '../components/PlanillaToPrint';
+
 export const PlanillasSeguimiento = () => {
 
   const [materias, setMaterias] = useState([]);
@@ -64,13 +65,7 @@ let [selectedMateriaId,setSelectedMateriaId] = useState();
   const [materiaSeleccionada, setMateriaSeleccionada] = useState(selectedMateriaId);
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState('');
   
-    const selectMateriaInicio=()=>{
-    if (!selectedMateriaId){
-setMateriaSeleccionada(null)
-return null;
-    } else{ 
-      return selectedMateriaId;}
-  }
+   
   
   
   
@@ -145,8 +140,6 @@ const onSelectMateria = (materiaId) => {
  setMateriaSeleccionada(materiaId)
  localStorage.setItem('selectedMateriaId', materiaId);
  
-
-
 }
 
   const onSelectEstudiante = (estudianteId) => {    
@@ -227,12 +220,33 @@ const onSelectMateria = (materiaId) => {
         // Actualizar anotación existente
         const updatedAnotaciones = [...prevAnotaciones];
         updatedAnotaciones[index] = nuevaAnotacion;
-        return updatedAnotaciones;
+        return updatedAnotaciones ;
       } else {
         // Agregar nueva anotación
         return [...prevAnotaciones, nuevaAnotacion];
       }
     })};
+
+    console.log(anotaciones)    
+    
+  
+    const handleAgregarClase = (nuevaClase) => {
+      const clasesMateriaSeleccionada = clases.filter(clase => clase.materiaId && clase.materiaId._id === materiaSeleccionada);
+   
+      const existeClaseConFecha = (fecha) => {
+        return clasesMateriaSeleccionada.some(clase => new Date(clase.fecha).toDateString() === new Date(fecha).toDateString());
+      };
+      if (existeClaseConFecha(nuevaClase.fecha)) {
+        alert('Ya existe una clase con esta fecha en la materia seleccionada.');
+        return false;
+      }
+      console.log('Clase agregada:', nuevaClase);
+      setClases([...clases, nuevaClase]);  // Agrega la nueva clase al estado de clases
+      return true;
+     
+      
+    };
+
 
   return (
     <Layout style={layoutStyle} className=''>
@@ -331,7 +345,7 @@ const onSelectMateria = (materiaId) => {
           <Typography.Title level={5}>Clases</Typography.Title>   
 
           
-          {materiaSeleccionada && <ClasesAdd cantidadClases={cantidadClases} materiaS={materiaSeleccionada} ausentes={ausentes} estudianteSeleccionado={estudianteSeleccionado} anotaciones={anotaciones}/>}
+          {materiaSeleccionada && <ClasesAdd cantidadClases={cantidadClases} materiaS={materiaSeleccionada} ausentes={ausentes} estudianteSeleccionado={estudianteSeleccionado} anotaciones={anotaciones} setClases={setClases} handleAgregarClase={handleAgregarClase} />}
      
           </Content  >
           
@@ -401,8 +415,7 @@ const onSelectMateria = (materiaId) => {
                <ul key={index} >
                
                 <li >{ clase.materiaId && clase.materiaId._id === materiaSeleccionada
-               
-              
+                  
                 &&(   
                   <>            
                   <div  >     

@@ -10,7 +10,6 @@ import {
 import esES from 'antd/es/locale/es_ES';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 const formItemLayout = {
@@ -26,7 +25,7 @@ const formItemLayout = {
 
 const URL = 'http://localhost:3000/api';
 
-export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) => {
+export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clases, setClases, handleAgregarClase }) => {
   const [reload, setReload] = useState(false);
   const [fechaActual, setFechaActual] = useState(new Date());
   const [form] = Form.useForm();
@@ -51,12 +50,18 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
   
 
   const onFinish = async (data) => {
+
     const selectedDate = data.fecha ? format(data.fecha,'yyyy-MM-dd') : format(fechaActual,'yyyy-MM-dd');
     data.fecha = selectedDate;
     console.log('Data being sent:', data);
 
-    try {
-      const first = await fetch(`${URL}/clase`, {
+    const claseAgregada = handleAgregarClase(data);
+    if (!claseAgregada) {
+      return; // Detener la ejecución si la clase no se agregó
+    }   
+    try {     
+      
+    const first =  await fetch(`${URL}/clase`, {
         method: 'POST',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' },
@@ -114,6 +119,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones }) =
       window.location.reload();
     }
   }, [reload, materiaS]);
+
 
   return (
     <ConfigProvider locale={esES}>

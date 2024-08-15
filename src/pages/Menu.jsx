@@ -23,6 +23,16 @@ export const Menu = () => {
                 <Link to="/registros" className="no-underline text-white">Registros de Clases</Link>
               </button>
             </li>
+            <li>
+              <button className="w-full p-6 bg-cyan-600 text-white rounded-md shadow-md hover:bg-cyan-700">
+                <Link to="/cursos" className="no-underline text-white">Gestión de Cursos</Link>
+              </button>
+            </li>
+            <li>
+              <button className="w-full p-6 bg-cyan-600 text-white rounded-md shadow-md hover:bg-cyan-700">
+                <Link to="/materias" className="no-underline text-white">Notas</Link>
+              </button>
+            </li>
           </ul>
         </div>
         {/* Acceso Admin */}

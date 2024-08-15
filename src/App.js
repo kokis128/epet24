@@ -1,9 +1,7 @@
 
 import '../src/index.css';
 import Inicio from '../src/components/Inicio'
-
 import { Institucional } from './pages/Institucional';
-
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import { useState } from 'react';
 import {Normativa} from '../src/pages/Normativa'
@@ -15,7 +13,11 @@ import { RutaProtegida } from './pages/RutaProtegida';
 import { PlanillasSeguimiento } from './components/PlanillasSeguimiento';
 import { PlanillaToPrint} from './components/PlanillaToPrint';
 import { CargarEstudiantes } from './pages/estudiantes/CargarEstudiantes';
-
+import { Cursos } from './pages/cursos/Cursos';
+import { MateriasPorCurso } from './pages/materias/MateriasPorCurso';
+import { AgregarMateria } from './pages/materias/AgregarMateria';
+import {AreasPorCurso} from './pages/areas/AreasPorCurso';
+import { CursoProvider } from './CursoContext';
 
 function App() {
   
@@ -27,7 +29,7 @@ function App() {
    
    <>
    <div className='container mx-auto '>
-   
+   <CursoProvider>
    <BrowserRouter>
     
       <Routes>
@@ -41,31 +43,19 @@ function App() {
     <Route element={<RutaProtegida isLogged={user} />}>
     <Route path='/menu' element={<Menu />} />
     <Route path='/seguimiento' element={<PlanillasSeguimiento />} />
-    <Route path='/estudiantes' element={<CargarEstudiantes />} />
     
-    </Route   >
+    <Route path='/estudiantesPorCurso/:id' element={<CargarEstudiantes />} />
+    <Route path='/cursos' element={<Cursos />} />
+    <Route path='/materiasPorCurso/:id' element={<AgregarMateria />} />
+    <Route path='/areasPorCurso/:id' element={<AreasPorCurso />} />
+    
+    </Route>
     <Route path='/register' element={<Register />} />
    
-    
-  
-    
-    
-    
-     
+    </Routes>     
+    </BrowserRouter>
+    </CursoProvider>
 
-
-      </Routes>
-      
-     
-      
-     
-      </BrowserRouter>
-   
-   
-
-   
-
-  
    </div>
 
    

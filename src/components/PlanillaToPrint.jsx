@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { PlanillaEstudiante } from '../components/PlanillaEstudiante';
 import { PlanillaAnotacion } from '../components/PlanillaAnotacion';
-import { format, parseISO } from 'date-fns';
+import { format, parse, isValid ,parseISO} from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
 import { es } from 'date-fns/locale';
 import { addDays } from 'date-fns';
@@ -11,7 +11,7 @@ const timeZone = 'America/Argentina/Buenos_Aires';
 export const PlanillaToPrint = ({ materiaS, clases }) => {
   const [data, setData] = useState(null);
   const componentRef = useRef();
-
+  
   useEffect(() => {
     fetch(`http://localhost:3000/api/planillas/${materiaS}`)
       .then(response => {
@@ -22,17 +22,9 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
       })
       .then(data => {
         setData(data);
-        console.log('Datos recibidos:', data);
+        console.log('Datos recibidos:', data);      
 
-        const fechasFormateadas = data.anotaciones
-          .filter(anotacion => data.materia._id === anotacion.materia_id)
-          .map(anotacion => formatDate(anotacion.fecha));
-
-        console.log('Fechas formateadas:', fechasFormateadas);
-
-        const fechasUnicas = [...new Set(fechasFormateadas)].sort((a, b) => new Date(a) - new Date(b));
-
-        console.log('Fechas únicas:', fechasUnicas);
+        
       })
       .catch(error => {
         console.error('Error al obtener la lista de estudiantes:', error);
@@ -49,16 +41,31 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
       return null;
     }
   };
-  const formatDateSalida = (fecha) => {
-    if (!fecha) return null;
-    try {
-      const date = parseISO(fecha); 
-      return formatInTimeZone(date, timeZone, 'dd/MM/yyyy', { locale: es });
-    } catch (error) {
-      console.error('Error al formatear la fecha:', error);
-      return null;
+
+  
+
+  const formatearFecha = (fecha) => {
+    // Intentar parsear la fecha en diferentes formatos conocidos
+    const formatosPosibles = ['dd/MM/yyyy', 'yyyy-MM-dd'];
+    let date;
+  
+    for (const formato of formatosPosibles) {
+      date = parse(fecha, formato, new Date());
+      if (isValid(date)) {
+        break;
+      }
     }
+  
+    // Verificar si la fecha es válida
+    if (!isValid(date)) {
+      return 'Invalid Date';
+    }
+  
+    // Formatear la fecha en el formato "dd/MM/yy"
+    return format(date, 'dd/MM/yy', { locale: es });
   };
+  
+  
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -72,10 +79,19 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
     .filter(fecha => fecha) // Filtrar fechas vacías
   )].sort((a, b) => new Date(a.split('/').reverse().join('-')) - new Date(b.split('/').reverse().join('-')));
 
-  const clasesPorFechaArray = clases.map(clase => ({
-    fecha: formatDateSalida(clase.fecha),
+
+
+
+  const clasesPorFechaArray = clases
+  .filter(clase => clase.materiaId._id === materiaS,) // Filtra clases por materia
+  .map(clase => ({
+    fecha: formatDate(clase.fecha),
     registros: [clase.registro],
+    
+   
   }));
+ 
+  
 
 
   return (
@@ -94,14 +110,14 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
             <tr>
               <th className="text-[10px] border border-gray-400">Fecha</th>
               {fechasUnicas.map((fecha, index) => (
-                <th key={`${fecha}-${index}`} className="border border-gray-400 text-bold text-[8px]">{fecha}</th>
+                <th key={`${fecha}-${index}`} className="border border-gray-400 text-bold text-[8px]">{formatearFecha(fecha)}</th>
               ))}
             </tr>
             <tr>
               <th className="border border-gray-400 text-[10px]">Actividad</th>
              
               {fechasUnicas.map((fecha, index) => {
-                const clasePorFecha = clasesPorFechaArray.find(clase => clase.fecha === formatDateSalida(fecha));
+                const clasePorFecha = clasesPorFechaArray.find(clase =>  clase.fecha === fecha);
                 return (
                   <th key={`actividad-${index}`} className="border border-gray-400 text-bold text-[8px]">
                     {clasePorFecha ? clasePorFecha.registros.join(', ') : ''}
