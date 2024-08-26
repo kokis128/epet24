@@ -12,6 +12,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
+
+import { formatInTimeZone } from 'date-fns-tz';
+
+import { addDays } from 'date-fns';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -25,21 +29,57 @@ const formItemLayout = {
 
 const URL = 'http://localhost:3000/api';
 
+
 export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clases, setClases, handleAgregarClase }) => {
   const [reload, setReload] = useState(false);
   const [fechaActual, setFechaActual] = useState(new Date());
   const [form] = Form.useForm();
+
+  
+
+
+
+  const timeZone = 'America/Argentina/Buenos_Aires';
+  
+  
+  const formatDate = (fecha) => {
+    if (!fecha) return null;
+    try {
+      const date = addDays(parseISO(fecha), 1);
+      return formatInTimeZone(date, timeZone, 'dd/MM/yyyy', { locale: es });
+    } catch (error) {
+      console.error('Error al formatear la fecha:', error);
+      return null;
+    }
+  };
+
+  
+
+
+
 
   useEffect(() => {
     form.setFieldsValue({
       materiaId: materiaS,
       numero: cantidadClases + 1,
       anotacion: anotaciones,
-      fecha: fechaActual,
+     
+      ...(clases ? {
+        
+        tema: clases.tema,
+        unidad: clases.unidad,
+        numero: clases.numero,
+        fecha: clases.fecha,
+        contenidos: clases.contenidos,
+        registro: clases.registro,
+        actividades: clases.actividades,
+        observaciones: clases.observaciones,
+      } : {})
     });
-  }, [materiaS, cantidadClases, anotaciones, fechaActual, form]);
+  }, [materiaS, cantidadClases, anotaciones, fechaActual, clases, form]);
 
   const actividadesPredefinidas = [
+    '',
     'TP',
     'T. Clase',
     'Particip.',
@@ -54,8 +94,10 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
     const selectedDate = data.fecha ? format(data.fecha,'yyyy-MM-dd') : format(fechaActual,'yyyy-MM-dd');
     data.fecha = selectedDate;
     console.log('Data being sent:', data);
-
-    const claseAgregada = handleAgregarClase(data);
+    const updatedClase = { ...clases, ...data };
+    const claseAgregada = handleAgregarClase(updatedClase);
+    setClases(claseAgregada)
+    console.log('claseAgregada',updatedClase)
     if (!claseAgregada) {
       return; // Detener la ejecución si la clase no se agregó
     }   
@@ -63,7 +105,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
       
     const first =  await fetch(`${URL}/clase`, {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify(clases),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -235,7 +277,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
               htmlType="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white"
             >
-              Guardar Clase
+              {clases ? "Actualizar Clase" : "Guardar Clase"}
             </Button>
           </Form.Item>
         </Form>

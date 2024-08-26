@@ -8,14 +8,14 @@ import { CursoContext } from '../../CursoContext';
 export const Cursos = () => {
     const { cursoDivisionBdRender,setCursoDivisionBdRender} = useContext(CursoContext);
     const [curso, setCurso] = useState(1);
-    const [division, setDivision] = useState('A');
-   
-    
+    const [division, setDivision] = useState('A');    
     const [observaciones, setObservaciones] = useState('');
     const [estudiantesPorcursoId, setEstudiantesCursoId] = useState('');
     const [materiaPorCursoId,setMateriaPorCursoId]=useState('');
     const [areaPorCursoId,setAreaPorCursoId]=useState('');
     const [error, setError] = useState(null);
+    const [turno, setTurno] = useState('');
+    const [objetivos, setObjetivos] = useState('');
     const navigate = useNavigate();
 
     // Fetch inicial de cursos cuando el componente se monta
@@ -37,7 +37,7 @@ export const Cursos = () => {
         if (existe) {
             alert(`El curso ${curso} con la división ${division} ya existe.`);
         } else {
-            const newCurso = { curso, division, observaciones };
+            const newCurso = { curso, division, turno, objetivos };
             const URL = 'http://localhost:3000/api';
 
             fetch(`${URL}/curso`, {
@@ -52,9 +52,12 @@ export const Cursos = () => {
                 if (data.message) {
                     alert(` ${data.message} ${data.curso.curso} ${data.curso.division}`);
                     setCursoDivisionBdRender(prevState => [...prevState, data.curso]);
+                    
                 } else {
                     console.error('Error al crear el curso:', data.message);
+                   
                 }
+              
             })
             .catch(error => {
                 console.error('Algo falló al agregar el curso:', error);
@@ -62,8 +65,6 @@ export const Cursos = () => {
             });
         }
     };
-
-
     const handleChangeCurso = (value) => {
         console.log(`selected ${value}`);
         setCurso(value);
@@ -73,10 +74,14 @@ export const Cursos = () => {
         console.log(`selected ${value}`);
         setDivision(value);
     };
+    const handleChangeTurno = (value) => {
+        console.log(`selected ${value}`);
+        setTurno(value);
+    };
 
-    const handleChangeObservaciones = (e) => {
+    const handleChangeObjetivos = (e) => {
         console.log(`selected ${e.target.value}`);
-        setObservaciones(e.target.value);
+        setObjetivos(e.target.value);
     };
 
     const onSelectEstudiantesPorcursoId = (id)=>{
@@ -96,7 +101,7 @@ export const Cursos = () => {
     }
 
     return (
-        <>
+       
             <div className='flex gap-4 flex-wrap mt-10'>
                 <div>
                     <Space wrap>
@@ -125,17 +130,32 @@ export const Cursos = () => {
                                 { value: 'E', label: 'E' },
                                 { value: 'F', label: 'F' },
                             ]}
+                            
                         />
-                        <Input type="text" placeholder='Observaciones' onChange={handleChangeObservaciones} />
+                        <Select
+                            defaultValue="Turno"
+                            style={{ width: 120 }}
+                            onChange={handleChangeTurno}
+                            options={[
+                                { value: 'Mañana', label: 'Mañana' },
+                                { value: 'Tarde', label: 'Tarde' },
+                                { value: 'Vespertino', label: 'Vespertino' },
+                                
+                            ]}
+                        />
+
+                        
+                       
+                        <Input type="text" placeholder='Objetivos a evaluar por áreas' onChange={handleChangeObjetivos} />
                         <Button type="primary" className='bg-blue-500' onClick={crearCrusoDivision}>Crear Curso</Button>
                     </Space>
                 </div>
                 <ul className='flex flex-wrap items-center gap-1 '>
                     {cursoDivisionBdRender.map((item, index) => (
                         <> 
-                    <div className='flex flex-col border-2 border-black'>
+                    <div key={item._id}  className='flex flex-col border-2 border-black'>
                         <li key={index}  className=' bg-blue-300   p-3  hover:bg-blue-100 cursor-pointer'>
-                            {item.curso} {item.division} - {item.observaciones}
+                            {item.curso} {item.division} - {item.turno}
                             
                         </li>
                         
@@ -153,7 +173,7 @@ export const Cursos = () => {
                     ))}
                 </ul>
             </div>
-        </>
+        
     );
 }
 

@@ -6,6 +6,7 @@ import { format, parse, isValid ,parseISO} from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
 import { es } from 'date-fns/locale';
 import { addDays } from 'date-fns';
+import './styles/tailwind.css'
 const timeZone = 'America/Argentina/Buenos_Aires';
 
 export const PlanillaToPrint = ({ materiaS, clases }) => {
@@ -40,9 +41,7 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
       console.error('Error al formatear la fecha:', error);
       return null;
     }
-  };
-
-  
+  }; 
 
   const formatearFecha = (fecha) => {
     // Intentar parsear la fecha en diferentes formatos conocidos
@@ -96,13 +95,16 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
 
   return (
     <>
-      <div ref={componentRef} className='pl-4'>
-        <div className="text-blue-300 flex justify-between pt-[-10px]">
-          <span className='text-sm font-mono'>EPET 24</span><span className='font-mono text-[11px]'>fecha: {formatDate(new Date().toISOString())}</span>
+      <div ref={componentRef} className='print-container pl-4'>
+      <span className='text-sm font-mono'>EPET 24</span>
+        <div className="flex justify-start pt-[-10px] gap-4">
+          
+          <span className='flex-none font-mono  text-sm'>Planilla de Seguimiento -</span>
+          <span className='font-mono text-sm '>fecha: {formatDate(new Date().toISOString())}</span>
         </div>
-        <div className="text-blue-300 text-[10px] flex mb-3 gap-1 justify-between">
-          <span className='font-mono text-blue-300 text-[10px]'>Planilla de Seguimiento</span>
-          <h2 className='font-mono'>Materia: {data.materia.name}</h2>
+        <div className=" text-xs flex mb-3 gap-1 ">
+         
+          <h2 className='font-mono'>Materia: {data.materia.name} - </h2>
           <h3 className='font-mono'>Curso: {data.materia.curso} División: {data.materia.curso}</h3>
         </div>
         <table className="border-collapse border border-gray-400">
@@ -146,6 +148,7 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
             ))}
           </tbody>
         </table>
+        <div className='page-break'></div>
       </div>
       <button onClick={handlePrint} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
         Imprimir

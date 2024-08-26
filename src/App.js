@@ -18,6 +18,8 @@ import { MateriasPorCurso } from './pages/materias/MateriasPorCurso';
 import { AgregarMateria } from './pages/materias/AgregarMateria';
 import {AreasPorCurso} from './pages/areas/AreasPorCurso';
 import { CursoProvider } from './CursoContext';
+import './pages/areas/tailwind.css';
+import './components/styles/tailwind.css';
 
 function App() {
   

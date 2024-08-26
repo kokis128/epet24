@@ -11,13 +11,14 @@ import { MdHeight } from 'react-icons/md';
 import { ContarAusencias} from '../pages/estudiantes/ContarAusencias';
 import { AgregarMateria} from '../pages/materias/AgregarMateria';
 import { PlanillaToPrint} from '../components/PlanillaToPrint';
+import { PlanillaToPrintMaterias} from '../components/PlanillaToPrintMaterias';
 
 export const PlanillasSeguimiento = () => {
 
   const [materias, setMaterias] = useState([]);
   const [clases, setClases] = useState([]); 
   const [estudiantesBd, setEstudiantesBd] = useState([]); 
- 
+  const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const [msgSeleccionar, setMsgSeleccionar]=useState('Debes Seleccionar una Materia')
   const [ausentes, setAusentes] = useState([]);
@@ -169,6 +170,10 @@ const onSelectMateria = (materiaId) => {
   const showModalImprimir = () => {
     setIsModalOpenImprimir(true);
   };
+  const [isModalOpenRegistros, setIsModalOpenRegistros] = useState(false);
+  const showModalRegistros = () => {
+    setIsModalOpenRegistros(true);
+  };
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -183,6 +188,9 @@ const onSelectMateria = (materiaId) => {
   };
   const handleOkImprimir = () => {
     setIsModalOpenImprimir(false);
+  };
+  const handleOkRegistros = () => {
+    setIsModalOpenRegistros(false);
   };
   
 
@@ -199,9 +207,12 @@ const onSelectMateria = (materiaId) => {
     setIsModalOpenInasistencias(false);     
   }; 
 
-  const handleCancelImprimir = () => {
+   const handleCancelImprimir = () => {
     setIsModalOpenImprimir(false);     
-  }; 
+  };
+  const handleCancelRegistros = () => {
+    setIsModalOpenRegistros(false);     
+  };
 
   const onChange = (e, id) => {
     if (e.target.checked) {
@@ -232,19 +243,29 @@ const onSelectMateria = (materiaId) => {
   
     const handleAgregarClase = (nuevaClase) => {
       const clasesMateriaSeleccionada = clases.filter(clase => clase.materiaId && clase.materiaId._id === materiaSeleccionada);
-   
+      
       const existeClaseConFecha = (fecha) => {
         return clasesMateriaSeleccionada.some(clase => new Date(clase.fecha).toDateString() === new Date(fecha).toDateString());
       };
+      
       if (existeClaseConFecha(nuevaClase.fecha)) {
         alert('Ya existe una clase con esta fecha en la materia seleccionada.');
         return false;
       }
-      console.log('Clase agregada:', nuevaClase);
-      setClases([...clases, nuevaClase]);  // Agrega la nueva clase al estado de clases
-      return true;
-     
       
+      const claseIndex = clases.findIndex(clase => clase._id === nuevaClase._id);
+      
+      if (claseIndex !== -1) {
+        // Actualizar clase existente
+        const nuevasClases = [...clases];
+        nuevasClases[claseIndex] = nuevaClase;
+        setClases(nuevasClases);
+      } else {
+        // Agregar nueva clase
+        setClases([...clases, nuevaClase]);
+      }
+      
+      return true;
     };
 
 
@@ -279,6 +300,10 @@ const onSelectMateria = (materiaId) => {
      <li><Button className='border-none bg-slate-500 rounded-none'  onClick={showModalImprimir}>
      Imprimir Planillas
      </Button></li>
+     
+     <li><Button className='border-none bg-slate-500 rounded-none'  onClick={showModalRegistros}>
+     Registro De Clases
+     </Button></li>
 
 
 
@@ -302,11 +327,13 @@ const onSelectMateria = (materiaId) => {
     <AgregarMateria user={user}/>           
      </Modal> 
 
-      <Modal  title={'Planilla de Seguimiento'} style={{ top: 0, padding: 0 ,height: '110vh', padding: 0, overflow: 'hidden' }}
+      <Modal  title={'Planilla de Seguimiento'} style={{ top: 0 ,height: '110vh', padding: 0, overflow: 'hidden' }}
         width="100vw" className="full-screen-modal"  open={isModalOpenIprimir} onOk={handleOkImprimir} onCancel={handleCancelImprimir}>
     <PlanillaToPrint materiaS={materiaSeleccionada} clases={clases}/>           
-     </Modal>     
-        
+     </Modal>  
+     
+    <PlanillaToPrintMaterias materiaS={materiaSeleccionada} clases={clases} open={isModalOpenRegistros} showModalRegistros={showModalRegistros} setIsModalOpenRegistros={setIsModalOpenRegistros} isModalOpenRegistros={isModalOpenRegistros} />           
+            
         </Header>
        
       <Layout>
@@ -356,16 +383,18 @@ const onSelectMateria = (materiaId) => {
       <Typography.Title level={5}>
         Estudiantes
       </Typography.Title>
+      <div style={{ minWidth: '250px' }}> 
       {estudiantesBd.map((estudianteBd) => (
         <ul key={estudianteBd._id}  >
           {materias.map((materia, index) => (
-            <li key={index} className="mb-2 ">
+            <li key={index} className="mb-2  ">
               {materiaSeleccionada === materia._id &&
                 materia.estudiantes.map((estudiante, idx) => (
                   <ul key={idx} >
                     {estudiante === estudianteBd._id && (
                       <li
                         onClick={() => onSelectEstudiante(estudianteBd._id)}
+                       
                         className={`flex items-center justify-between p-2 cursor-pointer border rounded-lg ${
                           estudianteBd._id === estudianteSeleccionado ? 'bg-blue-300 border-blue-800' : 'bg-gradient-to-r from-indigo-400  border-gray-700'
                         }`}
@@ -373,7 +402,7 @@ const onSelectMateria = (materiaId) => {
                         <span className=" text-gray-600 font-sans text-xs">
                           {estudianteBd.nombre} {estudianteBd.apellido}
                         </span>
-                        <ul className='flex flex-row-reverse overflow-x-hidden'>
+                        <ul className='flex flex-row-reverse overflow-x-hidden'  style={{ maxWidth: '140px' }} >
                         <li><Input
                             placeholder="Anotación"
                             className="ml-4"
@@ -395,6 +424,7 @@ const onSelectMateria = (materiaId) => {
           ))}
         </ul>
       ))}
+      </div>
     </div>
 
           </Layout >

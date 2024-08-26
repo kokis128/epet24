@@ -15,18 +15,12 @@ export const Menu = () => {
           <ul className="flex flex-col items-center space-y-4">
             <li>
               <button className="w-full p-6 bg-cyan-600 text-white rounded-md shadow-md hover:bg-cyan-700">
-                <Link to="/seguimiento" className="no-underline text-white">Planillas De Seguimiento</Link>
+                <Link to="/seguimiento" className="no-underline text-white">Gestion de Clases</Link>
               </button>
             </li>
+           
             <li>
-              <button className="w-full p-6 bg-cyan-600 text-white rounded-md shadow-md hover:bg-cyan-700">
-                <Link to="/registros" className="no-underline text-white">Registros de Clases</Link>
-              </button>
-            </li>
-            <li>
-              <button className="w-full p-6 bg-cyan-600 text-white rounded-md shadow-md hover:bg-cyan-700">
-                <Link to="/cursos" className="no-underline text-white">Gestión de Cursos</Link>
-              </button>
+            
             </li>
             <li>
               <button className="w-full p-6 bg-cyan-600 text-white rounded-md shadow-md hover:bg-cyan-700">
@@ -40,8 +34,10 @@ export const Menu = () => {
           <h2 className="text-xl font-semibold text-center mb-4">Acceso Admin</h2>
           <ul className="flex flex-col items-center space-y-4">
             <li>
+             
+              
               <button className="w-full p-6 bg-cyan-600 text-white rounded-md shadow-md hover:bg-cyan-700">
-                <Link to="/estudiantes" className="no-underline text-white">Cargar Estudiantes</Link>
+                <Link to="/cursos" className="no-underline text-white">Gestión de Cursos</Link>
               </button>
             </li>
            
