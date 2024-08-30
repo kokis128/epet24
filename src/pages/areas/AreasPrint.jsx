@@ -70,7 +70,7 @@ export const AreasPrint = ({ setOpen, open, areas, estudiantes, informesGuardado
 
 
 
-        <div ref={componentRef} className="print-container">
+        <div ref={componentRef} className="print-container ml-10 mt-4 w-full">
 
         {estudiantes.map((estudiante,index)=>(
           <div key={index}>
@@ -79,7 +79,7 @@ export const AreasPrint = ({ setOpen, open, areas, estudiantes, informesGuardado
             <span className="text-sm underline">INFORME DE PROCESO - Ciclo Basico Comun (e Interciclo)</span>
             
             <span className="font-mono  ">PROVINCIA DE NEUQUEN-CONSEJO PROVINCIAL DE EDUCACION</span>
-            <div><span className="font-mono text-[9px] ">{formatDate(new Date().toISOString())}</span></div>
+            <div><span className="font-medium text-[9px] ">{formatDate(new Date().toISOString())}</span></div>
           </div >
           <div className="flex gap-3 items-center  font-bold ">
             <span className='text-[7px] font-mono leading-tight ' >Establecimiento <br /> Educativo</span>
@@ -111,7 +111,7 @@ export const AreasPrint = ({ setOpen, open, areas, estudiantes, informesGuardado
       {/* Línea divisoria horizontal */}
       <hr className="border-t border-gray-400 " />
       {/* Muestra los objetivos del curso */}
-      <div className="text-[11px] font-mono leading-tight">
+      <div className="text-[10px] font-light leading-tight">
         {cursoActual?.objetivos}
       </div>
     </th>
@@ -120,12 +120,12 @@ export const AreasPrint = ({ setOpen, open, areas, estudiantes, informesGuardado
       {/* Línea divisoria horizontal */}
       <hr className="border-t border-gray-400 " />
       {/* Muestra los objetivos del curso */}
-      <div className="text-[8px] font-mono text-start mt-0">
+      <div className="text-[7px] font-mono text-start mt-0">
       Promocion: 7 al 10<br/>Proceso: 4 al 6
 
       </div>
     </th>
-    <th className="text-[11px] font-mono border border-gray-400 break-words max-w-[90px] text-center">
+    <th className="text-xs font-mono border border-gray-400 break-words max-w-[90px] text-center">
                     Firma Coordinador del Area
       </th>
   </tr>
@@ -134,16 +134,16 @@ export const AreasPrint = ({ setOpen, open, areas, estudiantes, informesGuardado
               
               {areas.map((area) => (
                 <tr key={area._id } className="w-50 ">
-                  <td className="text-[11px] font-mono border border-gray-400 break-words max-w-[100px] text-center">{area.area}</td>
-                  <td className="text-[11px] font-mono border border-gray-400 break-words max-w-[100px] text-center ">{area.materias}</td>
-                  <td className="text-[11px] font-mono border border-gray-400 break-words max-w-[550px] text-center ">
+                  <td className="text-[11px] font-medium border border-gray-400 break-words max-w-[100px] text-center">{area.area}</td>
+                  <td className="text-[11px] font-medium border border-gray-400 break-words max-w-[100px] text-center ">{area.materias}</td>
+                  <td className="text-[10px] font-medium border border-gray-400 break-words max-w-[550px] text-center ">
                     {informesGuardados[estudiante._id]?.[area._id]?.informe}
                     {console.log('informe Guardado',informesGuardados[estudiante._id]?.[area._id])}
                   </td>
-                  <td className="text-[15px] font-mono border border-gray-400 break-words max-w-[50px] text-center">
+                  <td className="text-[15px] font-medium border border-gray-400 break-words max-w-[50px] text-center">
                   {informesGuardados[estudiante._id]?.[area._id]?.nota}
                   </td>
-                  <td className="text-[9px] font-mono border border-gray-400  text-center text-center align-bottom pb-4">
+                  <td className="text-[9px] font-medium border border-gray-400  text-center text-center align-bottom pb-4">
                   {informesGuardados[estudiante._id]?.[area._id]?.firma}
                   </td>
                   

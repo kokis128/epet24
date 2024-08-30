@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { PlanillaEstudiante } from '../components/PlanillaEstudiante';
 import { PlanillaAnotacion } from '../components/PlanillaAnotacion';
-import { format, parse, isValid ,parseISO} from 'date-fns';
+import { format, parse, isValid, parseISO } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
 import { es } from 'date-fns/locale';
 import { addDays } from 'date-fns';
 import './styles/tailwind.css'
+
 const timeZone = 'America/Argentina/Buenos_Aires';
 
 export const PlanillaToPrint = ({ materiaS, clases }) => {
@@ -24,8 +25,6 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
       .then(data => {
         setData(data);
         console.log('Datos recibidos:', data);      
-
-        
       })
       .catch(error => {
         console.error('Error al obtener la lista de estudiantes:', error);
@@ -35,8 +34,8 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
   const formatDate = (fecha) => {
     if (!fecha) return null;
     try {
-      const date = addDays(parseISO(fecha), 1); 
-      return formatInTimeZone(date, timeZone, 'dd/MM/yyyy', { locale: es });
+       
+      return formatInTimeZone(fecha, timeZone, 'dd/MM/yyyy', { locale: es });
     } catch (error) {
       console.error('Error al formatear la fecha:', error);
       return null;
@@ -44,7 +43,6 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
   }; 
 
   const formatearFecha = (fecha) => {
-    // Intentar parsear la fecha en diferentes formatos conocidos
     const formatosPosibles = ['dd/MM/yyyy', 'yyyy-MM-dd'];
     let date;
   
@@ -55,91 +53,80 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
       }
     }
   
-    // Verificar si la fecha es válida
     if (!isValid(date)) {
       return 'Invalid Date';
     }
   
-    // Formatear la fecha en el formato "dd/MM/yy"
-    return format(date, 'dd/MM/yy', { locale: es });
+    return format(addDays(date,1), 'dd/MM', { locale: es });
   };
-  
-  
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-  if (!data) return <div>Cargando...</div>;
+  if (!data) return <div className="flex  h-screen">
+    <div className="animate-spin rounded-full  border-t-2 border-b-2 border-gray-900"></div>
+  </div>;
 
-  const fechasUnicas = [...new Set(data.anotaciones
-    .filter(anotacion => data.materia._id === anotacion.materia_id)
-    .map(anotacion => formatDate(anotacion.fecha))
-    .filter(fecha => fecha) // Filtrar fechas vacías
-  )].sort((a, b) => new Date(a.split('/').reverse().join('-')) - new Date(b.split('/').reverse().join('-')));
-
-
-
-
-  const clasesPorFechaArray = clases
-  .filter(clase => clase.materiaId._id === materiaS,) // Filtra clases por materia
-  .map(clase => ({
-    fecha: formatDate(clase.fecha),
-    registros: [clase.registro],
-    
-   
-  }));
- 
-  
-
+  const clasesFiltradas = clases
+    .filter(clase => clase.materiaId?._id === materiaS)
+    .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
 
   return (
-    <>
-      <div ref={componentRef} className='print-container pl-4'>
-      <span className='text-sm font-mono'>EPET 24</span>
-        <div className="flex justify-start pt-[-10px] gap-4">
-          
-          <span className='flex-none font-mono  text-sm'>Planilla de Seguimiento -</span>
-          <span className='font-mono text-sm '>fecha: {formatDate(new Date().toISOString())}</span>
+    <div className="mx-auto sm:px-6 lg:px-8">
+  <div ref={componentRef} className="bg-white shadow-md rounded-lg overflow-hidden my-8">
+    <div className="p-6">
+      <div className="flex justify-between">
+        <span className="text-lg font-semibold text-gray-800">EPET 24</span>
+        <span className="text-sm text-gray-600">Fecha: {formatDate(new Date().toISOString())}</span>
+      </div>
+      <div className="mb-4">
+        <h2 className="text-xl font-bold text-gray-900">Planilla de Seguimiento</h2>
+        <div className="">
+          <span className="text-sm text-gray-600 border">Materia: {data.materia.name}</span>
+          <span className="text-sm text-gray-600 ml-4">Curso: {data.materia.curso}</span>
+          <span className="text-sm text-gray-600 ml-4">División: {data.materia.curso}</span>
         </div>
-        <div className=" text-xs flex mb-3 gap-1 ">
-         
-          <h2 className='font-mono'>Materia: {data.materia.name} - </h2>
-          <h3 className='font-mono'>Curso: {data.materia.curso} División: {data.materia.curso}</h3>
-        </div>
-        <table className="border-collapse border border-gray-400">
-          <thead>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 table-fixed">
+          <thead className="bg-gray-50">
             <tr>
-              <th className="text-[10px] border border-gray-400">Fecha</th>
-              {fechasUnicas.map((fecha, index) => (
-                <th key={`${fecha}-${index}`} className="border border-gray-400 text-bold text-[8px]">{formatearFecha(fecha)}</th>
+              <th scope="col" className=" text-left text-[8px] font-medium text-gray-500 uppercase tracking-wider">
+                Fecha
+              </th>
+              {clasesFiltradas.map((clase, index) => (
+                <th key={`${clase._id}-${index}`} scope="col" className=" text-center text-[8px] border border-gray-200 font-medium text-gray-500  tracking-wider">
+                  {formatearFecha(formatDate(clase.fecha))}
+                </th>
               ))}
             </tr>
             <tr>
-              <th className="border border-gray-400 text-[10px]">Actividad</th>
-             
-              {fechasUnicas.map((fecha, index) => {
-                const clasePorFecha = clasesPorFechaArray.find(clase =>  clase.fecha === fecha);
-                return (
-                  <th key={`actividad-${index}`} className="border border-gray-400 text-bold text-[8px]">
-                    {clasePorFecha ? clasePorFecha.registros.join(', ') : ''}
-                  </th>
-                );
-              })}
+              <th scope="col" className=" text-left text-xs  text-gray-500 ">
+                Actividad
+              </th>
+              {clasesFiltradas.map((clase, index) => (
+                <th key={`actividad-${clase._id}-${index}`} scope="col" className=" text-center text-[8px] font-thin text-gray-500  border border-gray-300">
+                  {clase.registro}
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody>
-            {data.materia.estudiantes.map((estudiante) => (
-              <tr key={estudiante._id}>
-                <td className="border border-gray-400">
+          <tbody className="bg-white divide-y divide-gray-200">
+            {data.materia.estudiantes.map((estudiante, estudianteIndex) => (
+              <tr key={estudiante._id} className={estudianteIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                <td className="px-1 py-1 text-xs font-medium border border-gray-300 text-gray-900">
                   <PlanillaEstudiante estudiante={estudiante} />
                 </td>
-                {fechasUnicas.map(fecha => {
+                {clasesFiltradas.map(clase => {
                   const anotacion = data.anotaciones.find(
-                    anotacion => anotacion.student_id === estudiante._id && formatDate(anotacion.fecha) === fecha && data.materia._id === anotacion.materia_id
+                    anotacion =>
+                      anotacion.student_id === estudiante._id &&
+                      formatDate(anotacion.fecha) === formatDate(clase.fecha) &&
+                      data.materia._id === anotacion.materia_id
                   );
                   return (
-                    <td key={fecha} className="border border-gray-400">
+                    <td key={`${estudiante._id}-${clase._id}`} className=" text-[8px]  border border-gray-300">
                       {anotacion ? <PlanillaAnotacion anotacion={anotacion} /> : ''}
                     </td>
                   );
@@ -148,11 +135,19 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
             ))}
           </tbody>
         </table>
-        <div className='page-break'></div>
       </div>
-      <button onClick={handlePrint} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
-        Imprimir
-      </button>
-    </>
+    </div>
+  </div>
+  <div className="flex justify-center mt-8 print:hidden">
+    <button
+      onClick={handlePrint}
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    >
+      Imprimir
+    </button>
+  </div>
+</div>
+  
   );
 };
+

@@ -12,18 +12,20 @@ import { ContarAusencias} from '../pages/estudiantes/ContarAusencias';
 import { AgregarMateria} from '../pages/materias/AgregarMateria';
 import { PlanillaToPrint} from '../components/PlanillaToPrint';
 import { PlanillaToPrintMaterias} from '../components/PlanillaToPrintMaterias';
+import TextArea from 'antd/es/input/TextArea';
 
 export const PlanillasSeguimiento = () => {
 
   const [materias, setMaterias] = useState([]);
   const [clases, setClases] = useState([]); 
   const [estudiantesBd, setEstudiantesBd] = useState([]); 
-  const [open, setOpen] = useState(false);
+ 
   const [error, setError] = useState(null);
   const [msgSeleccionar, setMsgSeleccionar]=useState('Debes Seleccionar una Materia')
   const [ausentes, setAusentes] = useState([]);
   const [reload, setReload] = useState(false);
   const [anotaciones, setAnotaciones] = useState([]);
+  const [claseCss, setClaseCss] = useState();
 
   const [cantidadClases, setCantidadClases] = useState(0);
 
@@ -61,9 +63,12 @@ let [selectedMateriaId,setSelectedMateriaId] = useState();
   const handleError = (error) => {
     console.error('Error fetching data:', error);
   };
+  
   selectedMateriaId = localStorage.getItem('selectedMateriaId');
   
-  const [materiaSeleccionada, setMateriaSeleccionada] = useState(selectedMateriaId);
+  const [materiaSeleccionada, setMateriaSeleccionada] = useState(() => {
+    return localStorage.getItem('selectedMateriaId') || null;
+  });
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState('');
   
    
@@ -73,14 +78,19 @@ let [selectedMateriaId,setSelectedMateriaId] = useState();
   useEffect(() => {
     fetch('http://localhost:3000/api/materias')
       .then(handleResponseMaterias)
-      .then(data => {
-         
+      .then(data => {         
         setMaterias(data);
+        if (!materiaSeleccionada && data.length > 0) {
+          const firstMateriaId = data[0]._id;
+          setMateriaSeleccionada(firstMateriaId);
+          localStorage.setItem('selectedMateriaId', firstMateriaId);
+        }
+        
         return data; // Retorna los datos para el siguiente then
       })
       .then(data=>(console.log(data)))    
       .catch(handleError);
-  }, [materiaSeleccionada]);
+  }, []);
 
 
   useEffect(() => {
@@ -216,14 +226,14 @@ const onSelectMateria = (materiaId) => {
 
   const onChange = (e, id) => {
     if (e.target.checked) {
-      console.log(e.target.checked)
       setAusentes([...ausentes, id]);
-     
     } else {
       setAusentes(ausentes.filter(ausenteId => ausenteId !== id));
-  }};  
+    }
+  };
 
   const handleAnotacionChange = (e, estudianteId) => {
+   
     const nuevaAnotacion = { student_id: estudianteId, anotacion: e.target.value };
     setAnotaciones(prevAnotaciones => {
       const index = prevAnotaciones.findIndex(anotacion => anotacion.student_id === estudianteId);
@@ -247,25 +257,15 @@ const onSelectMateria = (materiaId) => {
       const existeClaseConFecha = (fecha) => {
         return clasesMateriaSeleccionada.some(clase => new Date(clase.fecha).toDateString() === new Date(fecha).toDateString());
       };
-      
       if (existeClaseConFecha(nuevaClase.fecha)) {
         alert('Ya existe una clase con esta fecha en la materia seleccionada.');
         return false;
       }
-      
-      const claseIndex = clases.findIndex(clase => clase._id === nuevaClase._id);
-      
-      if (claseIndex !== -1) {
-        // Actualizar clase existente
-        const nuevasClases = [...clases];
-        nuevasClases[claseIndex] = nuevaClase;
-        setClases(nuevasClases);
-      } else {
-        // Agregar nueva clase
-        setClases([...clases, nuevaClase]);
-      }
-      
+      console.log('Clase agregada:', nuevaClase);
+      setClases([...clases, nuevaClase]);  // Agrega la nueva clase al estado de clases
       return true;
+     
+      
     };
 
 
@@ -331,9 +331,9 @@ const onSelectMateria = (materiaId) => {
         width="100vw" className="full-screen-modal"  open={isModalOpenIprimir} onOk={handleOkImprimir} onCancel={handleCancelImprimir}>
     <PlanillaToPrint materiaS={materiaSeleccionada} clases={clases}/>           
      </Modal>  
-     
-    <PlanillaToPrintMaterias materiaS={materiaSeleccionada} clases={clases} open={isModalOpenRegistros} showModalRegistros={showModalRegistros} setIsModalOpenRegistros={setIsModalOpenRegistros} isModalOpenRegistros={isModalOpenRegistros} />           
-            
+    
+    <PlanillaToPrintMaterias materiaS={materiaSeleccionada} clases={clases} setOpen={setIsModalOpenRegistros} isModalOpenRegistros={isModalOpenRegistros} handleOkRegistros={handleOkRegistros} handleCancelRegistros={handleCancelRegistros}/>           
+           
         </Header>
        
       <Layout>
@@ -383,36 +383,43 @@ const onSelectMateria = (materiaId) => {
       <Typography.Title level={5}>
         Estudiantes
       </Typography.Title>
-      <div style={{ minWidth: '250px' }}> 
+      <div style={{ minWidth: '250px' }} > 
       {estudiantesBd.map((estudianteBd) => (
-        <ul key={estudianteBd._id}  >
+        <ul  key={estudianteBd._id}   >
           {materias.map((materia, index) => (
-            <li key={index} className="mb-2  ">
+            <li key={index} >
               {materiaSeleccionada === materia._id &&
                 materia.estudiantes.map((estudiante, idx) => (
-                  <ul key={idx} >
+                  <ul key={idx}  >
                     {estudiante === estudianteBd._id && (
                       <li
-                        onClick={() => onSelectEstudiante(estudianteBd._id)}
-                       
-                        className={`flex items-center justify-between p-2 cursor-pointer border rounded-lg ${
-                          estudianteBd._id === estudianteSeleccionado ? 'bg-blue-300 border-blue-800' : 'bg-gradient-to-r from-indigo-400  border-gray-700'
-                        }`}
-                      >
+                      onClick={() => onSelectEstudiante(estudianteBd._id)}
+                      className={`flex items-center justify-between p-2 cursor-pointer border rounded-lg ${
+                        ausentes.includes(estudianteBd._id) ? 'bg-red-400' : 'bg-gradient-to-r from-indigo-400 border-gray-700'
+                      }`}
+                    >
                         <span className=" text-gray-600 font-sans text-xs">
                           {estudianteBd.nombre} {estudianteBd.apellido}
                         </span>
-                        <ul className='flex flex-row-reverse overflow-x-hidden'  style={{ maxWidth: '140px' }} >
-                        <li><Input
+                        <ul className='flex flex-row-reverse overflow-x-hidden '  style={{ maxWidth: '140px' }} >
+                        <li ><TextArea
                             placeholder="Anotación"
-                            className="ml-4"
+                            className="ml-3"
                             value={anotaciones.find(anotacion => anotacion.student_id === estudianteBd._id)?.anotacion || ''}
                             onChange={(e) => handleAnotacionChange(e, estudianteBd._id)}
                             
                           
                           /></li>
                         
-                       <li> <Checkbox onChange={(e) => onChange(e, estudianteBd._id)} className="pl-5"></Checkbox></li>
+                        <li>
+  <label className="inline-flex items-center pl-5">
+    <input 
+      type="checkbox" 
+      onChange={(e) => onChange(e, estudianteBd._id)} 
+      className="form-checkbox h-4 w-4 accent-red-500"
+    />
+  </label>
+</li>
                        
                         </ul>
 
@@ -451,7 +458,9 @@ const onSelectMateria = (materiaId) => {
                   <div  >     
                  <ClasesList clases={clase}
                       incrementarCantidad={incrementarCantidad}
-                      decrementarCantidad={decrementarCantidad} />
+                      decrementarCantidad={decrementarCantidad}
+                      setClases={setClases}
+                      materiaSeleccionada={materiaSeleccionada} />
                  </div> 
                  
                  </> 

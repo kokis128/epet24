@@ -12,10 +12,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
-
-import { formatInTimeZone } from 'date-fns-tz';
-
-import { addDays } from 'date-fns';
+import TextArea from 'antd/es/input/TextArea';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -29,57 +26,37 @@ const formItemLayout = {
 
 const URL = 'http://localhost:3000/api';
 
-
-export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clases, setClases, handleAgregarClase }) => {
+export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anotaciones,clases, setClases, handleAgregarClase, actividades, selectedClase}) => {
+  
+  
+  
   const [reload, setReload] = useState(false);
   const [fechaActual, setFechaActual] = useState(new Date());
   const [form] = Form.useForm();
-
-  
-
-
-
-  const timeZone = 'America/Argentina/Buenos_Aires';
-  
-  
-  const formatDate = (fecha) => {
-    if (!fecha) return null;
-    try {
-      const date = addDays(parseISO(fecha), 1);
-      return formatInTimeZone(date, timeZone, 'dd/MM/yyyy', { locale: es });
-    } catch (error) {
-      console.error('Error al formatear la fecha:', error);
-      return null;
-    }
-  };
-
-  
-
-
-
 
   useEffect(() => {
     form.setFieldsValue({
       materiaId: materiaS,
       numero: cantidadClases + 1,
-      anotacion: anotaciones,
-     
-      ...(clases ? {
-        
-        tema: clases.tema,
-        unidad: clases.unidad,
-        numero: clases.numero,
-        fecha: clases.fecha,
-        contenidos: clases.contenidos,
-        registro: clases.registro,
-        actividades: clases.actividades,
-        observaciones: clases.observaciones,
-      } : {})
+      fecha: fechaActual,
+      ...(selectedClase ? {
+        materiaId: selectedClase.materiaId._id,
+        tema: selectedClase.tema,
+        unidad: selectedClase.unidad,
+        numero: selectedClase.numero,
+        fecha: parseISO(selectedClase.fecha),
+        anotaciones:anotaciones,
+        contenidos: selectedClase.contenidos,
+        registro: selectedClase.registro,
+        actividades: selectedClase.actividades,
+        observaciones: selectedClase.observaciones,
+      }:{}
+
+      )
     });
-  }, [materiaS, cantidadClases, anotaciones, fechaActual, clases, form]);
+  }, [materiaS, cantidadClases, fechaActual, form]);
 
   const actividadesPredefinidas = [
-    '',
     'TP',
     'T. Clase',
     'Particip.',
@@ -94,18 +71,17 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
     const selectedDate = data.fecha ? format(data.fecha,'yyyy-MM-dd') : format(fechaActual,'yyyy-MM-dd');
     data.fecha = selectedDate;
     console.log('Data being sent:', data);
-    const updatedClase = { ...clases, ...data };
-    const claseAgregada = handleAgregarClase(updatedClase);
-    setClases(claseAgregada)
-    console.log('claseAgregada',updatedClase)
-    if (!claseAgregada) {
-      return; // Detener la ejecución si la clase no se agregó
-    }   
-    try {     
+    const updatedClases={...clases,...data};
+    const method = selectedClase ? 'PUT' : 'POST'; 
+    console.log('updatedClases being sent:', updatedClases);
+    handleAgregarClase(updatedClases)
+   
+    try {    
+       
       
-    const first =  await fetch(`${URL}/clase`, {
-        method: 'POST',
-        body: JSON.stringify(clases),
+    const first =  await fetch(`${URL}/clase${selectedClase ? `/${selectedClase._id}` : ''}`, {
+        method: method,
+        body: JSON.stringify(updatedClases),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -165,7 +141,8 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
 
   return (
     <ConfigProvider locale={esES}>
-      <div className="flex justify-center">
+      <div className={className}></div>
+      <div className="flex justify-center ">
         <Form
           {...formItemLayout}
           form={form}
@@ -183,7 +160,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
           <Form.Item
             name="fecha"
             label="Fecha"
-            rules={[{ required: true, message: 'Debes Completar!' }]}
+            rules={[{ required: !selectedClase, message: 'Debes Completar!' }]}
             className="mb-3"
           >
             <DatePicker
@@ -197,11 +174,19 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
               locale={es}
             />
           </Form.Item>
+          <Form.Item
+            label="Clase N°"
+            name="numero"
+            rules={[{ required: !selectedClase, message: 'Debes Completar!' }]}
+            className=" mb-3"
+          >
+            <Input className="w-full" />
+          </Form.Item>
 
           <Form.Item
             label="Tema"
             name="tema"
-            rules={[{ required: true, message: 'Debes Completar!' }]}
+            rules={[{ required: !selectedClase, message: 'Debes Completar!' }]}
             className=" mb-3"
           >
             <Input className="w-full" />
@@ -210,34 +195,39 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
           <Form.Item
             label="Unidad"
             name="unidad"
-            rules={[{ required: true, message: 'Debes Completar!' }]}
+            rules={[{ required: !selectedClase, message: 'Debes Completar!' }]}
             className=" mb-3"
           >
             <Input className="w-full" />
           </Form.Item>
 
-          <Form.Item
-            label="Clase N°"
-            name="numero"
-            rules={[{ required: true, message: 'Debes Completar!' }]}
-            className=" mb-3"
-          >
-            <Input className="w-full" />
-          </Form.Item>
+       
 
           <Form.Item
             label="Contenidos Trabajados"
             name="contenidos"
-            rules={[{ required: true, message: 'Debes Completar!' }]}
+            rules={[]}
             className=" mb-3"
           >
             <Input.TextArea className="w-full" />
           </Form.Item>
 
           <Form.Item
+            label="Actividades"
+            name="actividades"
+            rules={[]}
+            className=" mb-3"
+          >
+            <TextArea className="w-full" />
+          </Form.Item>
+
+
+
+
+          <Form.Item
             label="Calif Clase."
             name="registro"
-            rules={[{ required: true, message: 'Debes Completar!' }]}
+            rules={[]}
             className="mb-3"
           >
             <Select
@@ -253,19 +243,12 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
             </Select>
           </Form.Item>
 
-          <Form.Item
-            label="Actividades"
-            name="actividades"
-            rules={[{ required: true, message: 'Debes Completar!' }]}
-            className=" mb-3"
-          >
-            <Mentions className="w-full" />
-          </Form.Item>
+       
 
           <Form.Item
             label="Observaciones"
             name="observaciones"
-            rules={[{ required: true, message: 'Debes completar este campo!' }]}
+            rules={[]}
             className=" mb-3"
           >
             <Input.TextArea className="w-full" />
@@ -277,7 +260,7 @@ export const ClasesAdd = ({ materiaS, ausentes, cantidadClases, anotaciones,clas
               htmlType="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white"
             >
-              {clases ? "Actualizar Clase" : "Guardar Clase"}
+              {selectedClase ? 'Actualizar Clase':'Guardar Clase'}
             </Button>
           </Form.Item>
         </Form>

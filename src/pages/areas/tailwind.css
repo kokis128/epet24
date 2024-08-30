@@ -8,7 +8,7 @@
     @media print {
       @page {
         size: A4 landscape; /* Define el tamaño A4 */
-        margin: 10mm; /* Márgenes de 20mm */
+        margin: 20mm; /* Márgenes de 20mm */
       }
       .page-break {
        
@@ -19,8 +19,8 @@
       /* Aplica estilo a los textos y componentes específicos durante la impresión */
       .print-container {
         max-width: 100%;
-        padding: 0;
-        margin: 0;
+        padding: 10;
+        margin: 10;
        
       }
   

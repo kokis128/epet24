@@ -23,7 +23,7 @@ export const PlanillaAnotacion = ({anotacion}) => {
   return (
     <>
    
-    <td key={anotacion._id } className="text-[10px]" >
+    <td key={anotacion._id } className="text-[8px]" >
    
       {anotacion.anotacion}
    
