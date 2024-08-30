@@ -65,20 +65,21 @@ console.log({cursoDivisionBdRender});
   return (
 
     <>
-    <div className="flex flex-row items-center justify-center min-h-screen bg-gray-100 py-5">
-     
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <div className="flex flex-row  justify-end ">
-      {cursoDivisionBdRender.filter(curso => curso._id === id).map((curso, index) => (
-            <div key={index}>Curso: {curso.curso} {curso.division}</div>
+    <div className="flex flex-col md:flex-row items-center justify-center min-h-screen bg-gray-200 py-10">
+      
+      {/* Formulario */}
+      <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-lg mb-8 md:mb-0 md:mr-8">
+        <div className="flex justify-between mb-6">
+          {cursoDivisionBdRender.filter(curso => curso._id === id).map((curso, index) => (
+            <div key={index} className="text-lg font-semibold text-gray-700">Curso: {curso.curso} {curso.division}</div>
           ))}
-          </div>
-        <div className="text-2xl font-bold text-center mb-5">Cargar Estudiantes</div>
+        </div>
+        <div className="text-3xl font-bold text-center text-gray-800 mb-6">Cargar Estudiantes</div>
         <Form
           form={form}
           layout="vertical"
           onFinish={onFinish}
-          className="space-y-4"
+          className="space-y-6"
         >
           <Form.Item
             label="Apellido"
@@ -91,9 +92,9 @@ console.log({cursoDivisionBdRender});
             ]}
             className="mb-4"
           >
-            <Input className="py-2 px-3 border rounded-md w-full" />
+            <Input className="py-2 px-4 border border-gray-300 rounded-md w-full" />
           </Form.Item>         
-
+  
           <Form.Item
             label="Nombre"
             name="nombre"
@@ -105,9 +106,9 @@ console.log({cursoDivisionBdRender});
             ]}
             className="mb-4"
           >
-            <Input className="py-2 px-3 border rounded-md w-full" />
+            <Input className="py-2 px-4 border border-gray-300 rounded-md w-full" />
           </Form.Item>
-
+  
           <Form.Item
             label="DNI"
             name="dni"
@@ -119,50 +120,49 @@ console.log({cursoDivisionBdRender});
             ]}
             className="mb-4"
           >
-            <Input className="py-2 px-3 border rounded-md w-full" />
+            <Input className="py-2 px-4 border border-gray-300 rounded-md w-full" />
           </Form.Item>
-
+  
           <Form.Item
             label="Observaciones"
             name="observaciones"
             className="mb-4"
           >
-            <Input className="py-2 px-3 border rounded-md w-full" />
+            <Input className="py-2 px-4 border border-gray-300 rounded-md w-full" />
           </Form.Item>
-
+  
           <Form.Item className="text-center">
-            <Button type="primary" htmlType="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+            <Button type="primary" htmlType="submit" className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition duration-200 ease-in-out">
               Guardar
             </Button>
           </Form.Item>
         </Form>
       </div>
-
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-10">
-      <thead>
-      <tr >
-        <td className="py-2 px-4 border">Nombre</td>
-        <td className="py-2 px-4 border">Apellido</td>
-        <td className="py-2 px-4 border">DNI</td>
-        </tr>
-      </thead>
-      <tbody>
-          
-      {estudiantesBd.filter(estudiante => estudiante.cursoId === cursoId).map((estudiante, index) => 
-    
-      (
-      <tr key={index}>
-        <td className="py-2 px-4 border">{estudiante.nombre}</td>
-         <td className="py-2 px-4 border">{ estudiante.apellido}</td> 
-         <td className="py-2 px-4 border">{estudiante.dni}</td>
-         
-         </tr>
-        ))}</tbody>
-    
+  
+      {/* Tabla de estudiantes */}
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
+        <div className="text-2xl font-bold text-center text-gray-800 mb-6">Lista de Estudiantes</div>
+        <table className="table-auto w-full">
+          <thead>
+            <tr className="bg-blue-500 text-white">
+              <th className="py-3 px-4 border-b">DNI</th>
+              <th className="py-3 px-4 border-b">Nombre</th>
+              <th className="py-3 px-4 border-b">Apellido</th>
+            </tr>
+          </thead>
+          <tbody>
+            {estudiantesBd.filter(estudiante => estudiante.cursoId === cursoId).map((estudiante, index) => (
+              <tr key={index} className="text-gray-700 bg-white hover:bg-gray-100 transition-colors duration-200 ease-in-out">
+                <td className="py-3 px-4 border-b">{estudiante.dni}</td>
+                <td className="py-3 px-4 border-b">{estudiante.nombre}</td>
+                <td className="py-3 px-4 border-b">{estudiante.apellido}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-    </div>
-    
-    </>
+  </>
   );
 };
 
