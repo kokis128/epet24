@@ -2,7 +2,7 @@ import React from 'react'
 import { useState,useEffect } from 'react';
 import { ClasesAdd } from './ClasesAdd';
 import { ClaseListItem } from './ClaseListItem';
-
+import { addDays,format, parseISO } from 'date-fns';
 export const ClasesList =  ({materiaSeleccionada,clases,incrementarCantidad,decrementarCantidad}) => {
   const [clasesm, setClases] = useState(clases);
   const [selectedClase, setSelectedClase] = useState(null); 
@@ -20,16 +20,15 @@ export const ClasesList =  ({materiaSeleccionada,clases,incrementarCantidad,decr
   
   const updateClase = (id) => { 
       
-   setMostrar(!mostrar)
- 
-   const clasesmArray = Array.isArray(clasesm) ? clasesm : [clasesm];
-   const clasesToEdit = clasesmArray.find(clase=>(clase._id===id));
-   console.log('clasesToEdit',clasesToEdit)
-   
-   
-setSelectedClase(clasesToEdit)
-console.log('SelectedClase',clasesToEdit)
-  };  
+   setMostrar(!mostrar) 
+    const clasesmArray = Array.isArray(clasesm) ? clasesm : [clasesm];
+    const clasesToEdit = clasesmArray.find(clase=>(clase._id===id));
+    console.log('clasesToEdit',clasesToEdit)   
+    setSelectedClase(clasesToEdit)
+    console.log('SelectedClase',clasesToEdit)
+  }; 
+  
+  
   const saveUpdatedClase = (updatedClase) => {
     const clasesmArray = Array.isArray(clasesm) ? clasesm : [clasesm];
     const updatedClases = clasesmArray.map(clase =>

@@ -15,7 +15,8 @@ export const ContarAusencias = ({ materiaS }) => {
       }
       const data = await response.json();
       setAusenciasData(data.data);
-      console.log(data);
+      
+      
     } catch (error) {
       console.error('Error:', error);
     } finally {

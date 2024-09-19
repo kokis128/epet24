@@ -6,6 +6,7 @@ import {
   Mentions,
   ConfigProvider,
   Select,
+  Modal
 } from 'antd';
 import esES from 'antd/es/locale/es_ES';
 import DatePicker from 'react-datepicker';
@@ -13,6 +14,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import TextArea from 'antd/es/input/TextArea';
+import { ModificarAnotacion } from '../../components/ModificarAnotacion';
+import { addDays } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -26,35 +30,76 @@ const formItemLayout = {
 
 const URL = 'http://localhost:3000/api';
 
-export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anotaciones,clases, setClases, handleAgregarClase, actividades, selectedClase}) => {
+
+const formatDateForDisplay = (date) => {
+  const d = new Date(date);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+const formatDateForSaving = (date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+
+
+
+
+
+
+export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anotaciones,clases, setClases, handleAgregarClase, actividades, selectedClase,setAnotaciones}) => {
   
-  
+  console.log('clases',clases)
   
   const [reload, setReload] = useState(false);
   const [fechaActual, setFechaActual] = useState(new Date());
   const [form] = Form.useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate(); 
+  const showModal = () => {
+   
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);    
+    };
 
-  useEffect(() => {
+ useEffect(() => {
+  if (selectedClase) {
+    // Si hay una clase seleccionada, se establece la fecha de la clase seleccionada
+    form.setFieldsValue({
+      materiaId: selectedClase.materiaId._id,
+      tema: selectedClase.tema,
+      unidad: selectedClase.unidad,
+      numero: selectedClase.numero,
+      // Asegúrate de que selectedClase.fecha sea un objeto Date
+      fecha: parseISO(selectedClase.fecha), // Conviertes la fecha si es una cadena ISO
+      contenidos: selectedClase.contenidos,
+      registro: selectedClase.registro,
+      actividades: selectedClase.actividades,
+      observaciones: selectedClase.observaciones,
+    });
+    setFechaActual(addDays(parseISO(selectedClase.fecha),1)); // Estableces la fecha seleccionada en el estado
+  } else {
+    // Si no hay clase seleccionada, se usa la fecha actual
     form.setFieldsValue({
       materiaId: materiaS,
       numero: cantidadClases + 1,
       fecha: fechaActual,
-      ...(selectedClase ? {
-        materiaId: selectedClase.materiaId._id,
-        tema: selectedClase.tema,
-        unidad: selectedClase.unidad,
-        numero: selectedClase.numero,
-        fecha: parseISO(selectedClase.fecha),
-        anotaciones:anotaciones,
-        contenidos: selectedClase.contenidos,
-        registro: selectedClase.registro,
-        actividades: selectedClase.actividades,
-        observaciones: selectedClase.observaciones,
-      }:{}
-
-      )
     });
-  }, [materiaS, cantidadClases, fechaActual, form]);
+    setFechaActual(new Date()); // Se asegura que el estado sea la fecha actual
+  }
+}, [materiaS, cantidadClases, selectedClase, form]);
 
   const actividadesPredefinidas = [
     'TP',
@@ -74,11 +119,15 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
     const updatedClases={...clases,...data};
     const method = selectedClase ? 'PUT' : 'POST'; 
     console.log('updatedClases being sent:', updatedClases);
-    handleAgregarClase(updatedClases)
    
-    try {    
-       
-      
+   
+   try {    
+    const agregarClase = handleAgregarClase(updatedClases);
+    if (!agregarClase) {
+      // Detener ejecución si handleAgregarClase retorna false
+      return;
+    }
+
     const first =  await fetch(`${URL}/clase${selectedClase ? `/${selectedClase._id}` : ''}`, {
         method: method,
         body: JSON.stringify(updatedClases),
@@ -90,7 +139,7 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
 
       const response = await fetch(`${URL}/register_absences`, {
         method: 'POST',
-        body: JSON.stringify({ ausentes, materia_id: materiaS }),
+        body: JSON.stringify({ ausentes, materia_id: materiaS, fecha: selectedDate }),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -134,14 +183,41 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
   useEffect(() => {
     if (reload) {
       localStorage.setItem('selectedMateriaId', materiaS);
-      window.location.reload();
+      navigate(0);
     }
   }, [reload, materiaS]);
 
 
+
+
+
+
   return (
     <ConfigProvider locale={esES}>
+
+      <div className='text-end '>
       <div className={className}></div>
+      {selectedClase?(
+      <div><Button className='  border-none bg-slate-200 rounded-md overflow-hidden mr-3 mb-0 '  onClick={showModal}>
+     Modificar Notas
+     </Button></div>):''}
+     </div>
+
+
+     <Modal title='Actualizar Notas Estudiantes' open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  footer={[<Button key="cancel" onClick={handleCancel}>
+            Cancelar
+          </Button>,
+          // Puedes agregar más botones si es necesario
+        ]}>
+
+          <ModificarAnotacion materiaS={materiaS} setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} clases={clases} anotaciones={anotaciones} setAnotaciones={setAnotaciones} selectedClase={selectedClase}   />
+     
+           
+     </Modal>
+
+
+
+
       <div className="flex justify-center ">
         <Form
           {...formItemLayout}
@@ -199,9 +275,7 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
             className=" mb-3"
           >
             <Input className="w-full" />
-          </Form.Item>
-
-       
+          </Form.Item>       
 
           <Form.Item
             label="Contenidos Trabajados"

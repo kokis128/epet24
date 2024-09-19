@@ -5,13 +5,12 @@ import { formatInTimeZone } from 'date-fns-tz';
 import { es } from 'date-fns/locale';
 import { addDays } from 'date-fns';
 import './styles/tailwind.css';
-import { Button, Modal } from 'antd';
+import {  Modal } from 'antd';
 
 const timeZone = 'America/Argentina/Buenos_Aires';
 
-export const PlanillaToPrintMaterias = ({materiaS, clases, open,setIsModalOpenRegistros,isModalOpenRegistros,handleCancelRegistros,handleOkRegistros}) => {
-  console.log('msteriaS', materiaS);
-  console.log('clases',clases);
+export const PlanillaToPrintMaterias = ({materiaS, clases,isModalOpenRegistros,handleCancelRegistros,handleOkRegistros}) => {
+ 
     
   const [data, setData] = useState(null);
     const componentRef = useRef();
