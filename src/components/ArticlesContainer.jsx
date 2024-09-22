@@ -14,7 +14,6 @@ export const ArticlesContainer = () => {
 
 
 
-
       
         <Article
         img={img1}

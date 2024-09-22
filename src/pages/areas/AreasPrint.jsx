@@ -71,7 +71,7 @@ export const AreasPrint = ({ setOpen, open, areas, estudiantes, informesGuardado
 
 
         <div ref={componentRef} className="print-container  mt-4 ">
-
+{console.log('estudiantes',estudiantes)}
         {estudiantes.map((estudiante,index)=>(
           <div key={index}>
           {/* Header del informe */}

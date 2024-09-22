@@ -2,7 +2,9 @@ import React from 'react'
 import { useState} from 'react'
 import logoepet24 from '../assets/logo24.png' 
 import {  Navigate } from "react-router-dom";
-
+import { Navbar } from '../components/Navbar'
+import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
 export const Login = () => {
 
   
@@ -97,14 +99,16 @@ try {
 
     <>
   
-
-    <section className='container flex place-content-center relative'>
+  <Header />
+  <Navbar />
+    <section className='container flex place-content-center relative  my-20'>
+    
      
      
     <form onSubmit={handleLogin} className=' flex flex-col border-2 my-5 mx-auto p-5'>
     <div  className=' text-3xl mx-auto my-auto'><img src = {logoepet24}  alt="logo" className='w-8 h-10 pt-2 mb-2 mx-auto' />
       Login</div>
-      <div className=' flex flex-col my-20 place-content-center'  >
+      <div className=' flex flex-col my-9 place-content-center'  >
         
     <div className=' ml-6 pb-2'>
       <label htmlFor="username">Usuario:</label>
@@ -131,16 +135,8 @@ try {
 
   <button type="submit" onClick={handleRegister} className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center absolute right-2'>Registrarse</button>
   
-  
-  
   </section>
- 
-
- 
-   
-   
-
-
+  <Footer />
   </>
    
   )

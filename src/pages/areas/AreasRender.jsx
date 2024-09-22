@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Input, Button,Select,Collapse  } from 'antd';
 import { AreasPrint } from './AreasPrint';
 
-export const AreasRender = ({ cursoId, cursos,items, defaultActiveKey, onChange }) => {
+export const AreasRender = ({ cursoId, cursos,items,mostrarForm, defaultActiveKey, onChange }) => {
   const [areas, setAreas] = useState([]);
   const [estudiantes, setEstudiantes] = useState([]);
   const [informesGuardados, setInformesGuardados] = useState({});
@@ -24,7 +24,7 @@ export const AreasRender = ({ cursoId, cursos,items, defaultActiveKey, onChange 
 
   useEffect(() => {
     if (areaSeleccionada) {
-      fetch(`http://localhost:3000/api/estudiantes/${cursoId}`)
+      fetch(`http://localhost:3000/api/estudiantes/curso/${cursoId}`)
         .then(response => response.json())
         .then(data => setEstudiantes(data))
         .catch(error => console.error('Error fetching students:', error));
@@ -102,6 +102,7 @@ export const AreasRender = ({ cursoId, cursos,items, defaultActiveKey, onChange 
   const enviarInforme = (estudianteId) => {
     const nuevoInforme = formData[estudianteId]?.[areaSeleccionada];
     if (!nuevoInforme) return;
+    console.error(`No se encontró el ID del informe para el estudiante con ID: ${estudianteId} y área: ${areaSeleccionada}`);
 
     const informeParaEnviar = {
       ...nuevoInforme,
@@ -118,10 +119,18 @@ export const AreasRender = ({ cursoId, cursos,items, defaultActiveKey, onChange 
     })
       .then(response => response.json())
       .then(data => {
+        if (data) {
         actualizarInformes(estudianteId, areaSeleccionada, data);
+      } else {
+        console.error('Error: la respuesta del servidor está vacía');
+      }
       })
       .catch(error => console.error('Error sending report:', error));
   };
+
+  useEffect(() => {
+    console.log(formData);  // Revisa si el estado se actualiza correctamente
+  }, [formData]); 
 
   const modificarInforme = (estudianteId) => {
     const informeActualizado = formData[estudianteId]?.[areaSeleccionada];
@@ -176,7 +185,7 @@ export const AreasRender = ({ cursoId, cursos,items, defaultActiveKey, onChange 
    
   };
   
-
+console.log(formData)
 
 
   return (
@@ -187,7 +196,7 @@ export const AreasRender = ({ cursoId, cursos,items, defaultActiveKey, onChange 
     <div className='absolute left-0 top-0 z-10 w-65 '>
     <Collapse 
       items={items} 
-      defaultActiveKey={['0']} 
+      defaultActiveKey={['0']}     
       onChange={onChange} 
       className='h-10 w-80 border   ' 
     />

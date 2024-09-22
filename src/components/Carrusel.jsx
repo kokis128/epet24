@@ -20,7 +20,7 @@ export const Carrusel = () => {
   
       return (
 
-        <section className=' md:col-span-3 '>
+        <section className='col-span-2 md:col-span-3 '>
 
              <Carousel autoplay effect="fade" className='w-full h-[210px]  z-0'>
     <div>

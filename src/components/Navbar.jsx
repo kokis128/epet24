@@ -18,31 +18,27 @@ export const Navbar = () => {
   
   return (
 
-    <nav className="container mx-auto flex justify-end mb-3   grid col-1 text-rigth md:col-span-4">
+    <nav className="container mx-auto flex justify-end mb-3   grid col-1 text-rigth md:col-span-4 ">
 <div className="text-rigth">
 <div className="z-0 ">
-<button onClick={mostrarMenu} className="absolute left-[450px]  top-4 z-10  w-13 h-13 sm:hidden "><GiHamburgerMenu  /></button> 
-  <ul className={`${showMenu ? 'bg-OffWhite' : 'hidden'}  absolute left-[375px] sm:static top-12 place-content-end justify-end c  sm:flex  font-normal text-2sm z-20`}>
- 
-    <li>
-       <Link to="/" className="hover:font-bold mx-6">Inicio</Link>        
-    </li>
-    <li>
-    <Link to="/autoridades" className="hover:font-bold mx-6 ">Institucional</Link>
-        
-    </li>
-    <li>
-    <Link to="/normativa" className="hover:font-bold mx-6 " >Normativa</Link>
-    </li>
-    <li>
-    <Link to="/programas" className="hover:font-bold mx-6">Programas</Link>
-    </li>
-    <li>
-    <Link to="/login" className="hover:font-bold mx-6">Login</Link>
-    </li>
-    
-    
-  </ul>
+<button onClick={mostrarMenu} className="absolute left-[320px]  top-10 z-10  w-13 h-13 sm:hidden "><GiHamburgerMenu  /></button> 
+<ul className={`${showMenu ? 'bg-OffWhite ' : 'hidden'} absolute left-[280px] bg-opacity-30 mt-5 sm:static top-12 place-content-end justify-end sm:flex sm:font-normal text-2sm z-20 transition-all`}>
+  <li className='sm:hover:bg-none hover:bg-blue-200'>
+    <Link to="/" className="mx-6 hover:font-bold  sm:hover:bg-none ">Inicio</Link>        
+  </li>
+  <li className='sm:hover:bg-none hover:bg-blue-200'>
+    <Link to="/institucional" className="mx-6 hover:font-bold sm:hover:bg-none ">Institucional</Link>
+  </li>
+  <li className='sm:hover:bg-none hover:bg-blue-200'>
+    <Link to="/normativa" className="mx-6 hover:font-bold sm:hover:bg-none ">Normativa</Link>
+  </li>
+  <li className='sm:hover:bg-none hover:bg-blue-200'>
+    <Link to="/programas" className="mx-6 hover:font-bold sm:hover:bg-none ">Programas</Link>
+  </li>
+  <li className='sm:hover:bg-none hover:bg-blue-200'>
+    <Link to="/login" className="mx-6 hover:font-bold sm:hover:bg-none ">Acceder</Link>
+  </li>
+</ul>
 
 
  

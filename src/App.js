@@ -5,7 +5,7 @@ import { Institucional } from './pages/Institucional';
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import { useState } from 'react';
 import {Normativa} from '../src/pages/Normativa'
-import { Programas } from '../src/pages/Programas';
+import { Programas } from './pages/programas/Programas';
 import { Login }  from './pages/Login';
 import { Menu } from './pages/Menu';
 import { Register } from "../src/pages/Register";
@@ -37,7 +37,7 @@ function App() {
       <Routes>
     <Route path='/' element={<Inicio />}  />   
     {/*<Route path='/Novedades' element={<Novedades />} /> */}
-    <Route path='/autoridades' element={<Institucional />} /> 
+    <Route path='/institucional' element={<Institucional />} /> 
     <Route path='/programas' element={<Programas />} />
     <Route path='/normativa' element={<Normativa />} />
     <Route path='/login' element={<Login />} />

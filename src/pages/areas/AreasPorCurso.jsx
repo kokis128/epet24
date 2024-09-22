@@ -18,7 +18,7 @@ export const AreasPorCurso = () => {
   const [cursos, setCursos] = useState();
 
   const mostrar = () => {
-    setMostrarForm(prevState => !prevState);
+    setMostrarForm(!mostrarForm);
   };
 
   const onFinish = async (data) => {
@@ -142,11 +142,12 @@ export const AreasPorCurso = () => {
 
   const onChange = (key) => {
     console.log(key);
+    
   };
 
   return (
     <div className="mt-3 relative">
-      <AreasRender cursoId={cursoId} cursos={cursos} mostrar={mostrar} items={items} defaultActiveKey={['1']} onChange={onChange} />
+      <AreasRender cursoId={cursoId} mostrarForm={mostrarForm} cursos={cursos} mostrar={mostrar} items={items}  onChange={onChange} />
     </div>
   );
 };
