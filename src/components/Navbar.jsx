@@ -21,8 +21,8 @@ export const Navbar = () => {
     <nav className="container pt-20 mx-auto flex justify-end mb-3   grid col-1 text-rigth md:col-span-4 ">
 <div className="text-rigth">
 <div className="z-0 ">
-<button onClick={mostrarMenu} className="absolute left-[365px]  top-12 z-10  w-17 h-15 sm:hidden "><GiHamburgerMenu  /></button> 
-<ul className={`${showMenu ? 'bg-OffWhite ' : 'hidden'}  absolute left-[285px] bg-opacity-50 md:opacity-100  mt-6 sm:static top-12 place-content-end justify-end sm:flex sm:font-normal text-2sm z-20 transition-all`}>
+<button onClick={mostrarMenu} className="absolute left-[360px]  top-12 z-10  w-17 h-15 sm:hidden "><GiHamburgerMenu  /></button> 
+<ul className={`${showMenu ? 'bg-OffWhite ' : 'hidden'}  absolute left-[280px] bg-opacity-50 md:opacity-100  mt-6 sm:static top-12 place-content-end justify-end sm:flex sm:font-normal text-2sm z-20 transition-all`}>
   <li className='sm:hover:bg-none hover:bg-blue-200'>
     <Link to="/" className="mx-6 font-bold  sm:hover:bg-none ">Inicio</Link>        
   </li>
