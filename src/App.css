@@ -31,9 +31,7 @@
 .App-link {
   color: #61dafb;
 }
-body {
-  overflow-y: scroll;
-}
+
 
 @keyframes App-logo-spin {
   from {
