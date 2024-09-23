@@ -9,26 +9,26 @@ import { Header } from './Header';
 import imgArt1 from './../assets/invernadero.jpg'
 import imgArt2 from './../assets/capacitacion.jpg'
 
-import backgroundImage from '../assets/fondo.jpg'; 
+
 
 function Inicio() {  
 
     return (
+     <>
      
-     <main className="   bg-fixed bg-center bg-cover "
-     style={{ backgroundImage: `url(${backgroundImage})` }} >    
+     <Header />
+     <Navbar />
       
-      <Header />
-      <Navbar /> 
-      <div className=" grid grid-cols-1 md:grid-cols-4 gap-4" >
-     
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4" >
+      
+      
                 
         <Carrusel />        
         <Sidebar />   
 
         
 
-         <div className=' grid grid-cols-1 col-span-2 md:col-span-3'>
+         <div className='  grid grid-cols-1 col-span-2 md:col-span-3'>
 
          <h1 className="text-sm  text-center  bg-gray-100 bg-opacity-40 ">Proyectos Institucionales</h1>
        
@@ -65,7 +65,9 @@ Con este invernadero, la EPET N°24 refuerza su compromiso de formar estudiantes
      
       
      
-      </main>
+      
+
+      </>
 
       
     );

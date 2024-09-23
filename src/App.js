@@ -20,7 +20,7 @@ import {AreasPorCurso} from './pages/areas/AreasPorCurso';
 import { CursoProvider } from './CursoContext';
 import './pages/areas/tailwind.css';
 import './components/styles/tailwind.css';
-
+import backgroundImage from './../src/assets/fondo.jpg'
 function App() {
   
   let text = localStorage.getItem("user");
@@ -30,7 +30,9 @@ function App() {
   return (
    
    <>
-   <div className='container mx-auto '>
+    <main className=" container mx-auto   bg-fixed bg-center bg-cover "
+     style={{ backgroundImage: `url(${backgroundImage})` }} >   
+   
    <CursoProvider>
    <BrowserRouter>
     
@@ -58,7 +60,7 @@ function App() {
     </BrowserRouter>
     </CursoProvider>
 
-   </div>
+   </main>
 
    
    
