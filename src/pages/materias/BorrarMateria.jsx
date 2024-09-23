@@ -9,7 +9,7 @@ export const BorrarMateria = ({ materiaS,setReload2,setMateriaSeleccionada,mater
   const URL = 'http://localhost:3000/api';
   const navigate = useNavigate(); // Para redirigir después de borrar
 console.log('materiaS',materiaS);
-console.log('materias',materias);
+
 
   const showModal = () => {
     if (!materiaS) {
