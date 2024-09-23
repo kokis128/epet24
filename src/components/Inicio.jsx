@@ -30,7 +30,7 @@ function Inicio() {
 
          <div className=' grid grid-cols-1 col-span-2 md:col-span-3'>
 
-         <h1 className="text-md  text-center mb-1 bg-gray-100 bg-opacity-40 ">Proyectos Institucionales</h1>
+         <h1 className="text-sm  text-center  bg-gray-100 bg-opacity-40 ">Proyectos Institucionales</h1>
        
         <MainArticle  articulo='Invernadero Prof Claudia Urquiza' txtarticulo='Inauguración del Invernadero "Profesora Claudia Urquiza"
 La EPET N°24 ha dado un importante paso hacia la integración de la educación técnica y la participación comunitaria con la inauguración de su invernadero «Profesora Claudia Urquiza». Este proyecto representa un avance significativo en la aplicación práctica de conocimientos adquiridos por los estudiantes y sirve como un espacio de aprendizaje interdisciplinario que fomenta el trabajo en equipo, la investigación y el desarrollo sostenible.
