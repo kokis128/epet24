@@ -1,5 +1,4 @@
 
-
 import {MainArticle} from "./MainArticle"
 import { Sidebar } from "./Sidebar";
 import { ArticlesContainer } from "./ArticlesContainer";
@@ -10,20 +9,20 @@ import { Header } from './Header';
 import imgArt1 from './../assets/invernadero.jpg'
 import imgArt2 from './../assets/capacitacion.jpg'
 
-
 import backgroundImage from '../assets/fondo.jpg'; 
 
-function Inicio() { 
+function Inicio() {  
 
     return (
-     <main className="bg-fixed bg-center bg-cover min-h-screen"
+     
+     <main className="   bg-fixed bg-center bg-cover "
      style={{ backgroundImage: `url(${backgroundImage})` }} >    
       
-      
+      <Header />
+      <Navbar /> 
       <div className=" grid grid-cols-1 md:grid-cols-4 gap-4" >
      
-        <Header />
-        <Navbar />          
+                
         <Carrusel />        
         <Sidebar />   
 

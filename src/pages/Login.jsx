@@ -7,8 +7,8 @@ import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
 export const Login = () => {
 
-  
-  const [username,setUsername] =useState('');
+   
+  const [email,setEmail] =useState('');
   const [password,setPassword] =useState('');
   
 
@@ -42,7 +42,7 @@ try {
   headers: {
     'Content-Type': 'application/json',
   },
-  body: JSON.stringify({ username, password }),
+  body: JSON.stringify({ email, password }),
 
 }
   )
@@ -62,14 +62,12 @@ try {
 
 
    
-    // Aquí podrías redirigir al usuario a otra página o realizar alguna acción adicional
-  
-
+    
 
   } else {
 
     console.error("Inicio de sesión fallido:", data.error);
-    // Puedes mostrar un mensaje de error al usuario o hacer alguna otra acción
+    //  mensaje de error al usuario 
     alert(data.msg)
  
   }
@@ -101,7 +99,7 @@ try {
   
   <Header />
   <Navbar />
-    <section className='container flex place-content-center relative  my-20'>
+    <section className='container flex place-content-center relative mb-20 my-20'>
     
      
      
@@ -114,9 +112,9 @@ try {
       <label htmlFor="username">Usuario:</label>
       <input
         type="text"
-        id="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        id="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         className='border-2 border-indigo-600 ml-2'
       />
     </div>

@@ -356,7 +356,7 @@ const onSelectMateria = (materiaId) => {
        
         <div className='font-sans text-gray-700 pr-6 underline decoration-solid text-center inline '>Gestión de Clases</div>
         </div>
-        <span className='flex flex-row-reverse pr-5 text-gray-500 font-sans inline text-xs'>Bienvenido {user.username}</span>
+        <span className='flex flex-row-reverse pr-5 text-gray-500 font-sans inline text-xs'>Usuario: {user.nombre} {user.apellido}</span>
         
         
         

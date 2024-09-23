@@ -8,9 +8,12 @@ import logoepet24 from '../assets/logo24.png'
 
 export const Register = () => {
 
-
-  const [username,setUsername] =useState('');
+  const [email,setEmail] =useState('');
+  const [nombre,setNombre] =useState('');
+  const [apellido,setApellido] =useState(''); 
   const [password,setPassword] =useState('');
+  const [funcion,setFuncion] =useState('');
+  
 
   const handleVolver = (e)=>{
 
@@ -37,7 +40,7 @@ try {
   headers: {
     'Content-Type': 'application/json',
   },
-  body: JSON.stringify({ username, password }),
+  body: JSON.stringify({ nombre,apellido,email,password,funcion }),
 
 }
   )
@@ -57,7 +60,7 @@ try {
   } else {
 
     console.error("Inicio de sesión fallido:", data.error);
-    // Puedes mostrar un mensaje de error al usuario o hacer alguna otra acción
+   
     alert('debes ingresar un usuario y contraseña validos')
  
   }
@@ -68,6 +71,32 @@ try {
   // Puedes mostrar un mensaje de error genérico al usuario o hacer alguna otra acción
 }
 }
+
+const validateEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+};
+
+const handleEmailChange = (e) => {
+  const emailValue = e.target.value;
+  if (validateEmail(emailValue)) {
+    setEmail(emailValue);  // Actualiza el estado si es un email válido
+  } else {
+    // Mostrar un mensaje de error o manejar el caso en que el email no sea válido
+    console.log("Email no válido");
+  }
+};
+
+const handlePasswordChange = (e) => {
+  setPassword(e.target.value);
+};
+
+const handlePasswordBlur = () => {
+  if (password.length < 5) {
+    alert('La contraseña debe tener al menos 5 caracteres');
+  }
+};
+
 
 
 
@@ -81,33 +110,91 @@ try {
     <section className='container flex place-content-center relative'>
      
      
-    <form onSubmit={handleSignup} className=' flex flex-col border-2 my-5 mx-auto p-5'>
-    <div  className=' text-3xl mx-auto my-auto'><img src = {logoepet24}  alt="logo" className='w-8 h-10 pt-2 mb-2 mx-auto' />
-      Registrarse</div>
-      <div className=' flex flex-col my-20 place-content-center'  >
-        
-    <div className=' ml-6 pb-2'>
-      <label htmlFor="username">Usuario:</label>
+    <form onSubmit={handleSignup} className='flex flex-col border-2 my-5 p-5'>
+  <div className='text-3xl mx-auto my-auto text-end'>
+    <img src={logoepet24} alt="logo" className='w-8 h-10 pt-2 mb-2 mx-auto' />
+    Registrarse
+  </div>
+  
+  <div className='flex flex-col my-20 text-center my-auto mr-8 mt-7'>
+    <div className='ml-6 pb-2'>
+      <label htmlFor="nombre">Nombre(s): </label>
       <input
         type="text"
-        id="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className='border-2 border-indigo-600 ml-2'
+        id="nombre"
+        value={nombre}
+        onChange={(e) => setNombre(e.target.value)}
+        required
+        className='border-2 border-indigo-600 ml-2 p-2 w-full'
+        maxLength={30} 
       />
     </div>
-    <div className='place-content-end'>
-      <label htmlFor="password" className=''>Contraseña:</label>
+
+    <div className='ml-6 pb-2'>
+      <label  htmlFor="apellido">Apellido:</label>
+      <input
+        type="text"
+        id="apellido"
+        value={apellido}
+        onChange={(e) => setApellido(e.target.value)}
+        required
+        className='border-2 border-indigo-600 ml-2 p-2 w-full'
+        maxLength={30} 
+      />
+    </div>
+
+    <div className='ml-6 pb-2'>
+      <label htmlFor="funcion">Función:</label>
+      <select 
+        id="funcion" 
+        name="options" 
+        className='border-2 border-indigo-600 ml-2 p-2 w-full'
+        value={funcion} 
+        onChange={(e) => setFuncion(e.target.value)}
+        required
+      >
+        <option value=""></option>
+        <option value="profe">Profe</option>
+        <option value="preceptor">Preceptor</option>
+        <option value="MEP">MEP</option>
+        <option value="directivo">Directivo</option>
+      </select>
+    </div>
+
+    <div className='ml-6 pb-2'>
+      <label htmlFor="email">Email: </label>
+      <input
+        type="email"
+        id="email"
+        value={email}
+        onChange={handleEmailChange }
+        className='border-2 border-indigo-600 ml-2 p-2 w-full'
+        required
+        placeholder='ingresa tu email'
+        maxLength={30} 
+      />
+    </div>
+
+    <div className='ml-6 pb-2'>
+      <label htmlFor="password">Contraseña:</label>
       <input
         type="password"
         id="password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      className='border-2 border-indigo-600 ml-2'/>
+        onChange={handlePasswordChange}
+        onBlur={handlePasswordBlur}
+        required
+        className='border-2 border-indigo-600 ml-2 p-2 w-full'
+        maxLength={8} 
+      />
     </div>
-    <button type="submit" className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center transition delay-700 duration-300 ease-in-out ...'>Registrarse</button>
-    </div>
-  </form>
+
+    <button type="submit" className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center transition delay-700 duration-300 ease-in-out'>
+      Registrarse
+    </button>
+  </div>
+</form>
+
 
   <button type="submit" onClick={handleVolver} className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center absolute right-2'>Login</button>
   
