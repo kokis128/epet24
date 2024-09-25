@@ -212,7 +212,7 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
                             anotacion?.student_id === estudiante?._id &&
                             formatDate(anotacion?.fecha) ===
                               formatDate(clase?.fecha) &&
-                            data?.materia?._id === anotacion?.materia_id
+                            clase?._id === anotacion?.clase_id
                         );
                         
                         const ausencia = 

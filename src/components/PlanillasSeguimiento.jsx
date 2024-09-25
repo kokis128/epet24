@@ -30,6 +30,7 @@ export const PlanillasSeguimiento = () => {
   const [ausentes, setAusentes] = useState([]);
   const [reload, setReload] = useState(false);
   const [reload2, setReload2] = useState(false);
+  const [reload3, setReload3] = useState(false);
   const [anotaciones, setAnotaciones] = useState([]);
 
   const incrementarCantidad = () => {
@@ -93,13 +94,20 @@ let [selectedMateriaId,setSelectedMateriaId] = useState();
       .catch(handleError);
   }, [reload,reload2]);
 
+  useEffect(() => {
+    if (selectedMateriaId) {
+      setMateriaSeleccionada(selectedMateriaId);
+    }
+  }, [selectedMateriaId]);
+
+
 
   useEffect(() => {
     fetch('http://localhost:3000/api/clases')
       .then(handleResponseclases)
       .then(data => setClases(data))
       .catch(handleError);
-  }, []);
+  }, [reload3]);
   
   
  
@@ -431,7 +439,7 @@ const onSelectMateria = (materiaId) => {
         <ul className='bg-gradient-to-r from-indigo-400'  >
          
           <li  onClick={() => onSelectMateria(materia._id)} key={materia._id}
-           style={{ cursor: 'pointer', margin: '0px 0px' } } className={materia._id===materiaSeleccionada?'font-sans select':''} > {materia.userId === user._id && materia.name}
+           style={{ cursor: 'pointer', margin: '0px 0px' } } className={materia._id===materiaSeleccionada?'font-sans select':''} > { materia.userId === user._id && materia.name}
            </li>
          
             
@@ -546,7 +554,8 @@ const onSelectMateria = (materiaId) => {
                       incrementarCantidad={incrementarCantidad}
                       decrementarCantidad={decrementarCantidad}
                       setClases={setClases}
-                      materiaSeleccionada={materiaSeleccionada} />
+                      materiaSeleccionada={materiaSeleccionada}
+                      setReload3={setReload3}  />
                  </div> 
                  
                  </> 

@@ -14,13 +14,6 @@ export const Login = () => {
 
   
 
-  const handleRegister = (e)=>{
-    
-
-
-    window.location.href ='/register';
-
-  }
 
 
 
@@ -129,9 +122,10 @@ try {
     </div>
     <button type="submit" onClick={handleLogin} className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center transition delay-700 duration-300 ease-in-out ...'>Iniciar sesión</button>
     </div>
+    <span className='text-xs text-gray-300 text-center'>Solo Personal de la institución</span>
   </form>
 
-  <button type="submit" onClick={handleRegister} className='border border-1 rounded bg-blue-200 p-2 m-4 place-content-center absolute right-2'>Registrarse</button>
+  
   
   </section>
   <Footer />

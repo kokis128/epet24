@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react';
 import { ClasesAdd } from './ClasesAdd';
 import './clasesListItem.css';
 import {DeleteOutlined,SelectOutlined} from '@ant-design/icons'
-import {Button, Space }from 'antd';
+import {Button, Modal }from 'antd';
 import { format, parse, isValid, parseISO } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
 import { es } from 'date-fns/locale';
@@ -57,6 +57,19 @@ if (deletedItemId) {
 
 }
 
+const confirmDelete = (id) => {
+  Modal.confirm({
+    title: '¿Estás seguro de que quieres eliminar esta clase?',
+    content: 'Esta acción no se puede deshacer.',
+    okText: 'Sí',
+    okType: 'danger',
+    cancelText: 'No',
+    onOk() {
+      del(id);
+    },
+  });
+};
+
 
 
   return (
@@ -76,7 +89,7 @@ if (deletedItemId) {
         <span className="text-gray-700 h-6"> Obs: {clasesm.observaciones}</span>
       </div>
       <div className="flex gap-2 mt-2 md:mt-0">
-        <Button type="primary" danger onClick={() => del(clasesm._id)}>
+        <Button type="primary" danger onClick={() => confirmDelete(clasesm._id)}>
           <DeleteOutlined />
         </Button>
         <Button type="default" onClick={() => update(clasesm._id) }>

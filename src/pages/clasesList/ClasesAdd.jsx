@@ -53,7 +53,7 @@ const formatDateForSaving = (date) => {
 
 
 
-export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anotaciones,clases, setClases, handleAgregarClase, actividades, selectedClase,setAnotaciones}) => {
+export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anotaciones,clases, handleAgregarClase, selectedClase,setAnotaciones}) => {
   
   console.log('clases',clases)
   
@@ -136,10 +136,11 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
 
       const newClaseFromDB = await first.json();
       console.log('Clase saved:', newClaseFromDB);
+      debugger
 
       const response = await fetch(`${URL}/register_absences`, {
         method: 'POST',
-        body: JSON.stringify({ ausentes, materia_id: materiaS, fecha: selectedDate }),
+        body: JSON.stringify({ ausentes, materia_id: materiaS, fecha: selectedDate,clase_id:newClaseFromDB._id }),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -155,7 +156,7 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
         alert('Hubo un error al registrar las ausencias');
       }
 
-      const anotacionesPayload = { anotaciones, fecha: selectedDate, materia_id: materiaS };
+      const anotacionesPayload = { anotaciones, fecha: selectedDate, materia_id: materiaS,clase_id:newClaseFromDB._id };
       console.log('Anotaciones payload:', anotacionesPayload);
 
       const res = await fetch(`${URL}/register_anotaciones`, {
@@ -178,6 +179,7 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
       console.error('Error al enviar datos:', error);
     }
     setReload(true);
+    
   };
 
   useEffect(() => {
@@ -256,7 +258,7 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
             rules={[{ required: !selectedClase, message: 'Debes Completar!' }]}
             className=" mb-3"
           >
-            <Input className="w-full" />
+            <Input className="w-full"   />
           </Form.Item>
 
           <Form.Item
@@ -271,7 +273,9 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
           <Form.Item
             label="Unidad"
             name="unidad"
-            rules={[{ required: !selectedClase, message: 'Debes Completar!' }]}
+            rules={[{ required: !selectedClase, message: 'Debes Completar!' },
+              { pattern: /^[0-9]+$/, message: 'Solo se permiten números' },
+            ]}
             className=" mb-3"
           >
             <Input className="w-full" />

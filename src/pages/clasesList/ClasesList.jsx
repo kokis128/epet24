@@ -3,11 +3,11 @@ import { useState,useEffect } from 'react';
 import { ClasesAdd } from './ClasesAdd';
 import { ClaseListItem } from './ClaseListItem';
 import { addDays,format, parseISO } from 'date-fns';
-export const ClasesList =  ({materiaSeleccionada,clases,incrementarCantidad,decrementarCantidad}) => {
+export const ClasesList =  ({materiaSeleccionada,clases,incrementarCantidad,decrementarCantidad,setReload3}) => {
   const [clasesm, setClases] = useState(clases);
   const [selectedClase, setSelectedClase] = useState(null); 
   const [deletedItemId, setDeletedItemId] = useState(null);  
-
+  const URL = 'http://localhost:3000/api';
   const [mostrar,setMostrar]=useState(false);
   const nClase = {
     tema:'mongoDb',
@@ -41,13 +41,52 @@ export const ClasesList =  ({materiaSeleccionada,clases,incrementarCantidad,decr
   };
   // Realiza la solicitud fetch cuando el componente se monta
   
-  const delClase = (id) => {
-    const clasesArray = [clasesm];
+  const delClase = async (id) => {
+    
+    
+    try {
+      const response = await fetch(`${URL}/clase/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        alert('Clase borrada exitosamente');
+
+        const clasesArray = [clasesm];
     const nArray = clasesArray.filter(item=>item._id!==id)    
     
     setClases(nArray)
-    setDeletedItemId(id);    
-  }  
+    setDeletedItemId(id);  
+    setReload3(true);
+       
+
+       
+        
+        
+        
+      } else {
+        alert('Hubo un error al borrar la clase');
+      }
+    } catch (error) {
+      console.error('Error al borrar la materia:', error);
+      alert('Ocurrió un error al intentar borrar la materia');
+    } 
+  }
+
+
+
+
+
+
+
+
+
+
+
+  
     return (
     <> 
     

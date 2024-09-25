@@ -4,6 +4,7 @@ import React from 'react'
 
 import { useState } from 'react'
 import logoepet24 from '../assets/logo24.png' 
+import { useNavigate } from 'react-router-dom'
 
 
 export const Register = () => {
@@ -13,12 +14,12 @@ export const Register = () => {
   const [apellido,setApellido] =useState(''); 
   const [password,setPassword] =useState('');
   const [funcion,setFuncion] =useState('');
-  
+  const navigate=useNavigate();
 
-  const handleVolver = (e)=>{
+  const handleVolver = ()=>{
 
 
-    window.location.href ='/login';
+   navigate('/login');
 
   }
 
@@ -47,15 +48,15 @@ try {
    
   
   const data = await response.json();
-
+console.log(data);
   if (response.ok) {
-    console.log("Registro exitoso");
+    
 
 
-    window.location.href= '/login';
+   
     // Aquí podrías redirigir al usuario a otra página o realizar alguna acción adicional
   alert('Login Registro Exitoso')
-
+  navigate('/login');
 
   } else {
 
@@ -72,20 +73,9 @@ try {
 }
 }
 
-const validateEmail = (email) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-};
 
-const handleEmailChange = (e) => {
-  const emailValue = e.target.value;
-  if (validateEmail(emailValue)) {
-    setEmail(emailValue);  // Actualiza el estado si es un email válido
-  } else {
-    // Mostrar un mensaje de error o manejar el caso en que el email no sea válido
-    console.log("Email no válido");
-  }
-};
+
+
 
 const handlePasswordChange = (e) => {
   setPassword(e.target.value);
@@ -167,7 +157,7 @@ const handlePasswordBlur = () => {
         type="email"
         id="email"
         value={email}
-        onChange={handleEmailChange }
+        onChange={(e)=>setEmail(e.target.value) }
         className='border-2 border-indigo-600 ml-2 p-2 w-full'
         required
         placeholder='ingresa tu email'
@@ -182,7 +172,7 @@ const handlePasswordBlur = () => {
         id="password"
         value={password}
         onChange={handlePasswordChange}
-        onBlur={handlePasswordBlur}
+        onBlur={(e)=>setPassword(e.target.value)}
         required
         className='border-2 border-indigo-600 ml-2 p-2 w-full'
         maxLength={8} 
