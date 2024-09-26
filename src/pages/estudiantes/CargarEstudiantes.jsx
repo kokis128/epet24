@@ -11,6 +11,7 @@ export const CargarEstudiantes = () => {
   const cursoId = id;
   const [form] = Form.useForm();
   const URL = 'http://localhost:3000/api';
+  const API_URL = process.env.REACT_APP_API_URL;
 console.log(id)
 
 
@@ -25,7 +26,7 @@ useEffect(() => {
     const dataWithId = { ...data, cursoId};
   console.log(dataWithId);
     try {
-      const first = await fetch(`${URL}/estudiante`, {
+      const first = await fetch(`${API_URL}/estudiante`, {
         method: 'POST',
         body: JSON.stringify(dataWithId),
         headers: {
@@ -44,7 +45,7 @@ useEffect(() => {
   };
   
   useEffect(() => {
-    fetch('http://localhost:3000/api/estudiantes')
+    fetch(`${API_URL}/estudiantes`)
       .then(handleResponseEstudiantes)
       .then(data => setEstudiantesBd(data))
       .catch(handleError);

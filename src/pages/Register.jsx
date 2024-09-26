@@ -15,7 +15,7 @@ export const Register = () => {
   const [password,setPassword] =useState('');
   const [funcion,setFuncion] =useState('');
   const navigate=useNavigate();
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const handleVolver = ()=>{
 
 
@@ -35,8 +35,7 @@ const handleSignup = async (event)=>{
 
 try { 
 
-  const response = await fetch('http://localhost:3000/api/signup',{
-
+  const response = await fetch(`${API_URL}/signup`,{
   method:'POST',
   headers: {
     'Content-Type': 'application/json',

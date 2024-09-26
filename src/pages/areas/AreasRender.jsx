@@ -14,7 +14,7 @@ export const AreasRender = ({ cursoId, cursos,items,mostrarForm, defaultActiveKe
   const [printModalOpen, setPrintModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [periodoSeleccionado, setPeriodoSeleccionado] = useState(undefined);
-
+  const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     fetch('http://localhost:3000/api/areas')
       .then(response => response.json())
@@ -24,12 +24,12 @@ export const AreasRender = ({ cursoId, cursos,items,mostrarForm, defaultActiveKe
 
   useEffect(() => {
     if (areaSeleccionada) {
-      fetch(`http://localhost:3000/api/estudiantes/curso/${cursoId}`)
+      fetch(`${API_URL}/estudiantes/curso/${cursoId}`)
         .then(response => response.json())
         .then(data => setEstudiantes(data))
         .catch(error => console.error('Error fetching students:', error));
 
-      fetch(`http://localhost:3000/api/areaEstudiante?cursoId=${cursoId}&areaId=${areaSeleccionada}`)
+      fetch(`${API_URL}/areaEstudiante?cursoId=${cursoId}&areaId=${areaSeleccionada}`)
         .then(response => response.json())
         .then(data => {
           const informesMap = data.reduce((acc, informe) => {

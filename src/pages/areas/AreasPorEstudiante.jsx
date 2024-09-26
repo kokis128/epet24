@@ -13,6 +13,7 @@ export const AreasPorEstudiante = () => {
   const estudianteId=id;
   const [form] = Form.useForm();
 const URL = 'http://localhost:3000/api'
+const API_URL = process.env.REACT_APP_API_URL;
 const [reload, setReload] = useState(false);
 const[cursos,setCursos]=useState();
 
@@ -20,7 +21,7 @@ const[cursos,setCursos]=useState();
 
     const dataWithId = { ...data, estudianteId};
 try {
-    const first = await fetch(`${URL}/areaEstudinate`,{
+    const first = await fetch(`${API_URL}/areaEstudinate`,{
     method: 'POST',
     body: JSON.stringify(dataWithId),
     headers:{
@@ -43,7 +44,7 @@ useEffect(() => {
 }, [reload]);
 
 useEffect(() => {
-    fetch('http://localhost:3000/api/areas')
+    fetch(`${API_URL}/areas`)
       .then(response=>response.json())
       .then(data => setCursos(data))
       .then(data=>console.log(data))

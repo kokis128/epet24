@@ -14,9 +14,9 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
   const [data, setData] = useState(null);
   const [ausentes, setAusentes] = useState([]);
   const componentRef = useRef();
-
+  const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
-    fetch(`http://localhost:3000/api/planillas/${materiaS}`)
+    fetch(`${API_URL}/planillas}/${materiaS}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Error al obtener la lista de estudiantes');
@@ -33,7 +33,7 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
   }, [materiaS]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/ausentes`)
+    fetch(`${API_URL}/ausentes`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Error al obtener las ausencias');

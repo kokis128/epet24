@@ -16,7 +16,7 @@ export const AreasPorCurso = () => {
   const [reload, setReload] = useState(false);
   const [mostrarForm, setMostrarForm] = useState(false);
   const [cursos, setCursos] = useState();
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const mostrar = () => {
     setMostrarForm(!mostrarForm);
   };
@@ -48,7 +48,7 @@ export const AreasPorCurso = () => {
   }, [reload]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/cursos')
+    fetch(`${API_URL}/cursos`)
       .then(response => response.json())
       .then(data => setCursos(data))
       .then(data => console.log(data));

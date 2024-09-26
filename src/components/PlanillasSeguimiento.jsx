@@ -32,7 +32,7 @@ export const PlanillasSeguimiento = () => {
   const [reload2, setReload2] = useState(false);
   const [reload3, setReload3] = useState(false);
   const [anotaciones, setAnotaciones] = useState([]);
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const incrementarCantidad = () => {
     setCantidadClases((prevCount) => prevCount + 1);
   };
@@ -77,7 +77,7 @@ let [selectedMateriaId,setSelectedMateriaId] = useState();
   
   
   useEffect(() => {
-    fetch('http://localhost:3000/api/materias')
+    fetch(`${API_URL}/materias`)
       .then(handleResponseMaterias)
       .then(data => {         
         setMaterias(data);
@@ -103,7 +103,7 @@ let [selectedMateriaId,setSelectedMateriaId] = useState();
 
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/clases')
+    fetch(`${API_URL}/clases`)
       .then(handleResponseclases)
       .then(data => setClases(data))
       .catch(handleError);
@@ -118,7 +118,7 @@ let [selectedMateriaId,setSelectedMateriaId] = useState();
 
   const fetchEstudiantes = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/estudiantes');
+      const response = await fetch(`${API_URL}/estudiantes`);
       if (!response.ok) throw new Error('Error al obtener estudiantes');
       const data = await response.json();
       setEstudiantesBd(data);

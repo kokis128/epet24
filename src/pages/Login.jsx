@@ -11,7 +11,7 @@ export const Login = () => {
   const [email,setEmail] =useState('');
   const [password,setPassword] =useState('');
   
-
+  const API_URL = process.env.REACT_APP_API_URL;
   
 
 
@@ -29,7 +29,7 @@ try {
 
   
 
-  const response = await fetch('http://localhost:3000/api/user/login',{
+  const response = await fetch(`${API_URL}/user/login`,{
 
   method:'POST',
   headers: {

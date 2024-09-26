@@ -9,6 +9,7 @@ const timeZone = 'America/Argentina/Buenos_Aires';
 
 export const ModificarAnotacion = ({ materiaS, clases, selectedClase }) => {
     const URL = 'http://localhost:3000/api';
+    const API_URL = process.env.REACT_APP_API_URL;
 
     const [anotacionEditando, setAnotacionEditando] = useState('');
     const [idAnotacionEditando, setIdAnotacionEditando] = useState(null);
@@ -21,7 +22,7 @@ export const ModificarAnotacion = ({ materiaS, clases, selectedClase }) => {
     useEffect(() => {
         const fetchAnotaciones = async () => {
             try {
-                const response = await fetch(`${URL}/planillas/${materiaS}`);
+                const response = await fetch(`${API_URL}/planillas/${materiaS}`);
                 const data = await response.json();
                 setAnotaciones(data.anotaciones);
                 setMateriaEstudiantes(data);

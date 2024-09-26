@@ -17,12 +17,12 @@ export const Cursos = () => {
     const [turno, setTurno] = useState('');
     const [objetivos, setObjetivos] = useState('');
     const navigate = useNavigate();
-
+    const API_URL = process.env.REACT_APP_API_URL;
     // Fetch inicial de cursos cuando el componente se monta
     useEffect(() => {
         const fetchCursos = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/cursos');
+                const response = await fetch(`${API_URL}/cursos`);
                 const data = await response.json();
                 setCursoDivisionBdRender(data);
             } catch (error) {
@@ -40,7 +40,7 @@ export const Cursos = () => {
             const newCurso = { curso, division, turno, objetivos };
             const URL = 'http://localhost:3000/api';
 
-            fetch(`${URL}/curso`, {
+            fetch(`${API_URL}/curso`, {
                 method: 'POST',
                 body: JSON.stringify(newCurso),
                 headers: {

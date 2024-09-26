@@ -4,7 +4,8 @@ import { Button, Modal } from 'antd';
 export const BorrarMateria = ({ materiaS, setReload2, setMateriaSeleccionada, materias }) => {
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const URL = 'http://localhost:3000/api';
+ 
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const showModal = () => {
     if (!materiaS) {
@@ -21,7 +22,7 @@ export const BorrarMateria = ({ materiaS, setReload2, setMateriaSeleccionada, ma
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${URL}/materia/${materiaS}`, {
+      const response = await fetch(`${API_URL}/materia/${materiaS}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

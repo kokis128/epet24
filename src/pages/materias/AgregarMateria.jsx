@@ -13,6 +13,7 @@ export const AgregarMateria = ({materiaS, setReload2}) => {
   const cursoId = id;
   const [form] = Form.useForm();
   const URL = 'http://localhost:3000/api';
+  const API_URL = process.env.REACT_APP_API_URL;
   const [reload, setReload] = useState(false);
   const { Option } = Select;
 const navigate = useNavigate();
@@ -22,7 +23,7 @@ const navigate = useNavigate();
 
     const dataWithId = { ...data, cursoId };
     try {
-      const first = await fetch(`${URL}/materia`, {
+      const first = await fetch(`${API_URL}/materia`, {
         method: 'POST',
         body: JSON.stringify(dataWithId),
         headers: {

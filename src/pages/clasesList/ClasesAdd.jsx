@@ -29,7 +29,7 @@ const formItemLayout = {
 };
 
 const URL = 'http://localhost:3000/api';
-
+const API_URL = process.env.REACT_APP_API_URL;
 
 const formatDateForDisplay = (date) => {
   const d = new Date(date);
@@ -128,7 +128,7 @@ export const ClasesAdd = ({ className, materiaS, ausentes, cantidadClases, anota
       return;
     }
 
-    const first =  await fetch(`${URL}/clase${selectedClase ? `/${selectedClase._id}` : ''}`, {
+    const first =  await fetch(`${API_URL}/clase${selectedClase ? `/${selectedClase._id}` : ''}`, {
         method: method,
         body: JSON.stringify(updatedClases),
         headers: { 'Content-Type': 'application/json' },
