@@ -26,7 +26,7 @@ function App() {
   let text = localStorage.getItem("user");
   let user = JSON.parse(text);
 
-  console.log(user);
+
   return (
    
    <>
