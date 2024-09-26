@@ -9,8 +9,6 @@ import { Header } from './Header';
 import imgArt1 from './../assets/invernadero.jpg'
 import imgArt2 from './../assets/capacitacion.jpg'
 
-
-
 function Inicio() {  
 
     return (
@@ -19,7 +17,7 @@ function Inicio() {
      <Header />
      <Navbar />
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4" >
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-2" >
       
       
                 
