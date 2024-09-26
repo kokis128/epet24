@@ -38,8 +38,25 @@ try {
   body: JSON.stringify({ email, password }),
 
 }
-  )
-  const data = await response.json();
+  );
+  if (!response.ok) {
+    const errorText = await response.text(); // Leer el cuerpo de la respuesta como texto
+    console.error("Error del servidor:", errorText);
+    alert('Error de inicio de sesión: ' + errorText);
+    return;
+  }
+
+
+
+  const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      
+  
+ 
+    const data = await response.json();
+  
+  
+  
 
  
 
@@ -64,6 +81,9 @@ try {
     alert(data.msg)
  
   }
+} else {
+  throw new Error('La respuesta no es un JSON');
+}
   
   
 } catch (error) {
