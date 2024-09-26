@@ -260,9 +260,9 @@ console.log(formData)
           />
           
 
-          <ul className="justify-start">
+          <ul className="justify-start overflow-x-auto">
             {filteredEstudiantes.map(estudiante => (
-              <li key={estudiante._id} className="flex sm:flex-col justify-around md:flex-row  border rounded border-gray-400 hover:bg-gray-100 ">
+              <li key={estudiante._id} className="flex flex-col justify-around md:flex-row  border rounded border-gray-400 hover:bg-gray-100 ">
                 <div className="flex-col flex-1 flex justify-center text-center cursor-pointer px-1">
                   <p className='text-[9px] text-lime-500  '>{estudiante.dni}</p>
                   <p className='text-xs '>{estudiante.nombre} {estudiante.apellido}</p>
