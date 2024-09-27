@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@types/react-icons": "^3.0.0",
+    "nodemon": "^3.1.7",
     "resolve-url-loader": "^5.0.0"
   }
 }

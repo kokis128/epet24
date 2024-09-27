@@ -16,12 +16,14 @@ export const AgregarMateria = ({materiaS, setReload2}) => {
   const API_URL = process.env.REACT_APP_API_URL;
   const [reload, setReload] = useState(false);
   const { Option } = Select;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 const navigate = useNavigate();
   const onFinish = async (data) => {
     console.log(data);
    
 
     const dataWithId = { ...data, cursoId };
+    setIsSubmitting(true);
     try {
       const first = await fetch(`${API_URL}/materia`, {
         method: 'POST',
@@ -41,6 +43,8 @@ const navigate = useNavigate();
 
     } catch (error) {
       console.error('Error al enviar datos:', error);
+    } finally {
+      setIsSubmitting(false); // Volver a habilitar el botón al finalizar
     }
   }
 
@@ -140,7 +144,7 @@ const navigate = useNavigate();
             htmlType="submit"
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
           >
-            Guardar
+            {isSubmitting ? 'Guardando...' : 'Guardar'} 
           </Button>
         </Form.Item>
       </Form>

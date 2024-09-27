@@ -459,23 +459,22 @@ const onSelectMateria = (materiaId) => {
         <Layout className='flex-row  ' style={contentStyle} >
 
           
-        <Content className='border-solid border-2 border-blue-700 w-[20%]'  >
+        <Content className='border-solid border-2 border-blue-700 w-[24%]'  >
         
           <Typography.Title level={5}>Clases</Typography.Title>   
 
           
-          {materiaSeleccionada && <ClasesAdd cantidadClases={cantidadClases} materiaS={materiaSeleccionada} ausentes={ausentes} estudianteSeleccionado={estudianteSeleccionado}  setClases={setClases} handleAgregarClase={handleAgregarClase} setAnotaciones={setAnotaciones} estudiantesBd={estudiantesBd} anotaciones={anotaciones}  />}
+          {materiaSeleccionada && <ClasesAdd cantidadClases={cantidadClases} materiaS={materiaSeleccionada} ausentes={ausentes} estudianteSeleccionado={estudianteSeleccionado}  setClases={setClases} handleAgregarClase={handleAgregarClase} setAnotaciones={setAnotaciones} estudiantesBd={estudiantesBd} anotaciones={anotaciones}/>}
      
           </Content  >
           
 
-          <div className="border-solid border-2 border-blue-700 px-2 rounded-lg shadow-md">
+      <div className="border-solid border-2 border-blue-700 px-2 rounded-lg shadow-md w-full sm:w-[30%]">
       
       
-      <Typography.Title level={5}>
-        Estudiantes
+      <Typography.Title level={5}> 
       </Typography.Title>
-      <div className='' style={{ maxWidth: '300px',minWidth:'250px' }}>
+      <div>
       {estudiantesBd.map((estudianteBd) => (
         <ul  key={estudianteBd._id}   >
           {materias.map((materia, index) => (
@@ -500,10 +499,9 @@ const onSelectMateria = (materiaId) => {
       className="text-xs  rounded-md border border-gray-300 shadow-inner focus:ring focus:ring-blue-200"
       value={anotaciones.find(anotacion => anotacion.student_id === estudianteBd._id)?.anotacion || ''}
       onChange={(e) => handleAnotacionChange(e, estudianteBd._id)}
-    />
- 
+    /> 
   </li>
-  <li className="flex flex-col items-center mr-2 ">
+  <li className="flex flex-col items-center mr-2">
     
       <input
         type="checkbox"
