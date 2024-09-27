@@ -7,6 +7,7 @@ import {
   Input, 
   Collapse 
 } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 
 export const AreasPorCurso = () => {
   const { id } = useParams();
@@ -14,11 +15,11 @@ export const AreasPorCurso = () => {
   const [form] = Form.useForm();
   const URL = 'http://localhost:3000/api';
   const [reload, setReload] = useState(false);
-  const [mostrarForm, setMostrarForm] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
   const [cursos, setCursos] = useState();
   const API_URL = process.env.REACT_APP_API_URL;
   const mostrar = () => {
-    setMostrarForm(!mostrarForm);
+    setFormVisible(!formVisible);
   };
 
   const onFinish = async (data) => {
@@ -105,7 +106,7 @@ export const AreasPorCurso = () => {
                 },
               ]}
             >
-              <Input />
+              <TextArea />
             </Form.Item>
 
             <Form.Item
@@ -118,7 +119,7 @@ export const AreasPorCurso = () => {
                 },
               ]}
             >
-              <Input />
+              <TextArea />
             </Form.Item>
 
             <Form.Item
@@ -147,7 +148,7 @@ export const AreasPorCurso = () => {
 
   return (
     <div className="mt-3 relative">
-      <AreasRender cursoId={cursoId} mostrarForm={mostrarForm} cursos={cursos} mostrar={mostrar} items={items}  onChange={onChange} />
+      <AreasRender cursoId={cursoId} setFormVisible={setFormVisible} formVisible={formVisible} cursos={cursos} mostrar={mostrar} items={items}  onChange={onChange} />
     </div>
   );
 };

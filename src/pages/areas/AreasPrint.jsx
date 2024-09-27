@@ -138,8 +138,7 @@ export const AreasPrint = ({ setOpen, open, areas, estudiantes, informesGuardado
                   </td>
                   <td className="text-[9px] font-medium border border-gray-400  text-center text-center align-bottom pb-4">
                   {informesGuardados[estudiante._id]?.[area._id]?.firma}
-                  </td>
-                  
+                  </td>                 
                  
                 </tr>
               ))}

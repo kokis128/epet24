@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Input, Button,Select,Collapse  } from 'antd';
 import { AreasPrint } from './AreasPrint';
 
-export const AreasRender = ({ cursoId, cursos, items, onChange }) => {
+export const AreasRender = ({ cursoId, cursos, items, onChange, formVisible, setFormVisible }) => {
   const [areas, setAreas] = useState([]);
   const [estudiantes, setEstudiantes] = useState([]);
   const [informesGuardados, setInformesGuardados] = useState({});
@@ -185,7 +185,31 @@ export const AreasRender = ({ cursoId, cursos, items, onChange }) => {
    
   };
   
-console.log(formData)
+
+
+
+const handleEliminarArea = () => {
+  if (!areaSeleccionada) {
+    alert("Por favor, selecciona un área para eliminar.");
+    return;
+  }
+
+  if (window.confirm("¿Estás seguro de que quieres eliminar esta área?")) {
+    fetch(`${API_URL}/areas/${areaSeleccionada}`, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (response.ok) {
+          setAreas(areas.filter(area => area._id !== areaSeleccionada));
+          setAreaSeleccionada(null);
+          alert("Área eliminada con éxito.");
+        } else {
+          alert("No se pudo eliminar el área. Inténtalo de nuevo.");
+        }
+      })
+      .catch(error => console.error('Error eliminando el área:', error));
+  }
+};
 
 
   return (
@@ -196,10 +220,13 @@ console.log(formData)
     <div className='absolute left-0 top-0 z-10 w-65 '>
     <Collapse 
       items={items} 
-      defaultActiveKey={['0']}     
-      onChange={onChange} 
+      activeKey={formVisible?['1']:['0']}     
+      onChange={() =>setFormVisible(!formVisible)}  
       className='h-10 w-80 border   ' 
     />
+  </div>
+  <div className='text-start'>
+    <Button onClick={handleEliminarArea} disabled={!areaSeleccionada}>Eliminar Área</Button>
   </div>
   
     
@@ -299,7 +326,7 @@ console.log(formData)
     onChange={(e) => handleFirmaChange(estudiante._id, e.target.value)}
     className="md:w-12 w-full h-full text-center border rounded text-xs resize-none pt-5"
     placeholder="Firma"
-    rows={2} // Establece la cantidad de líneas visibles
+    rows={3} // Establece la cantidad de líneas visibles
     maxLength={20}
   />
 </div>
