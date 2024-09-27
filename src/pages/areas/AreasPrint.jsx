@@ -61,15 +61,9 @@ export const AreasPrint = ({ setOpen, open, areas, estudiantes, informesGuardado
         onOk={() => setOpen(false)}
         onCancel={() => setOpen(false)}
         width={1122}
-        footer={null}
-       
+        footer={null}     
       
       >
-      
-
-
-
-
         <div ref={componentRef} className="print-container  mt-4 ">
 {console.log('estudiantes',estudiantes)}
         {estudiantes.map((estudiante,index)=>(

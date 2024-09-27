@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Input, Button,Select,Collapse  } from 'antd';
 import { AreasPrint } from './AreasPrint';
 
-export const AreasRender = ({ cursoId, cursos,items,mostrarForm, defaultActiveKey, onChange }) => {
+export const AreasRender = ({ cursoId, cursos, items, onChange }) => {
   const [areas, setAreas] = useState([]);
   const [estudiantes, setEstudiantes] = useState([]);
   const [informesGuardados, setInformesGuardados] = useState({});
@@ -16,7 +16,7 @@ export const AreasRender = ({ cursoId, cursos,items,mostrarForm, defaultActiveKe
   const [periodoSeleccionado, setPeriodoSeleccionado] = useState(undefined);
   const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
-    fetch('http://localhost:3000/api/areas')
+    fetch(`${API_URL}/areas`)
       .then(response => response.json())
       .then(data => setAreas(data))
       .catch(error => console.error('Error fetching areas:', error));
@@ -110,7 +110,7 @@ export const AreasRender = ({ cursoId, cursos,items,mostrarForm, defaultActiveKe
       areaId: areaSeleccionada,
     };
 
-    fetch('http://localhost:3000/api/areaEstudiante', {
+    fetch(`${API_URL}/areaEstudiante`, {
       method: 'POST',
       body: JSON.stringify(informeParaEnviar),
       headers: {
@@ -142,7 +142,7 @@ export const AreasRender = ({ cursoId, cursos,items,mostrarForm, defaultActiveKe
       return;
     }
 
-    fetch(`http://localhost:3000/api/areaEstudiante/${informeId}`, {
+    fetch(`${API_URL}/areaEstudiante/${informeId}`, {
       method: 'PUT',
       body: JSON.stringify(informeActualizado),
       headers: {
@@ -193,7 +193,7 @@ console.log(formData)
     
     <div className='flex justify-end pt-2 gap-3 '>
     
-    <div className='absolute left-0 top-0 z-10 w-full '>
+    <div className='absolute left-0 top-0 z-10 w-65 '>
     <Collapse 
       items={items} 
       defaultActiveKey={['0']}     
@@ -247,7 +247,7 @@ console.log(formData)
 
         {/* Estudiantes section */}
         <div className="w-full md:w-full">
-          <div className='flex w-20 gap-5 justify-start'>
+          <div className='flex w-20 gap-1 justify-start'>
           <h2 className="text-lg font-semibold mb-2">Estudiantes</h2>
           
           
@@ -260,7 +260,7 @@ console.log(formData)
           />
           
 
-          <ul className="justify-start overflow-x-auto">
+          <ul className="justify-start">
             {filteredEstudiantes.map(estudiante => (
               <li key={estudiante._id} className="flex flex-col justify-around md:flex-row  border rounded border-gray-400 hover:bg-gray-100 ">
                 <div className="flex-col flex-1 flex justify-center text-center cursor-pointer px-1">
