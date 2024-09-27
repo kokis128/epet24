@@ -436,10 +436,10 @@ const onSelectMateria = (materiaId) => {
         
         {materias.map((materia,index) => (        
            
-        <ul className='bg-gradient-to-r from-indigo-400 '  >
+        <ul className='bg-gradient-to-r from-indigo-400'  >
          
           <li  onClick={() => onSelectMateria(materia._id)} key={materia._id}
-           style={{ cursor: 'pointer', margin: '0px 0px'} } className={materia._id===materiaSeleccionada?'font-sans select':''} > { materia.userId === user._id && materia.name}
+           style={{ cursor: 'pointer', margin: '0px 0px' } } className={materia._id===materiaSeleccionada?'font-sans select':''} > { materia.userId === user._id && materia.name}
            </li>
          
             
@@ -475,7 +475,7 @@ const onSelectMateria = (materiaId) => {
       <Typography.Title level={5}>
         Estudiantes
       </Typography.Title>
-      <div className='' style={{ maxWidth: '300px',minWidth:'250px' }}>
+      <div style={{ maxWidth: '350px',minWidth:'250px' }}>
       {estudiantesBd.map((estudianteBd) => (
         <ul  key={estudianteBd._id}   >
           {materias.map((materia, index) => (
