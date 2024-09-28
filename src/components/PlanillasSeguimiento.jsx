@@ -350,7 +350,7 @@ const onSelectMateria = (materiaId) => {
 
 
   return (
-    <Layout style={layoutStyle} className=''>
+    <Layout style={layoutStyle}>
       <Header className='overflow-hidden h-full w-full p-0 bg-gradient-to-r from-indigo-600  ' style={headerStyle}>
 
 
@@ -369,27 +369,27 @@ const onSelectMateria = (materiaId) => {
         
         
                
-    <ul className='flex bg-slate-500  ' >
-    <li><Button className=' h-full border-none bg-slate-500 rounded-none overflow-hidden'   onClick={showModalMaterias}>
+    <ul className='flex flex-col sm:flex-row bg-slate-500  ' >
+    <li><Button className=' h-full w-full border-none bg-slate-500 rounded-none overflow-hidden'   onClick={showModalMaterias}>
      Agregar Materia
      </Button ></li>
-     <li><Button className=' h-full border-none bg-slate-500 rounded-none overflow-hidden'   onClick={showModalBorrarMateria}>
+     <li><Button className=' h-full w-full border-none bg-slate-500 rounded-none overflow-hidden'   onClick={showModalBorrarMateria}>
      <BorrarMateria materiaS={materiaSeleccionada} setReload2={setReload2} setMateriaSeleccionada={setMateriaSeleccionada} materias={materias}/> 
      </Button ></li>
 
-     <li><Button className=' h-full border-none bg-slate-500 rounded-none overflow-hidden '  onClick={showModal}>
+     <li><Button className=' h-full w-full border-none bg-slate-500 rounded-none overflow-hidden '  onClick={showModal}>
      Matricular Estudiantes
      </Button></li>
 
-     <li><Button className=' h-full border-none bg-slate-500 rounded-none'  onClick={showModalInasistencias}>
+     <li><Button className=' h-full w-full border-none bg-slate-500 rounded-none'  onClick={showModalInasistencias}>
      Desmatricular Estudiantes
      </Button></li>
 
-     <li><Button className='h-full border-none bg-slate-500 rounded-none'  onClick={showModalImprimir}>
+     <li><Button className='h-full w-full border-none bg-slate-500 rounded-none'  onClick={showModalImprimir}>
      Planillas
      </Button></li>
      
-     <li><Button className='h-full border-none bg-slate-500 rounded-none'  onClick={showModalRegistros}>
+     <li><Button className='h-full w-full border-none bg-slate-500 rounded-none'  onClick={showModalRegistros}>
      Registro De Clases
      </Button></li>
      
@@ -428,10 +428,18 @@ const onSelectMateria = (materiaId) => {
            
         </Header>
        
-      <Layout>
-        <Sider width="25%" style={siderStyle}>        
+      <Layout className='flex-row ' style={contentStyle}  >
+       
+
+      <Layout style={contentStyle}>
+
+        <Layout className='flex flex-row ' style={contentStyle} >
+
+          
+
+        <Sider style={siderStyle}  width="46%">     
       
-      <div>                         
+                              
       <Typography.Title level={5}>Materias</Typography.Title>            
         
         {materias.map((materia,index) => (        
@@ -449,33 +457,95 @@ const onSelectMateria = (materiaId) => {
         ))}
         
         
-      </div>
+      
          
       
         </Sider>
 
-        <Layout style={contentStyle} >
-
-        <Layout className='flex-row  ' style={contentStyle} >
-
           
-        <Content className='border-solid border-2 border-blue-700 w-[20%]'  >
+        <Content className='border-solid border-2 border-blue-700 w-full'   >
         
           <Typography.Title level={5}>Clases</Typography.Title>   
 
           
           {materiaSeleccionada && <ClasesAdd cantidadClases={cantidadClases} materiaS={materiaSeleccionada} ausentes={ausentes} estudianteSeleccionado={estudianteSeleccionado}  setClases={setClases} handleAgregarClase={handleAgregarClase} setAnotaciones={setAnotaciones} estudiantesBd={estudiantesBd} anotaciones={anotaciones}  />}
      
-          </Content  >
-          
+         
+         
+         
+            
+                  
+         
+         
+         </Content  >
 
-          <div className="border-solid border-2 border-blue-700 px-2 rounded-lg shadow-md">
+
+
+
+
+          
+         </Layout >
+
+         {user._id  && (
+        <div className='resizable'>         
+         
+         
+          {
+            
+            <div >  
+
+
+
+         
+          {clases.map((clase,index) => (
+               
+                 
+               <ul key={index} >
+               
+                <li >{ clase.materiaId && clase.materiaId._id === materiaSeleccionada
+                  
+                &&(   
+                  <>            
+                  <div  >     
+                 <ClasesList clases={clase}
+                      incrementarCantidad={incrementarCantidad}
+                      decrementarCantidad={decrementarCantidad}
+                      setClases={setClases}
+                      materiaSeleccionada={materiaSeleccionada}
+                      setReload3={setReload3}  />
+                 </div> 
+                 
+                 </> 
+             
+                )                
+            }</li>
+          
+              </ul>
+             
+            ))}
+             
+         
+         </div>
+         
+         }
+         
+        </div>
+
+        
+         
+      )}    
+
+
+         </Layout >
+
+         
+         <div className="border-solid border-2 border-blue-700 px-2 rounded-lg shadow-md  w-[48%] lg:w-[33%] ">
       
       
       <Typography.Title level={5}>
         Estudiantes
       </Typography.Title>
-      <div style={{ maxWidth: '350px',minWidth:'250px' }}>
+      <div >
       {estudiantesBd.map((estudianteBd) => (
         <ul  key={estudianteBd._id}   >
           {materias.map((materia, index) => (
@@ -528,63 +598,17 @@ const onSelectMateria = (materiaId) => {
       </div>
     </div>
 
-          </Layout >
+          
+          
      
      
     
-      {user._id  && (
-        <div className='resizable'>         
-         
-          <h5>Clases:</h5>
-          {
-            
-            <div >            
-         
-          {clases.map((clase,index) => (
-               
-                 
-               <ul key={index} >
-               
-                <li >{ clase.materiaId && clase.materiaId._id === materiaSeleccionada
-                  
-                &&(   
-                  <>            
-                  <div  >     
-                 <ClasesList clases={clase}
-                      incrementarCantidad={incrementarCantidad}
-                      decrementarCantidad={decrementarCantidad}
-                      setClases={setClases}
-                      materiaSeleccionada={materiaSeleccionada}
-                      setReload3={setReload3}  />
-                 </div> 
-                 
-                 </> 
-             
-                )                
-            }</li>
-          
-              </ul>
-             
-            ))}
-             
-         
-         </div>
-         
-         }
-         
-        </div>
-
-        
-         
-      )}      
-       
-            
-          
+    
           
           </Layout>
           
          
-      </Layout>
+     
 
       
       

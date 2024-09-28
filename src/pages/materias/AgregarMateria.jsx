@@ -15,6 +15,7 @@ export const AgregarMateria = ({materiaS, setReload2}) => {
   const URL = 'http://localhost:3000/api';
   const API_URL = process.env.REACT_APP_API_URL;
   const [reload, setReload] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { Option } = Select;
 const navigate = useNavigate();
   const onFinish = async (data) => {
@@ -22,6 +23,7 @@ const navigate = useNavigate();
    
 
     const dataWithId = { ...data, cursoId };
+    setIsSubmitting(true); 
     try {
       const first = await fetch(`${API_URL}/materia`, {
         method: 'POST',
@@ -41,7 +43,9 @@ const navigate = useNavigate();
 
     } catch (error) {
       console.error('Error al enviar datos:', error);
-    }
+    }finally {
+    setIsSubmitting(false); // Volver a habilitar el botón al finalizar
+  }
   }
 
   useEffect(() => {
@@ -136,11 +140,12 @@ const navigate = useNavigate();
         </Form.Item>
 
         <Form.Item>
-          <Button
+        <Button
             htmlType="submit"
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            disabled={isSubmitting} // Deshabilita el botón cuando se está enviando
           >
-            Guardar
+            {isSubmitting ? 'Guardando...' : 'Guardar'} {/* Cambiar el texto del botón mientras se envía */}
           </Button>
         </Form.Item>
       </Form>
