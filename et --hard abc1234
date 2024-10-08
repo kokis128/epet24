@@ -1,0 +1,67 @@
+[33mb619f80[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33mb619f80[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{1}: reset: moving to HEAD
+[33mb619f80[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{2}: pull --rebase origin main (finish): returning to refs/heads/main
+[33mb619f80[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{3}: pull --rebase origin main (pick): eliminar cursos y estudiantes
+[33m3a2527a[m HEAD@{4}: pull --rebase origin main (start): checkout 3a2527ad454e12a23d7a704e38e57ad11f06f2ee
+[33md8d4777[m HEAD@{5}: commit: eliminar cursos y estudiantes
+[33maec4089[m HEAD@{6}: commit: correccion responsive
+[33me8c7aaf[m HEAD@{7}: commit: correccion
+[33md77320c[m HEAD@{8}: reset: moving to HEAD~1
+[33md762343[m HEAD@{9}: commit: correccion
+[33md77320c[m HEAD@{10}: commit: correccion delete areass
+[33md9447f5[m HEAD@{11}: commit: correccion areas
+[33md1ccf47[m HEAD@{12}: commit: correccion areas
+[33m5d2410a[m HEAD@{13}: commit: correccion areas
+[33m3c7482d[m HEAD@{14}: commit: correccion planillas
+[33m33d5964[m HEAD@{15}: commit: comprobacion loginn
+[33m4571c89[m HEAD@{16}: commit: comprobacion loginn
+[33mcd82ba9[m HEAD@{17}: commit: modificacion url produccion
+[33m9fe8331[m HEAD@{18}: commit: modificacion seguimiento user admin
+[33m482906f[m HEAD@{19}: checkout: moving from dev to main
+[33mbf1effe[m[33m ([m[1;31morigin/dev[m[33m, [m[1;32mdev[m[33m)[m HEAD@{20}: checkout: moving from main to dev
+[33m482906f[m HEAD@{21}: commit: modificacion inicio
+[33m1847113[m HEAD@{22}: commit: modificacion inicio
+[33m620fe38[m HEAD@{23}: pull origin main: Fast-forward
+[33m2e469aa[m HEAD@{24}: checkout: moving from dev to main
+[33mbf1effe[m[33m ([m[1;31morigin/dev[m[33m, [m[1;32mdev[m[33m)[m HEAD@{25}: commit: ajustes en inicio varios
+[33m4afc6a4[m HEAD@{26}: commit: ajustes en inicio varios
+[33m457c7e5[m HEAD@{27}: commit: ajustes en inicio
+[33mb858021[m HEAD@{28}: commit: ajustes en inicio
+[33m10bddf4[m HEAD@{29}: commit: ajustes en inicio
+[33mb6b3ff9[m HEAD@{30}: commit: configuraciones varias
+[33m6fb2edf[m HEAD@{31}: commit: idem anterior
+[33m2c079ce[m HEAD@{32}: commit: ipresión informes
+[33me1c5402[m HEAD@{33}: commit: update
+[33m5a520e1[m HEAD@{34}: commit: areas
+[33m2e469aa[m HEAD@{35}: checkout: moving from main to dev
+[33m2e469aa[m HEAD@{36}: checkout: moving from dev to main
+[33m2e469aa[m HEAD@{37}: checkout: moving from main to dev
+[33m2e469aa[m HEAD@{38}: commit: --
+[33m6089b7e[m HEAD@{39}: commit: --
+[33m8dcf799[m HEAD@{40}: commit: --
+[33m1549ce9[m HEAD@{41}: commit: --
+[33m0b90e3b[m HEAD@{42}: commit: registro del dia
+[33mab1fcd8[m HEAD@{43}: commit: clases en form
+[33m8676104[m HEAD@{44}: commit: clases, DatePiker React
+[33m038c487[m HEAD@{45}: commit: imprimir planillas
+[33m1f5f6be[m HEAD@{46}: commit: print
+[33m9664e83[m HEAD@{47}: commit: inicio print incompleto
+[33me2c3f5b[m HEAD@{48}: commit: Anotaciones Estudiantes
+[33mff44ef7[m HEAD@{49}: commit: asistencias, contar faltas
+[33ma8fab6c[m HEAD@{50}: commit: renderizado estudiantes
+[33mb975213[m HEAD@{51}: commit: modificaciones en estudiantes
+[33m5e50dc1[m HEAD@{52}: commit: carga estudiantes
+[33m1e0524a[m HEAD@{53}: commit: carga form,materia seleccionada
+[33m1e768c8[m HEAD@{54}: commit: modify ClassLisItem
+[33ma59500c[m HEAD@{55}: commit: useeefect en calases
+[33m59a85d0[m HEAD@{56}: commit: actualizacion estado de las materias
+[33m04e582f[m HEAD@{57}: commit: use state , filter, update, delete clases
+[33m863802b[m HEAD@{58}: commit: login with routes protected
+[33mc15a5d1[m HEAD@{59}: commit: implementar
+[33me13712a[m HEAD@{60}: commit: correcciones
+[33mf6b5cc7[m HEAD@{61}: commit: add component login
+[33me140a3d[m HEAD@{62}: pull origin main: Fast-forward
+[33m1c2ccda[m HEAD@{63}: commit: first page completed using grid
+[33meba79aa[m HEAD@{64}: Branch: renamed refs/heads/main to refs/heads/main
+[33meba79aa[m HEAD@{66}: commit: my first commit
+[33m385d7c4[m HEAD@{67}: commit (initial): Initialize project using Create React App

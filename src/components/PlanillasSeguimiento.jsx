@@ -463,11 +463,7 @@ const onSelectMateria = (materiaId) => {
         </Sider>
 
           
-<<<<<<< HEAD
-        <Content className='border-solid border-2 border-blue-700 w-[24%]'  >
-=======
         <Content className='border-solid border-2 border-blue-700 w-full'   >
->>>>>>> aec408923ffb1f72471c80d1b0ba60e4ebd0b654
         
           <Typography.Title level={5}>Clases</Typography.Title>   
 
@@ -483,9 +479,6 @@ const onSelectMateria = (materiaId) => {
          
          </Content  >
 
-<<<<<<< HEAD
-      <div className="border-solid border-2 border-blue-700 px-2 rounded-lg shadow-md w-full sm:w-[30%]">
-=======
 
 
 
@@ -547,16 +540,11 @@ const onSelectMateria = (materiaId) => {
 
          
          <div className="border-solid border-2 border-blue-700 px-2 rounded-lg shadow-md  w-[48%] lg:w-[33%] ">
->>>>>>> aec408923ffb1f72471c80d1b0ba60e4ebd0b654
       
       
       <Typography.Title level={5}> 
       </Typography.Title>
-<<<<<<< HEAD
-      <div>
-=======
       <div >
->>>>>>> aec408923ffb1f72471c80d1b0ba60e4ebd0b654
       {estudiantesBd.map((estudianteBd) => (
         <ul  key={estudianteBd._id}   >
           {materias.map((materia, index) => (
