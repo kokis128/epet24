@@ -12,6 +12,51 @@ export const CargarEstudiantes = () => {
   const [form] = Form.useForm();
   const URL = 'http://localhost:3000/api';
   const API_URL = process.env.REACT_APP_API_URL;
+  const  onSelectEstudiante= async (_id)=>{
+    try{
+      const response =fetch(`${API_URL}/estudiante`, {
+      method: 'PUT',
+      body: JSON.stringify({_id}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+      
+      
+    }
+  
+  )
+  const result = await response.json();
+  if (response.ok) {
+    alert('Estudiante eliminado del curso');
+    // Actualizar el estado sin el estudiante eliminado
+    setEstudiantesBd((prevEstudiantes) =>
+      prevEstudiantes.filter((estudiante) => estudiante._id !== _id)
+    );
+    
+  } else {
+    alert(result.message || 'Error al eliminar el estudiante');
+  }
+   
+   
+   
+   
+  } catch (error) {
+    console.error('Error al enviar datos:', error);
+  }
+  setReload(true);
+
+};
+useEffect(() => {
+  fetch(`${API_URL}/estudiantes`)
+    .then(handleResponseEstudiantes)
+    .then(data => setEstudiantesBd(data))
+    .catch(handleError);
+    
+}, [reload]); // Recarga la lista cada vez que cambia el estado reload
+
+
+  
 console.log(id)
 
 
@@ -71,8 +116,8 @@ console.log({cursoDivisionBdRender});
       {/* Formulario */}
       <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-lg mb-8 md:mb-0 md:mr-8">
         <div className="flex justify-between mb-6">
-          {cursoDivisionBdRender.filter(curso => curso._id === id).map((curso, index) => (
-            <div key={index} className="text-lg font-semibold text-gray-700">Curso: {curso.curso} {curso.division}</div>
+          {cursoDivisionBdRender.filter(curso => curso?._id === id).map((curso, index) => (
+            <div key={index} className="text-lg font-semibold text-gray-700">Curso: {curso?.curso} {curso?.division}</div>
           ))}
         </div>
         <div className="text-3xl font-bold text-center text-gray-800 mb-6">Cargar Estudiantes</div>
@@ -152,11 +197,12 @@ console.log({cursoDivisionBdRender});
             </tr>
           </thead>
           <tbody>
-            {estudiantesBd.filter(estudiante => estudiante.cursoId === cursoId).map((estudiante, index) => (
-              <tr key={index} className="text-gray-700 bg-white hover:bg-gray-100 transition-colors duration-200 ease-in-out">
-                <td className="py-3 px-4 border-b">{estudiante.dni}</td>
-                <td className="py-3 px-4 border-b">{estudiante.nombre}</td>
-                <td className="py-3 px-4 border-b">{estudiante.apellido}</td>
+            {estudiantesBd.filter(estudiante => estudiante?.cursoId === cursoId).map((estudiante, index) => (
+              <tr key={index}  className="text-gray-700 bg-white hover:bg-gray-100 transition-colors duration-200 ease-in-out">
+                <td className="py-3 px-4 border-b">{estudiante?.dni}</td>
+                <td className="py-3 px-4 border-b">{estudiante?.nombre}</td>
+                <td className="py-3 px-4 border-b">{estudiante?.apellido}</td>
+                <td><Button onClick={()=>onSelectEstudiante(estudiante?._id)}>Eliminar</Button></td>
               </tr>
             ))}
           </tbody>
