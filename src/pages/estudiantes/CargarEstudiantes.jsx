@@ -12,59 +12,20 @@ export const CargarEstudiantes = () => {
   const cursoId = id;
   const [form] = Form.useForm();
   const API_URL = process.env.REACT_APP_API_URL;
-  const  onSelectEstudiante= async (_id)=>{
-    try{
-      const response =fetch(`${API_URL}/estudiante`, {
-      method: 'PUT',
-      body: JSON.stringify({_id}),
-      headers: {
-        'Content-Type': 'application/json',
-      },
 
-      
-      
+  const fetchEstudiantes = async () => {
+    try {
+      const response = await fetch(`${API_URL}/estudiantes`);
+      const data = await handleResponseEstudiantes(response);
+      setEstudiantesBd(data);
+    } catch (error) {
+      handleError(error);
     }
-  
-  )
-  const result = await response.json();
-  if (response.ok) {
-    alert('Estudiante eliminado del curso');
-    // Actualizar el estado sin el estudiante eliminado
-    setEstudiantesBd((prevEstudiantes) =>
-      prevEstudiantes.filter((estudiante) => estudiante._id !== _id)
-    );
-    
-  } else {
-    alert(result.message || 'Error al eliminar el estudiante');
-  }
-   
-   
-   
-   
-  } catch (error) {
-    console.error('Error al enviar datos:', error);
-  }
-  setReload(true);
-
-};
-useEffect(() => {
-  fetch(`${API_URL}/estudiantes`)
-    .then(handleResponseEstudiantes)
-    .then(data => setEstudiantesBd(data))
-    .catch(handleError);
-    
-}, [reload]); // Recarga la lista cada vez que cambia el estado reload
-
-
-  
-console.log(id)
+  };
 
   useEffect(() => {
-    fetch(`${API_URL}/estudiantes`)
-      .then(handleResponseEstudiantes)
-      .then(data => setEstudiantesBd(data))
-      .catch(handleError);
-  }, [reload]); // Dependencia para recargar datos
+    fetchEstudiantes(); // Carga la lista de estudiantes al montar el componente
+  }, [reload]); // Recarga la lista cada vez que cambia el estado reload
 
   const handleResponseEstudiantes = (response) => {
     if (!response.ok) {
@@ -89,10 +50,10 @@ console.log(id)
       });
       const newEstudiante = await response.json();
       alert(newEstudiante.message);
+      setReload((prev) => !prev); // Actualiza el estado para recargar la lista de estudiantes
     } catch (error) {
       console.error('Error al enviar datos:', error);
     }
-    setReload(true);
   };
 
   const eliminarEstudiante = async (estudianteId) => {
@@ -107,7 +68,7 @@ console.log(id)
 
       const result = await response.json();
       alert(result.message);
-      setReload(true); // Recargar la lista de estudiantes
+      setReload((prev) => !prev); // Recarga la lista de estudiantes
     } catch (error) {
       console.error('Error al eliminar estudiante:', error);
     }
