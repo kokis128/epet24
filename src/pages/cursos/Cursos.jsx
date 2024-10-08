@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Select, Space, Button, Input } from 'antd';
 import { useNavigate, Outlet } from 'react-router-dom';
-import { MateriasPorCurso } from '../materias/MateriasPorCurso';
-import { AreasPorCurso } from '../areas/AreasPorCurso';
+import {  MateriasPorCurso  } from '../materias/MateriasPorCurso';;
+import {  AreasPorCurso  } from '../areas/AreasPorCurso';;
 import { CursoContext } from '../../CursoContext';
 
 export const Cursos = () => {
