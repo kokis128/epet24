@@ -8,7 +8,7 @@ import { ClasesList } from '../pages/clasesList/ClasesList';
 import { ClasesAdd } from '../pages/clasesList/ClasesAdd';
 import { MatricularEstudiante} from '../pages/estudiantes/MatricularEstudiante';
 import { DesmatricularEstudiante} from '../pages/estudiantes/DesmatricularEstudiante';
-//import { CargarEstudiantes } from '../pages/estudiantes/CargarEstudiantes';
+import { CargarEstudiantes } from '../pages/estudiantes/CargarEstudiantes';
 import { useState, useEffect } from 'react';
 import '../pages/clasesList/clasesListItem.css'
 import { MdHeight } from 'react-icons/md';
