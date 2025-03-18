@@ -9,17 +9,16 @@ export const Sidebar = () => {
         <h1 className='text-SoftOrange text-[30px] font-bolt text-center content-center'>Novedades</h1>
         <NewArticle
         
-        title='Estudiantina 2024'
-        text='Invitamos a todos a ser parte de esta celebración única, que se llevará a cabo el próximo 24 de septiembre. ¡No te lo pierdas!'
+        title='Inicio Ciclo lectivo 2025'
+        text='Les deseamos a todos nuestros estudiantes un exelente inicio de clases'
             />
         <NewArticle 
-        title='Expo 2024'
-        text='Este año, la Expo se centra en la innovación y la sostenibilidad. Nos enorgullece presentar proyectos que no solo muestran la creatividad de nuestros estudiantes, sino que también abordan los desafíos actuales de nuestra sociedad. '
+        title='Calendario Escolar 2025'
+        text='Consulta las fechas importantes del ciclo lectivo y mantente al día con los eventos escolares. '
             />
         <NewArticle 
-        title='Nuevo Plan de Estudios'
-        text='Este Año se implementará un nuevo plan de estudios, 
-            para primer y segundo Año.'
+        title='Convocatorias Abiertas'
+        text='Este Año Participa en los concursos y actividades extracurriculares. ¡Tu talento es importante!.'
             /> 
              <NewArticle 
         title= {<a href='https://regular.neuquen.gov.ar/Regular/servlet/com.certiregu.hnuevareg'>Certificado de Alumno Regular</a>}
