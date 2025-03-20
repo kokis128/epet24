@@ -10,6 +10,7 @@ const timeZone = 'America/Argentina/Buenos_Aires';
 export const ModificarAnotacion = ({ materiaS, clases, selectedClase }) => {
     const URL = 'http://localhost:3000/api';
     const API_URL = process.env.REACT_APP_API_URL;
+    console.log('clase seleccionada',selectedClase);
 
     const [anotacionEditando, setAnotacionEditando] = useState('');
     const [idAnotacionEditando, setIdAnotacionEditando] = useState(null);
@@ -80,7 +81,9 @@ export const ModificarAnotacion = ({ materiaS, clases, selectedClase }) => {
             const nuevaAnotacion = {
                 anotaciones: [{ student_id: estudianteSeleccionado._id, anotacion: anotacionEditando }],
                 fecha: format(addDays(selectedClase.fecha,1), 'yyyy-MM-dd'),
-                materia_id: materiaS
+                materia_id: materiaS,
+                clase_id:selectedClase
+                
             };
     
             try {
@@ -194,7 +197,7 @@ export const ModificarAnotacion = ({ materiaS, clases, selectedClase }) => {
                                     ) : (
                                         <Button
                                             onClick={() => handleAgregarAnotacion(estudiante)}
-                                            className="bg-blue-500 text-white px-2 py-1 rounded"
+                                            className="bg-blue-700 text-white px-2 py-1 rounded"
                                         >
                                             Agregar Nota
                                         </Button>
@@ -213,6 +216,10 @@ export const ModificarAnotacion = ({ materiaS, clases, selectedClase }) => {
                 onCancel={() => setIsModalOpen(false)}
                 okText="Guardar"
                 cancelText="Cancelar"
+                okButtonProps={{
+                    style: { backgroundColor: '#1890ee', borderColor: '#1890ff' }, // Cambia el color del botón Guardar
+                  }}
+                
             >
                 <TextArea
                     rows={4}

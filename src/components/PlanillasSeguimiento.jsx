@@ -603,16 +603,12 @@ const onSelectMateria = (materiaId) => {
     
     
           
-          </Layout>
-          
+          </Layout>    
          
      
 
       
-      
-    
-     
-      <footer style={footerStyle} className='md:col-span-4 bg-slate-300  '>
+       <footer style={footerStyle} className='md:col-span-4 bg-slate-300  '>
         <div className="flex  md:flex-row justify-between px-5">
           
         <div className='pt-[5px]'>
