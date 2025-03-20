@@ -486,57 +486,41 @@ const onSelectMateria = (materiaId) => {
           
          </Layout >
 
-         {user._id  && (
-        <div className='resizable'>         
-         
-         
-          {
-            
-            <div >  
+         {user._id && (
+  <div className='resizable'>
+    <div>
+      {clases
+        .filter(clase => {
+          // Verificar que la clase tenga una materia asociada
+          if (!clase.materiaId) return false;
 
+          // Verificar que la materia pertenezca al usuario actual
+          const materia = materias.find(m => m._id === clase.materiaId._id);
+          if (!materia || materia.userId !== user._id) return false;
 
-
-         
-          {clases.map((clase,index) => (
-               
-                 
-               <ul key={index} >
-               
-                <li >{ clase.materiaId && clase.materiaId._id === materiaSeleccionada
-                  
-                &&(   
-                  <>            
-                  <div  >     
-                 <ClasesList clases={clase}
-                      incrementarCantidad={incrementarCantidad}
-                      decrementarCantidad={decrementarCantidad}
-                      setClases={setClases}
-                      materiaSeleccionada={materiaSeleccionada}
-                      setReload3={setReload3}  />
-                 </div> 
-                 
-                 </> 
-             
-                )                
-            }</li>
-          
-              </ul>
-             
-            ))}
-             
-         
-         </div>
-         
-         }
-         
-        </div>
-
-        
-         
-      )}    
-
-
-         </Layout >
+          // Verificar que la materia sea la seleccionada
+          return clase.materiaId._id === materiaSeleccionada;
+        })
+        .map((clase) => (
+          <ul key={clase._id}>
+            <li>
+              <div>
+                <ClasesList
+                  clases={clase}
+                  incrementarCantidad={incrementarCantidad}
+                  decrementarCantidad={decrementarCantidad}
+                  setClases={setClases}
+                  materiaSeleccionada={materiaSeleccionada}
+                  setReload3={setReload3}
+                />
+              </div>
+            </li>
+          </ul>
+        ))}
+    </div>
+  </div>
+)}
+</Layout>
 
          
          <div className="border-solid border-2 border-blue-700 px-2 rounded-lg shadow-md  w-[48%] lg:w-[33%] ">
