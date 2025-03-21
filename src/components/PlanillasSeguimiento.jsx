@@ -18,6 +18,7 @@ import { BorrarMateria} from '../pages/materias/BorrarMateria';
 import { PlanillaToPrint} from '../components/PlanillaToPrint';
 import { PlanillaToPrintMaterias} from '../components/PlanillaToPrintMaterias';
 import TextArea from 'antd/es/input/TextArea';
+import { Navigate } from 'react-router-dom';
 
 export const PlanillasSeguimiento = () => {
   
@@ -344,6 +345,10 @@ const onSelectMateria = (materiaId) => {
       
     };
 
+    const logout=()=>{
+      window.location.href = '/login';
+    }
+
 
     
    
@@ -365,6 +370,11 @@ const onSelectMateria = (materiaId) => {
         <div className='font-sans text-gray-700 pr-6 underline decoration-solid text-center inline '>Gestión de Clases</div>
         </div>
         <span className='flex flex-row-reverse pr-5 text-gray-500 font-sans inline text-xs'>Usuario: {user.nombre} {user.apellido}</span>
+        <div class="text-right">
+        <button className=" text-white pr-5 rounded" onClick={logout}>
+        Salir
+         </button>
+        </div>
         
         
         
