@@ -13,41 +13,16 @@ const timeZone = 'America/Argentina/Buenos_Aires';
 export const PlanillaToPrint = ({ materiaS, clases }) => {
   const [data, setData] = useState(null);
   const [ausentes, setAusentes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const componentRef = useRef();
- const API_URL = process.env.REACT_APP_API_URL;
-  useEffect(() => {
-    fetch(`${API_URL}/planillas/${materiaS}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error al obtener la lista de estudiantes');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data);
-        console.log('Datos recibidos:', data);
-      })
-      .catch((error) => {
-        console.error('Error al obtener la lista de estudiantes:', error);
-      });
-  }, [materiaS]);
+  const API_URL = process.env.REACT_APP_API_URL;
 
-  useEffect(() => {
-    fetch(`http://localhost:3000/api/ausentes`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error al obtener las ausencias');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setAusentes(data.ausentes);
-      })
-      .catch((error) => {
-        console.error('Error al obtener las ausencias:', error);
-      });
-  }, [materiaS]);
+  // Normalizar fechas para comparación
+  const normalizeDate = (date) => {
+    return format(new Date(date), 'yyyy-MM-dd');
+  };
 
+  // Formatear fecha para mostrar
   const formatDate = (fecha) => {
     if (!fecha) return null;
     try {
@@ -58,6 +33,7 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
     }
   };
 
+  // Formatear fecha para la tabla
   const formatearFecha = (fecha) => {
     const formatosPosibles = ['dd/MM/yyyy', 'yyyy-MM-dd'];
     let date;
@@ -76,40 +52,45 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
     return format(addDays(date, 1), 'dd/MM', { locale: es });
   };
 
-  const formatDateToCompare = (fecha) => {
-    if (!fecha) return null;
-    try {
-      const date = new Date(fecha);
-      return format(date, 'yyyy-MM-dd'); // Comparar solo el año, mes y día
-    } catch (error) {
-      console.error('Error al formatear la fecha:', error);
-      return null;
-    }
-  };
+  // Fetch de datos
+  useEffect(() => {
+    Promise.all([
+      fetch(`${API_URL}/planillas/${materiaS}`),
+      fetch(`http://localhost:3000/api/ausentes`)
+    ])
+      .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+      .then(([data1, data2]) => {
+        setData(data1);
+        setAusentes(data2.ausentes);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setLoading(false);
+      });
+  }, [materiaS]);
 
-  
-
+  // Función para imprimir
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-  if (!data)
+  if (loading) {
     return (
-      <div className="flex h-screen">
-        <div className="animate-spin rounded-full border-t-2 border-b-2 border-gray-900"></div>
+      <div className="flex h-screen justify-center items-center">
+        <div className="animate-spin rounded-full border-t-2 border-b-2 border-gray-900 h-12 w-12"></div>
       </div>
     );
+  }
+
+  if (!data) {
+    return <div>No se encontraron datos.</div>;
+  }
 
   // Filtrar las clases para las anotaciones
   const clasesFiltradasAnotaciones = clases
     .filter((clase) => clase.materiaId?._id === materiaS)
     .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-
-  // Filtrar las clases para las ausencias
-  const clasesFiltradasAusencias = clases.map((clase) => ({
-    fecha: formatDateToCompare(clase.fecha),
-    id: clase._id,
-  }));
 
   return (
     <div className="mx-auto sm:px-6 lg:px-8">
@@ -153,20 +134,19 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
                   >
                     Fecha
                   </th>
-                  
                   {clasesFiltradasAnotaciones.map((clase, index) => (
-                    
                     <th
                       key={`${clase._id}-${index}`}
                       scope="col"
                       className="text-center text-[8px] border border-gray-200 font-medium text-gray-500 tracking-wider"
                     >
                       {formatearFecha(formatDate(clase.fecha))}
-                    </th>            
+                    </th>
                   ))}
-                
+                  <th scope="col" className="text-center text-[6px] border border-gray-200 font-medium text-gray-500">
+                    Cant.<br /> Aus
+                  </th>
                 </tr>
-                
                 <tr>
                   <th
                     scope="col"
@@ -174,7 +154,6 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
                   >
                     Actividad
                   </th>
-                  
                   {clasesFiltradasAnotaciones.map((clase, index) => (
                     <th
                       key={`actividad-${clase._id}-${index}`}
@@ -184,17 +163,12 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
                       {clase.registro}
                     </th>
                   ))}
-                    <th scope="col" className="text-center text-[6px] border border-gray-200 font-medium text-gray-500">
-                    Cant.<br /> Aus
-                  </th>
                 </tr>
               </thead>
-              
               <tbody className="bg-white divide-y divide-gray-200">
                 {data.materia.estudiantes.map((estudiante, estudianteIndex) => {
-                  // Reiniciar contador por estudiante
-                  let cont = 0;
-                  
+                  let cont = 0; // Contador de ausencias por estudiante
+
                   return (
                     <tr
                       key={estudiante._id}
@@ -202,34 +176,30 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
                         estudianteIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'
                       }
                     >
-                      <td className=" py-1 text-xs font-medium border border-gray-300 text-gray-900">
+                      <td className="py-1 text-xs font-medium border border-gray-300 text-gray-900">
                         <PlanillaEstudiante estudiante={estudiante} />
                       </td>
-                      
                       {clasesFiltradasAnotaciones.map((clase) => {
                         const anotacion = data.anotaciones.find(
                           (anotacion) =>
                             anotacion?.student_id === estudiante?._id &&
-                            formatDate(anotacion?.fecha) ===
-                              formatDate(clase?.fecha) &&
+                            normalizeDate(anotacion?.fecha) === normalizeDate(clase?.fecha) &&
                             clase?._id === anotacion?.clase_id
                         );
-                        
-                        const ausencia = 
-                          ausentes.find(
-                            (falta) =>
-                              falta?.student_id === estudiante?._id &&
-                              falta?.materia_id === materiaS &&
-                              formatDate(falta?.fecha) ===
-                                formatDate(clase?.fecha)
-                          );
+
+                        const ausencia = ausentes.find(
+                          (falta) =>
+                            falta?.student_id === estudiante?._id &&
+                            falta?.materia_id === materiaS &&
+                            normalizeDate(falta?.fecha) === normalizeDate(clase?.fecha)
+                        );
 
                         if (ausencia) cont++;
 
                         return (
                           <td
                             key={`${estudiante._id}-${clase._id}`}
-                            className="text-[8px] border border-gray-300 "
+                            className="text-[8px] border border-gray-300"
                           >
                             <PlanillaAnotacion
                               anotacion={anotacion ? anotacion : ''}
@@ -238,7 +208,6 @@ export const PlanillaToPrint = ({ materiaS, clases }) => {
                           </td>
                         );
                       })}
-                      {/* Mostrar el contador de ausencias */}
                       <td className="text-center text-[8px] border border-gray-300">
                         {cont}
                       </td>
