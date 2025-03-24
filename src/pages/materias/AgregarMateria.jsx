@@ -79,7 +79,11 @@ const navigate = useNavigate();
         <Form.Item
           label="Nombre"
           name="name"
-          rules={[{ required: true, message: 'Debes Completar!' }]}
+          rules={[
+            { required: true, message: 'Debes Completar!' },
+            { max: 30, message: 'El nombre no puede exceder los 30 caracteres' }
+          
+          ]}
         >
           <Input className="border rounded w-full py-2 px-3" />
         </Form.Item>
