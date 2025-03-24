@@ -81,19 +81,29 @@ let [selectedMateriaId,setSelectedMateriaId] = useState();
     fetch(`${API_URL}/materias`)
       .then(handleResponseMaterias)
       .then(data => {         
-        setMaterias(data);
-        if (!materiaSeleccionada && data.length > 0) {
-          const firstMateriaId = data[0]._id;
-          console.log('primerMateria',firstMateriaId);
+        // Filtrar solo las materias del usuario actual
+        const materiasDelUsuario = data.filter(materia => materia.userId === user._id);
+        
+        setMaterias(materiasDelUsuario);
+        
+        if (!materiaSeleccionada && materiasDelUsuario.length > 0) {
+          const firstMateriaId = materiasDelUsuario[0]._id;
           setMateriaSeleccionada(firstMateriaId);
           localStorage.setItem('selectedMateriaId', firstMateriaId);
         }
         
-        return data; // Retorna los datos para el siguiente then
-      })
-      .then(data=>(console.log(data)))    
+        return data;
+      })    
       .catch(handleError);
-  }, [reload,reload2]);
+  }, [reload, reload2]);
+
+
+
+
+
+
+
+  
 
   useEffect(() => {
     if (selectedMateriaId) {
